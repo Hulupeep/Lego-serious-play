@@ -50,11 +50,11 @@ A small cargo boat to transport an animal safely down the river. (not to be told
  
 ### Lego Pieces
 You will need 4 walls for a cage
-A flat piece for the boat
-An animal lego or from anything else that is small enough.
-A small flat piece for the roof (when it rains)
-Sets of standard bricks and half width bricks
-See image below
+- A flat piece for the boat
+- An animal lego or from anything else that is small enough.
+- A small flat piece for the roof (when it rains)
+- Sets of standard bricks and half width bricks
+- See image below
 ![lego.jpg](lego.jpg)
 
 
