@@ -12,6 +12,8 @@
 ## Overview
  
 This LEGO Serious Play challenge is designed to simulate real-world collaboration under ambiguity, constraint, and limited resources. Teams must work together to build a solution to a problem they don’t fully understand—while communicating through a single "Architect" who holds the secret.
+
+Simple, yet challenging.
  
 The workshop emphasizes:
 - Communication clarity
@@ -35,7 +37,8 @@ By the end of the session, participants will have experienced:
 
 ### What's being built
 A small cargo boat to transport an animal safely down the river. (not to be told to participants)
-[cargo.jpg](cargo.jpg)
+
+![cargo.jpg](cargo.jpg)
  
 ### Materials
 - LEGO bricks sorted into **3 shared bowls** per team
@@ -52,7 +55,7 @@ An animal lego or from anything else that is small enough.
 A small flat piece for the roof (when it rains)
 Sets of standard bricks and half width bricks
 See image below
-[bricks.jpg](bricks.jpg)
+![lego.jpg](lego.jpg)
 
 
  
