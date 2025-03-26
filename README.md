@@ -21,6 +21,8 @@ We’re starting with one complete exercise—**Mission: Secure the Cargo**—a 
 
 A LEGO Serious Play challenge for 3–4 teams (in-person or hybrid), where each team must build something to safely transport an unknown “cargo”… without being told what it is, what it’s for, or what it should look like.
 
+See the facilitators guide in the workshop under the folder 'workshops' 
+
 
 
 ### Core themes:
