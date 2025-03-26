@@ -2,7 +2,7 @@
  
 **Workshop Name:** Mission: Secure the Cargo  
 **Type:** LEGO Serious Play  
-**Duration:** ~30 minutes  
+**Duration:** ~30 minutes in total. 10-15 mins to build. 5 to 10 mins to explain, 5 mins debrief
 **Group Size:** 6–12 people (3–4 teams)  
 **Optional Remote Play:** Supported (see `remote.md`)
 **Lego Pieces** - See below
