@@ -48,23 +48,17 @@ A LEGO Serious Play challenge for 3–4 teams (in-person or hybrid), where each 
 Each workshop in this repo should follow the structure below:
 
 /workshops
-├── mission-secure-the-cargo
+├── your_workshop_name 
 │ ├── facilitator.md          ← Step-by-step guide
 │ ├── participants.md         ← Instructions for teams
-│ ├── architect.md            ← Secret role instructions
+│ ├── architect.md            ← Optional for Secret role instructions
 │ ├── remote.md               ← (Optional) Remote play version
-│ ├── debrief.md              ← Debrief questions
+│ ├── debrief.md              ← Optional Debrief questions
 │   └── assets/
 │       ├── model-photo.jpg     ← Image of the build
 │       └── printouts/          ← Any PDFs for printing
  
-/contribute
-├── how-to.md                   ← Simple guide for submitting your own
-├── template/                   ← Folder to copy for new sessions
-│ ├── facilitator.md
-│ ├── participants.md
-│ ├── architect.md
-│   ├── assets/
+ 
  
 README.md                       ← Main repo intro + workshop index
 LICENSE                         ← Open source license (MIT or CC)
