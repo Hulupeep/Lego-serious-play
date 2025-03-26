@@ -5,6 +5,7 @@
 **Duration:** ~30 minutes  
 **Group Size:** 6–12 people (3–4 teams)  
 **Optional Remote Play:** Supported (see `remote.md`)
+**Lego Pieces** - See below
  
 ---
  
@@ -31,14 +32,29 @@ By the end of the session, participants will have experienced:
 ---
  
 ## Setup
+
+### What's being built
+A small cargo boat to transport an animal safely down the river. (not to be told to participants)
+[cargo.jpg](cargo.jpg)
  
 ### Materials
 - LEGO bricks sorted into **3 shared bowls** per team
-- Pre-built “cargo” (e.g., an animal in a small cage) hidden among the pieces
+- Pre-built “cargo” (e.g., an animal in a small cage) hidden among the pieces (see image below)
 - Printed instructions or devices for viewing:
   - `facilitator_script.md`
   - `architect.md`
   - `participants.md`
+ 
+### Lego Pieces
+You will need 4 walls for a cage
+A flat piece for the boat
+An animal lego or from anything else that is small enough.
+A small flat piece for the roof (when it rains)
+Sets of standard bricks and half width bricks
+See image below
+[bricks.jpg](bricks.jpg)
+
+
  
 ### Room Setup
 - Separate tables or zones for 3–4 teams
