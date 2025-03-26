@@ -62,18 +62,10 @@ Each workshop in this repo should follow the structure below:
  
 README.md                       ← Main repo intro + workshop index
 LICENSE                         ← Open source license (MIT or CC)
-
-
 Each folder should be self-contained and copy-pasteable into a new repo for reuse.
 
-
  
----
-
-
-
 ## ✍️ Contribute Your Own Session
-
 
 
 We'd love your ideas, twists, and full workshop formats. To contribute:
