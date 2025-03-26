@@ -47,10 +47,27 @@ A LEGO Serious Play challenge for 3–4 teams (in-person or hybrid), where each 
 
 Each workshop in this repo should follow the structure below:
 
-
-
-/your-workshop-name ├── README.md ← Overview of the session ├── facilitator-guide.md ← Full facilitator instructions (step-by-step) ├── participant-guide.md ← The version you give to players (no spoilers) ├── architect-instructions.md ← Secret instructions just for the "Architect" ├── remote-play.md ← Tips and tools for running it remotely ├── debrief.md ← Optional: debrief questions + reflection flow ├── /assets ← Images, diagrams, photos of the builds
-
+/workshops
+├── mission-secure-the-cargo
+│ ├── facilitator.md          ← Step-by-step guide
+│ ├── participants.md         ← Instructions for teams
+│ ├── architect.md            ← Secret role instructions
+│ ├── remote.md               ← (Optional) Remote play version
+│ ├── debrief.md              ← Debrief questions
+│   └── assets/
+│       ├── model-photo.jpg     ← Image of the build
+│       └── printouts/          ← Any PDFs for printing
+ 
+/contribute
+├── how-to.md                   ← Simple guide for submitting your own
+├── template/                   ← Folder to copy for new sessions
+│ ├── facilitator.md
+│ ├── participants.md
+│ ├── architect.md
+│   ├── assets/
+ 
+README.md                       ← Main repo intro + workshop index
+LICENSE                         ← Open source license (MIT or CC)
 
 
 Each folder should be self-contained and copy-pasteable into a new repo for reuse.
