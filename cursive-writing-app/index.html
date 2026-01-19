@@ -419,244 +419,253 @@
         const ASCENDER = 10;
         const DESCENDER = 95;
 
-        // Cursive letter stroke data - single-line paths in correct writing order
+        /*
+         * CURSIVE STROKE DATA - TRUE SINGLE-STROKE PATHS
+         *
+         * In real cursive, the pen RARELY lifts. Most letters are ONE continuous stroke.
+         * Pen only lifts for: dots (i,j) and crosses (t,f,x)
+         *
+         * Each path follows the exact motion a human hand makes.
+         */
         const letterStrokes = {
             'a': {
                 width: 50,
-                // Stroke order: 1) entry up, around oval, 2) down stem with exit
+                // ONE stroke: entry → up → oval → back to stem → down → exit
                 strokes: [
-                    [[0, BASELINE], [5, 55], [10, MIDLINE], [20, 35], [35, 35], [45, MIDLINE], [45, 55], [40, 65], [25, 70], [10, 65], [5, 55], [10, MIDLINE]],
-                    [[45, MIDLINE], [45, BASELINE], [50, 65]]
+                    [[0, BASELINE], [5, 55], [10, MIDLINE], [20, 35], [35, 35], [45, MIDLINE], [45, 55], [40, 65], [25, BASELINE], [10, 65], [10, 55], [15, MIDLINE], [45, MIDLINE], [45, BASELINE], [50, 65]]
                 ],
-                strokeNames: ['Oval', 'Down & exit'],
-                tip: 'Start at baseline, curve up and around to form oval, then down stroke with exit connector.'
+                strokeNames: ['Complete letter'],
+                tip: 'One fluid motion: up, around the oval, retrace to stem, down, exit.'
             },
             'b': {
                 width: 50,
+                // ONE stroke: up tall → loop → down → bump → exit
                 strokes: [
-                    [[0, BASELINE], [5, 50], [10, 25], [15, ASCENDER], [20, 15], [18, 25], [15, MIDLINE], [15, BASELINE]],
-                    [[15, 55], [25, 45], [40, 45], [48, 55], [48, 65], [40, BASELINE], [25, BASELINE], [15, 65]],
-                    [[48, 65], [50, 60]]
+                    [[0, BASELINE], [5, 50], [10, 25], [15, ASCENDER], [20, 15], [18, 25], [15, MIDLINE], [15, BASELINE], [15, 55], [25, 45], [40, 45], [48, 55], [45, 68], [30, BASELINE], [15, 65], [48, 62], [52, 58]]
                 ],
-                strokeNames: ['Tall loop', 'Bump', 'Exit'],
-                tip: 'Start with upstroke to ascender, loop, down, then make the bump.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up tall with loop, down, make bump, exit.'
             },
             'c': {
                 width: 45,
+                // ONE stroke: entry → up → around → exit
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, MIDLINE], [25, 35], [38, 38], [42, 45]],
-                    [[38, 38], [25, 38], [12, 45], [8, 55], [10, 65], [22, BASELINE], [38, 68], [45, 60]]
+                    [[0, BASELINE], [5, 55], [12, MIDLINE], [25, 35], [38, 38], [38, 38], [25, 38], [12, 45], [8, 55], [10, 65], [22, BASELINE], [38, 68], [45, 60]]
                 ],
-                strokeNames: ['Up curve', 'Around & exit'],
-                tip: 'Upstroke, curve around like letter C, exit to the right.'
+                strokeNames: ['Complete letter'],
+                tip: 'One fluid curve: up, around like a C, exit right.'
             },
             'd': {
                 width: 55,
+                // ONE stroke: entry → oval → up tall → down → exit
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, MIDLINE], [25, 35], [40, 38], [45, 50], [42, 65], [28, BASELINE], [12, 68], [8, 55], [12, MIDLINE]],
-                    [[45, 50], [45, 25], [48, ASCENDER], [52, 15]],
-                    [[48, ASCENDER], [45, 50], [45, BASELINE], [55, 62]]
+                    [[0, BASELINE], [5, 55], [12, MIDLINE], [25, 35], [40, 38], [45, 50], [42, 65], [28, BASELINE], [12, 68], [8, 55], [12, MIDLINE], [45, MIDLINE], [45, 25], [48, ASCENDER], [50, 15], [48, 25], [45, MIDLINE], [45, BASELINE], [55, 62]]
                 ],
-                strokeNames: ['Oval', 'Up to top', 'Down & exit'],
-                tip: 'Make oval first, then tall stroke up, back down with exit.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: oval first, up tall, back down with exit.'
             },
             'e': {
                 width: 40,
+                // ONE stroke: entry → up → loop → around → exit
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, 45], [20, MIDLINE], [28, 42], [30, 48], [25, 52], [15, 52]],
-                    [[15, 52], [8, 58], [8, 68], [18, BASELINE+5], [32, BASELINE], [40, 62]]
+                    [[0, BASELINE], [5, 55], [12, 45], [20, MIDLINE], [28, 42], [30, 48], [25, 52], [15, 52], [8, 58], [8, 68], [18, BASELINE+5], [32, BASELINE], [40, 62]]
                 ],
-                strokeNames: ['Loop up', 'Around & exit'],
-                tip: 'Upstroke with small loop at top, then curve around and exit.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up with tiny loop, curve around, exit.'
             },
             'f': {
                 width: 45,
+                // TWO strokes: main body, then cross
                 strokes: [
-                    [[10, 25], [18, 15], [28, ASCENDER], [35, 15], [32, 25]],
-                    [[28, ASCENDER], [22, 35], [18, BASELINE], [15, 85], [10, DESCENDER], [2, 92]],
+                    [[10, 25], [18, 15], [28, ASCENDER], [35, 15], [32, 25], [28, MIDLINE], [22, BASELINE], [18, 85], [12, DESCENDER], [2, 92]],
                     [[8, 50], [35, 50]]
                 ],
-                strokeNames: ['Top curve', 'Long down', 'Cross'],
-                tip: 'Start with curve at top, long stroke down past baseline, then cross.'
+                strokeNames: ['Main stroke', 'Cross'],
+                tip: 'First: curve at top, down past baseline. Then: cross stroke.'
             },
             'g': {
                 width: 50,
+                // ONE stroke: entry → oval → down tail
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, MIDLINE], [25, 35], [40, 38], [45, 50], [42, 65], [28, BASELINE], [12, 68], [8, 55], [12, MIDLINE]],
-                    [[45, 50], [45, BASELINE], [45, 85], [40, DESCENDER], [25, DESCENDER], [10, 90]]
+                    [[0, BASELINE], [5, 55], [12, MIDLINE], [25, 35], [40, 38], [45, 50], [42, 65], [28, BASELINE], [12, 68], [8, 55], [12, MIDLINE], [45, MIDLINE], [45, BASELINE], [45, 85], [40, DESCENDER], [25, DESCENDER], [10, 90]]
                 ],
-                strokeNames: ['Oval', 'Down & tail'],
-                tip: 'Make oval like "a", then continue down below baseline, curve left.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: oval, continue down below baseline, curve left.'
             },
             'h': {
                 width: 55,
+                // ONE stroke: up tall → loop → down → hump → exit
                 strokes: [
-                    [[0, BASELINE], [5, 50], [10, 25], [15, ASCENDER], [22, 12], [20, 22], [15, MIDLINE], [15, BASELINE]],
-                    [[15, 55], [22, 45], [35, MIDLINE], [48, 42], [52, 55], [52, BASELINE], [55, 65]]
+                    [[0, BASELINE], [5, 50], [10, 25], [15, ASCENDER], [22, 12], [20, 22], [15, MIDLINE], [15, BASELINE], [15, 55], [22, 45], [35, MIDLINE], [48, 42], [52, 55], [52, BASELINE], [55, 65]]
                 ],
-                strokeNames: ['Tall loop down', 'Hump & exit'],
-                tip: 'Tall stroke with loop, down, then hump over to the right.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up tall with loop, down, hump over, exit.'
             },
             'i': {
                 width: 30,
+                // TWO strokes: main, then dot
                 strokes: [
                     [[0, BASELINE], [5, 55], [12, MIDLINE], [12, BASELINE], [18, 68], [25, 62], [30, 55]],
-                    [[12, 28], [14, 30], [12, 32]]
+                    [[12, 28], [13, 30], [12, 28]]
                 ],
                 strokeNames: ['Main stroke', 'Dot'],
-                tip: 'Upstroke to midline, down to baseline with exit, then add dot.'
+                tip: 'First: up, down with exit. Then: add dot.'
             },
             'j': {
                 width: 30,
+                // TWO strokes: main with tail, then dot
                 strokes: [
                     [[0, BASELINE], [8, 55], [15, MIDLINE], [15, BASELINE], [15, 85], [10, DESCENDER], [0, 92]],
-                    [[15, 28], [17, 30], [15, 32]]
+                    [[15, 28], [16, 30], [15, 28]]
                 ],
                 strokeNames: ['Main stroke', 'Dot'],
-                tip: 'Like "i" but continue down below baseline, curve left, add dot.'
+                tip: 'First: up, down past baseline, curve. Then: add dot.'
             },
             'k': {
                 width: 50,
+                // ONE stroke: tall loop → down → kick out (diagonal in connects)
                 strokes: [
-                    [[0, BASELINE], [5, 50], [10, 25], [15, ASCENDER], [22, 12], [20, 22], [15, MIDLINE], [15, BASELINE]],
-                    [[42, 38], [30, 50], [18, 58]],
-                    [[22, 55], [35, BASELINE], [42, BASELINE], [50, 65]]
+                    [[0, BASELINE], [5, 50], [10, 25], [15, ASCENDER], [22, 12], [20, 22], [15, MIDLINE], [15, BASELINE], [15, 55], [42, 38], [30, 50], [20, 58], [25, 60], [35, BASELINE], [42, BASELINE], [50, 65]]
                 ],
-                strokeNames: ['Tall loop', 'Kick in', 'Kick out'],
-                tip: 'Tall stroke, then diagonal kick in, diagonal kick out.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: tall stroke, down, kick angles, exit.'
             },
             'l': {
                 width: 35,
+                // ONE stroke: up tall → loop → down → exit
                 strokes: [
                     [[0, BASELINE], [5, 50], [12, 25], [18, ASCENDER], [25, 12], [22, 22], [18, MIDLINE], [18, BASELINE], [25, 68], [32, 62], [35, 55]]
                 ],
-                strokeNames: ['Loop down exit'],
-                tip: 'Upstroke to ascender with loop, down to baseline, exit right.'
+                strokeNames: ['Complete letter'],
+                tip: 'One elegant motion: up with loop, down, exit right.'
             },
             'm': {
                 width: 75,
+                // ONE stroke: up → down → hump → hump → exit
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, MIDLINE], [12, BASELINE]],
-                    [[12, 55], [20, 42], [32, MIDLINE], [38, 45], [38, BASELINE]],
-                    [[38, 55], [48, 42], [60, MIDLINE], [68, 45], [68, BASELINE], [75, 65]]
+                    [[0, BASELINE], [5, 55], [12, MIDLINE], [12, BASELINE], [12, 55], [20, 42], [32, MIDLINE], [38, 45], [38, BASELINE], [38, 55], [48, 42], [60, MIDLINE], [68, 45], [68, BASELINE], [75, 65]]
                 ],
-                strokeNames: ['Up-down', 'First hump', 'Second hump'],
-                tip: 'Upstroke, down, then two humps side by side.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up, down, first hump, second hump, exit.'
             },
             'n': {
                 width: 50,
+                // ONE stroke: up → down → hump → exit
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, MIDLINE], [12, BASELINE]],
-                    [[12, 55], [22, 42], [38, MIDLINE], [45, 48], [45, BASELINE], [50, 65]]
+                    [[0, BASELINE], [5, 55], [12, MIDLINE], [12, BASELINE], [12, 55], [22, 42], [38, MIDLINE], [45, 48], [45, BASELINE], [50, 65]]
                 ],
-                strokeNames: ['Up-down', 'Hump exit'],
-                tip: 'Upstroke, down, then one hump over with exit.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up, down, hump over, exit.'
             },
             'o': {
                 width: 50,
+                // ONE stroke: entry → oval → small exit
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, MIDLINE], [25, 35], [40, 38], [48, 50], [45, 65], [30, BASELINE], [12, 68], [8, 55], [15, MIDLINE]],
-                    [[45, 55], [50, 62]]
+                    [[0, BASELINE], [5, 55], [12, MIDLINE], [25, 35], [40, 38], [48, 50], [45, 65], [30, BASELINE], [12, 68], [8, 55], [15, MIDLINE], [45, 55], [50, 62]]
                 ],
-                strokeNames: ['Oval', 'Exit'],
-                tip: 'Upstroke, complete oval, small exit connector.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up, complete oval, small connector exit.'
             },
             'p': {
                 width: 50,
+                // ONE stroke: up → down deep → up → bump → exit
                 strokes: [
-                    [[0, BASELINE], [8, 55], [15, MIDLINE], [15, BASELINE], [15, 85], [15, DESCENDER]],
-                    [[15, DESCENDER], [15, 55], [25, 45], [40, 45], [48, 55], [45, 68], [30, BASELINE], [15, 65]],
-                    [[45, 60], [50, 55]]
+                    [[0, BASELINE], [8, 55], [15, MIDLINE], [15, BASELINE], [15, 85], [15, DESCENDER], [15, 55], [25, 45], [40, 45], [48, 55], [45, 68], [30, BASELINE], [15, 65], [45, 60], [50, 55]]
                 ],
-                strokeNames: ['Down stroke', 'Bump', 'Exit'],
-                tip: 'Upstroke, down past baseline, back up, make bump.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up, down past baseline, back up, bump, exit.'
             },
             'q': {
                 width: 55,
+                // ONE stroke: entry → oval → down → tail right
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, MIDLINE], [25, 35], [40, 38], [48, 50], [45, 65], [30, BASELINE], [12, 68], [8, 55], [15, MIDLINE]],
-                    [[48, 50], [48, BASELINE], [48, 88], [52, DESCENDER], [60, DESCENDER+2]]
+                    [[0, BASELINE], [5, 55], [12, MIDLINE], [25, 35], [40, 38], [48, 50], [45, 65], [30, BASELINE], [12, 68], [8, 55], [15, MIDLINE], [48, 50], [48, BASELINE], [48, 88], [52, DESCENDER], [60, DESCENDER+2]]
                 ],
-                strokeNames: ['Oval', 'Down & tail'],
-                tip: 'Make oval, down past baseline, tail goes right (opposite of g).'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: oval, down past baseline, tail curves right.'
             },
             'r': {
                 width: 38,
+                // ONE stroke: up → down → shoulder
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, MIDLINE], [12, BASELINE]],
-                    [[12, 55], [20, 45], [30, MIDLINE], [38, 48]]
+                    [[0, BASELINE], [5, 55], [12, MIDLINE], [12, BASELINE], [12, 55], [20, 45], [30, MIDLINE], [38, 48]]
                 ],
-                strokeNames: ['Up-down', 'Shoulder'],
-                tip: 'Upstroke, down, small shoulder curve.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up, down, small shoulder curve.'
             },
             's': {
                 width: 40,
+                // ONE stroke: snake curve
                 strokes: [
                     [[0, BASELINE], [5, 58], [12, 48], [22, MIDLINE], [32, 42], [35, 50], [28, 58], [18, 60], [12, 65], [15, BASELINE], [28, BASELINE], [40, 62]]
                 ],
-                strokeNames: ['S-curve'],
-                tip: 'Upstroke, curve back, curve forward - snake motion.'
+                strokeNames: ['Complete letter'],
+                tip: 'One snake motion: up, curve back, curve forward, exit.'
             },
             't': {
                 width: 38,
+                // TWO strokes: main, then cross
                 strokes: [
                     [[0, BASELINE], [8, 55], [15, 30], [15, BASELINE], [22, 68], [30, 62], [38, 55]],
                     [[5, 48], [28, 48]]
                 ],
                 strokeNames: ['Main stroke', 'Cross'],
-                tip: 'Upstroke (not as tall as l), down with exit, then cross.'
+                tip: 'First: up, down with exit. Then: cross stroke.'
             },
             'u': {
                 width: 50,
+                // ONE stroke: up → down curve → up → down → exit
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, MIDLINE], [12, 60], [18, BASELINE], [30, BASELINE], [40, 60], [42, MIDLINE]],
-                    [[42, MIDLINE], [42, BASELINE], [50, 65]]
+                    [[0, BASELINE], [5, 55], [12, MIDLINE], [12, 60], [18, BASELINE], [30, BASELINE], [40, 60], [42, MIDLINE], [42, BASELINE], [50, 65]]
                 ],
-                strokeNames: ['U-shape', 'Down exit'],
-                tip: 'Upstroke, down and curve, up, then down with exit.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up, down and curve, up, down with exit.'
             },
             'v': {
                 width: 45,
+                // ONE stroke: V shape
                 strokes: [
                     [[0, BASELINE], [5, 55], [12, MIDLINE], [25, BASELINE], [40, MIDLINE], [45, 55]]
                 ],
-                strokeNames: ['V-stroke'],
-                tip: 'Upstroke, diagonal down to point, diagonal up.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up, diagonal down to point, diagonal up.'
             },
             'w': {
                 width: 65,
+                // ONE stroke: zigzag
                 strokes: [
                     [[0, BASELINE], [5, 55], [10, MIDLINE], [20, BASELINE], [32, MIDLINE+5], [42, BASELINE], [55, MIDLINE], [62, 55], [65, 60]]
                 ],
-                strokeNames: ['W-stroke'],
-                tip: 'Upstroke, down-up-down-up like two Vs connected.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up, down-up-down-up like connected Vs.'
             },
             'x': {
                 width: 45,
+                // TWO strokes: two diagonals
                 strokes: [
                     [[0, BASELINE], [5, 58], [12, 48], [35, BASELINE], [42, 68], [45, 62]],
                     [[40, MIDLINE], [25, 55], [10, BASELINE]]
                 ],
                 strokeNames: ['First diagonal', 'Cross diagonal'],
-                tip: 'First diagonal stroke, then crossing diagonal.'
+                tip: 'Two strokes: first diagonal, then crossing diagonal.'
             },
             'y': {
                 width: 50,
+                // ONE stroke: u-shape top → down tail
                 strokes: [
-                    [[0, BASELINE], [5, 55], [12, MIDLINE], [12, 60], [18, BASELINE], [30, BASELINE], [40, 60], [42, MIDLINE]],
-                    [[42, MIDLINE], [42, BASELINE], [42, 85], [35, DESCENDER], [20, DESCENDER], [8, 88]]
+                    [[0, BASELINE], [5, 55], [12, MIDLINE], [12, 60], [18, BASELINE], [30, BASELINE], [40, 60], [42, MIDLINE], [42, BASELINE], [42, 85], [35, DESCENDER], [20, DESCENDER], [8, 88]]
                 ],
-                strokeNames: ['U-shape', 'Down tail'],
-                tip: 'Like "u" on top, but continue down past baseline, curve left.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: like u on top, continue down, curve left.'
             },
             'z': {
                 width: 42,
+                // ONE stroke: up → across → diagonal → across → exit
                 strokes: [
-                    [[0, BASELINE], [5, 58], [12, 48], [18, MIDLINE], [38, MIDLINE]],
-                    [[38, MIDLINE], [10, BASELINE], [42, BASELINE], [45, 65]]
+                    [[0, BASELINE], [5, 58], [12, 48], [18, MIDLINE], [38, MIDLINE], [10, BASELINE], [42, BASELINE], [48, 65]]
                 ],
-                strokeNames: ['Up-across', 'Diagonal-across'],
-                tip: 'Upstroke, across top, diagonal down, across bottom.'
+                strokeNames: ['Complete letter'],
+                tip: 'One motion: up, across, diagonal down, across, exit.'
             },
             ' ': {
                 width: 25,
