@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursive Writing Practice - Learn to Write Beautifully!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .writing-area {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-section input {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .input-section input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-repeat {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .copybook {
+            background: #fffef5;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            min-height: 200px;
+            overflow-x: auto;
+        }
+
+        .copybook-lines {
+            position: relative;
+            height: 150px;
+            margin: 10px 0;
+        }
+
+        .line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+        }
+
+        .line-top {
+            top: 0;
+            background: #e0e0e0;
+            border-top: 1px dashed #ccc;
+        }
+
+        .line-mid {
+            top: 50px;
+            background: #ff9999;
+            height: 1px;
+            border-top: 1px dashed #ff6666;
+        }
+
+        .line-base {
+            top: 100px;
+            background: #4444ff;
+            height: 2px;
+        }
+
+        .line-descender {
+            top: 150px;
+            background: #e0e0e0;
+            border-top: 1px dashed #ccc;
+        }
+
+        .line-label {
+            position: absolute;
+            right: 5px;
+            font-size: 10px;
+            color: #999;
+            transform: translateY(-50%);
+        }
+
+        .line-top .line-label { top: 0; }
+        .line-mid .line-label { top: 0; color: #ff6666; }
+        .line-base .line-label { top: 0; color: #4444ff; }
+        .line-descender .line-label { top: 0; }
+
+        .cursive-display {
+            position: absolute;
+            top: 0;
+            left: 20px;
+            right: 20px;
+            height: 150px;
+        }
+
+        .cursive-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .letter-path {
+            fill: none;
+            stroke: #333;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .letter-path.animated {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+
+        .instruction-box {
+            background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 5px solid #ffc107;
+        }
+
+        .instruction-box h3 {
+            color: #f57f17;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instruction-box h3::before {
+            content: "💡";
+            font-size: 1.5em;
+        }
+
+        .instruction-text {
+            color: #5d4037;
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+
+        .current-letter {
+            display: inline-block;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 3em;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .panel h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .setting-group {
+            margin-bottom: 15px;
+        }
+
+        .setting-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .setting-group select,
+        .setting-group input[type="range"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .setting-group input[type="range"] {
+            padding: 5px;
+        }
+
+        .speed-value {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .letter-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .letter-btn {
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.3em;
+            transition: all 0.2s;
+        }
+
+        .letter-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .letter-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .word-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .word-chip {
+            padding: 8px 15px;
+            background: #f0f4ff;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .word-chip:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .progress-indicator {
+            display: flex;
+            gap: 5px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .progress-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+
+        .progress-dot.completed {
+            background: #4caf50;
+            color: white;
+        }
+
+        .progress-dot.current {
+            background: #667eea;
+            color: white;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .practice-mode {
+            background: #e8f5e9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .practice-mode h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .repeat-options {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .repeat-options input {
+            width: 60px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .guide-lines-legend {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            font-size: 0.85em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        .legend-color.top { background: #e0e0e0; }
+        .legend-color.mid { background: #ff9999; }
+        .legend-color.base { background: #4444ff; }
+        .legend-color.descender { background: #e0e0e0; }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            opacity: 0.8;
+        }
+
+        /* Animation keyframes */
+        @keyframes drawLetter {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✏️ Cursive Writing Practice</h1>
+            <p>Learn to write beautifully, one letter at a time!</p>
+        </header>
+
+        <div class="main-content">
+            <div class="writing-area">
+                <div class="input-section">
+                    <input type="text" id="wordInput" placeholder="Type a word, letter, or sentence..." value="hello">
+                    <button class="btn btn-primary" onclick="startWriting()">Write It!</button>
+                    <button class="btn btn-repeat" onclick="repeatWriting()">🔄 Repeat</button>
+                </div>
+
+                <div class="progress-indicator" id="progressIndicator"></div>
+
+                <div class="copybook" id="copybook">
+                    <div class="copybook-lines">
+                        <div class="line line-top"><span class="line-label">Top Line (tall letters)</span></div>
+                        <div class="line line-mid"><span class="line-label">Midline (short letters)</span></div>
+                        <div class="line line-base"><span class="line-label">Baseline (all letters sit here)</span></div>
+                        <div class="line line-descender"><span class="line-label">Descender (g, j, p, q, y)</span></div>
+
+                        <div class="cursive-display" id="cursiveDisplay">
+                            <svg class="cursive-svg" id="cursiveSvg" viewBox="0 0 800 150" preserveAspectRatio="xMinYMid meet">
+                                <!-- Letters will be drawn here -->
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-lines-legend">
+                    <div class="legend-item"><div class="legend-color top"></div> Top Line</div>
+                    <div class="legend-item"><div class="legend-color mid"></div> Midline</div>
+                    <div class="legend-item"><div class="legend-color base"></div> Baseline</div>
+                    <div class="legend-item"><div class="legend-color descender"></div> Descender</div>
+                </div>
+
+                <div class="instruction-box" id="instructionBox">
+                    <h3>How to Write: <span class="current-letter" id="currentLetter">h</span></h3>
+                    <div class="instruction-text" id="instructionText">
+                        Enter a word above and click "Write It!" to see how to write in cursive!
+                    </div>
+                </div>
+
+                <div class="practice-mode">
+                    <h4>📝 Practice Mode</h4>
+                    <div class="repeat-options">
+                        <label>Repeat times:</label>
+                        <input type="number" id="repeatCount" value="3" min="1" max="10">
+                        <button class="btn btn-secondary" onclick="startPractice()">Start Practice</button>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-secondary" onclick="previousLetter()">⬅️ Previous</button>
+                    <button class="btn btn-secondary" onclick="pauseResume()" id="pauseBtn">⏸️ Pause</button>
+                    <button class="btn btn-secondary" onclick="nextLetter()">Next ➡️</button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="panel">
+                    <h3>⚙️ Settings</h3>
+
+                    <div class="setting-group">
+                        <label>Cursive Style</label>
+                        <select id="cursiveStyle" onchange="updateStyle()">
+                            <option value="modern">Modern Cursive</option>
+                            <option value="traditional">Traditional D'Nealian</option>
+                            <option value="italic">Italic Cursive</option>
+                            <option value="spencerian">Spencerian</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Writing Speed</label>
+                        <input type="range" id="speedSlider" min="1" max="10" value="5" onchange="updateSpeed()">
+                        <div class="speed-value" id="speedValue">Medium</div>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Letter Size</label>
+                        <select id="letterSize" onchange="updateSize()">
+                            <option value="small">Small</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Pen Color</label>
+                        <select id="penColor" onchange="updateColor()">
+                            <option value="#333333">Black</option>
+                            <option value="#1a237e">Dark Blue</option>
+                            <option value="#4a148c">Purple</option>
+                            <option value="#b71c1c">Red</option>
+                            <option value="#1b5e20">Green</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3>🔤 Quick Letters</h3>
+                    <div class="letter-grid" id="letterGrid">
+                        <!-- Letters will be generated here -->
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3>📚 Practice Words</h3>
+                    <div class="word-suggestions">
+                        <span class="word-chip" onclick="setWord('apple')">apple</span>
+                        <span class="word-chip" onclick="setWord('ball')">ball</span>
+                        <span class="word-chip" onclick="setWord('cat')">cat</span>
+                        <span class="word-chip" onclick="setWord('dog')">dog</span>
+                        <span class="word-chip" onclick="setWord('elephant')">elephant</span>
+                        <span class="word-chip" onclick="setWord('fish')">fish</span>
+                        <span class="word-chip" onclick="setWord('hello')">hello</span>
+                        <span class="word-chip" onclick="setWord('world')">world</span>
+                        <span class="word-chip" onclick="setWord('school')">school</span>
+                        <span class="word-chip" onclick="setWord('happy')">happy</span>
+                        <span class="word-chip" onclick="setWord('The quick brown fox')">Quick fox</span>
+                        <span class="word-chip" onclick="setWord('I love to write')">I love to write</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Made with ❤️ for young learners | Practice makes perfect!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Cursive letter data with SVG paths and instructions
+        const cursiveLetters = {
+            // Lowercase letters
+            'a': {
+                path: 'M 5 50 Q 15 30 25 35 Q 35 40 35 50 Q 35 65 25 70 Q 15 75 10 65 L 35 65 L 35 100',
+                width: 40,
+                instruction: 'Start just below the midline. Make a small curve up and around to form an oval. Come back to where you started, then pull down to the baseline and add a small upstroke to connect to the next letter.',
+                tips: 'Keep your oval round and even. The connecting stroke should be smooth.'
+            },
+            'b': {
+                path: 'M 5 100 L 5 0 Q 5 0 15 10 L 15 50 Q 25 40 35 50 Q 40 65 30 75 Q 20 80 15 70 L 15 100',
+                width: 45,
+                instruction: 'Start at the baseline. Make a tall upstroke to the top line. Come back down, then make a bump that touches the midline and curves back to the baseline.',
+                tips: 'The tall stem should be straight. The bump should be round like a balloon.'
+            },
+            'c': {
+                path: 'M 35 40 Q 25 30 15 40 Q 5 55 15 70 Q 25 80 35 70',
+                width: 40,
+                instruction: 'Start just below the midline. Curve up slightly, then sweep around to the left making a C shape. End with a small upstroke for connecting.',
+                tips: 'Keep the curve smooth and open. Don\'t close it like an "o".'
+            },
+            'd': {
+                path: 'M 35 100 L 35 0 Q 35 0 25 10 L 35 50 Q 25 40 15 50 Q 5 65 15 75 Q 25 80 35 70',
+                width: 40,
+                instruction: 'Start at the baseline. Make a tall upstroke to the top line. Come back down to the midline, then curve around to make the body of the letter. Connect back to your stem.',
+                tips: 'The tall stem comes first, then the round part wraps around it.'
+            },
+            'e': {
+                path: 'M 5 55 Q 15 45 25 50 Q 30 55 25 60 L 5 60 Q 10 80 30 70',
+                width: 35,
+                instruction: 'Start in the middle. Make a small loop that curves up, then swings around and down. Add a small upstroke to connect.',
+                tips: 'The loop should be small and neat. This is one of the trickiest letters!'
+            },
+            'f': {
+                path: 'M 30 10 Q 20 0 15 10 L 15 100 Q 15 120 5 130 M 5 50 L 30 50',
+                width: 35,
+                instruction: 'Start at the top line with a small curve. Draw down through the baseline to the descender line with a curve at the bottom. Add a cross stroke at the midline.',
+                tips: 'The letter "f" goes both above and below the main lines. Keep it balanced.'
+            },
+            'g': {
+                path: 'M 35 50 Q 25 40 15 50 Q 5 65 15 75 Q 25 80 35 70 L 35 100 Q 35 130 15 140 Q 5 135 10 125',
+                width: 40,
+                instruction: 'Start like an "a" - make an oval. Then continue down below the baseline to the descender line, curving back up to the left.',
+                tips: 'The tail swings down and curves back like a hook. Keep the oval part round.'
+            },
+            'h': {
+                path: 'M 5 100 L 5 0 Q 5 0 15 10 L 5 55 Q 15 45 25 50 Q 35 55 35 70 L 35 100',
+                width: 40,
+                instruction: 'Start at the baseline. Make a tall upstroke to the top line. Come back down to the midline, then make a hump that goes up and back down to the baseline.',
+                tips: 'The hump should be smooth and round. It\'s like an "n" attached to a tall stem.'
+            },
+            'i': {
+                path: 'M 5 100 Q 5 90 10 85 L 10 50 Q 10 40 15 45 L 15 100 M 15 25 L 15 30',
+                width: 20,
+                instruction: 'Start at the midline. Make a short downstroke to the baseline with a small curve. Add a dot above the letter.',
+                tips: 'Keep it simple and straight. Don\'t forget the dot!'
+            },
+            'j': {
+                path: 'M 15 50 Q 15 40 20 45 L 20 100 Q 20 130 5 140 Q 0 135 5 125 M 20 25 L 20 30',
+                width: 25,
+                instruction: 'Start at the midline. Draw down past the baseline to the descender line, then curve back to the left. Add a dot above.',
+                tips: 'The curve at the bottom is like a hook. Don\'t forget the dot!'
+            },
+            'k': {
+                path: 'M 5 100 L 5 0 Q 5 0 15 10 L 5 55 M 30 45 L 10 60 L 35 100',
+                width: 40,
+                instruction: 'Start at the baseline. Make a tall upstroke to the top line. Come back to the middle, then add two diagonal strokes - one going up-left and one going down-right.',
+                tips: 'The two diagonal lines should meet at the tall stem.'
+            },
+            'l': {
+                path: 'M 5 100 L 5 0 Q 5 0 20 10 L 20 100 Q 20 95 25 100',
+                width: 30,
+                instruction: 'Start at the baseline. Make a tall upstroke all the way to the top line, with a small loop at the top. Come back down to the baseline with a connecting stroke.',
+                tips: 'Keep it tall and straight. The loop at the top should be small.'
+            },
+            'm': {
+                path: 'M 5 100 Q 5 90 10 85 L 10 50 Q 20 40 25 50 L 25 55 Q 35 40 45 50 Q 50 55 50 70 L 50 100',
+                width: 55,
+                instruction: 'Start at the midline. Make a downstroke, then two humps - each one goes up to the midline and back down to the baseline.',
+                tips: 'Both humps should be the same size. It\'s like two "n" letters joined together.'
+            },
+            'n': {
+                path: 'M 5 100 Q 5 90 10 85 L 10 50 Q 20 40 30 50 Q 35 55 35 70 L 35 100',
+                width: 40,
+                instruction: 'Start at the midline. Make a downstroke, then curve up and over to make one hump. Come back down to the baseline.',
+                tips: 'The hump should be round and smooth, like a hill.'
+            },
+            'o': {
+                path: 'M 20 50 Q 5 55 5 70 Q 5 85 20 85 Q 35 85 35 70 Q 35 55 20 50 Q 35 50 40 55',
+                width: 45,
+                instruction: 'Start at the midline. Make a complete oval shape, going counter-clockwise. End with a small connecting stroke.',
+                tips: 'Keep it round and even. Close the oval neatly.'
+            },
+            'p': {
+                path: 'M 10 50 Q 10 40 15 45 L 15 140 M 15 55 Q 25 45 35 55 Q 40 70 30 80 Q 20 85 15 75',
+                width: 40,
+                instruction: 'Start at the midline. Draw down past the baseline to the descender line. Come back up and add a round bump on the right side.',
+                tips: 'The tail goes down below the baseline. The bump is like a "b" turned sideways.'
+            },
+            'q': {
+                path: 'M 35 50 Q 25 40 15 50 Q 5 65 15 75 Q 25 80 35 70 L 35 130 Q 40 140 45 135',
+                width: 50,
+                instruction: 'Start like an "a" - make an oval. Then continue down past the baseline to the descender line, curving to the right at the end.',
+                tips: 'The tail curves the opposite way from "g" - it goes to the right.'
+            },
+            'r': {
+                path: 'M 5 100 Q 5 90 10 85 L 10 50 Q 15 40 25 45 Q 30 50 30 55',
+                width: 35,
+                instruction: 'Start at the midline. Make a short downstroke, then curve up and to the right, ending with a small shoulder.',
+                tips: 'Keep it short and simple. The shoulder is just a small curve.'
+            },
+            's': {
+                path: 'M 30 45 Q 20 35 10 45 Q 5 55 20 60 Q 35 65 30 80 Q 25 90 10 85',
+                width: 35,
+                instruction: 'Start below the midline. Curve up and to the left, then snake down and curve the other way. It\'s like a curvy snake!',
+                tips: 'This is a tricky letter! Practice the S-curve motion. Think of a snake slithering.'
+            },
+            't': {
+                path: 'M 15 20 Q 15 10 20 15 L 20 100 Q 20 95 30 100 M 5 50 L 30 50',
+                width: 35,
+                instruction: 'Start above the midline (but not at the top line). Draw down to the baseline. Add a cross stroke at the midline.',
+                tips: 'The "t" is shorter than letters like "l" and "h". The cross goes at the midline.'
+            },
+            'u': {
+                path: 'M 5 50 Q 5 40 10 45 L 10 75 Q 10 90 25 85 Q 35 80 35 50 L 35 100',
+                width: 40,
+                instruction: 'Start at the midline. Draw down, curve at the baseline, and come back up. Then add a downstroke on the right side.',
+                tips: 'It\'s like an "n" turned upside down! Keep the curve smooth.'
+            },
+            'v': {
+                path: 'M 5 50 Q 5 40 10 45 L 25 90 L 40 50',
+                width: 45,
+                instruction: 'Start at the midline. Draw down at an angle to the baseline, then back up at an angle to the midline.',
+                tips: 'Make both sides equal. The point should touch the baseline.'
+            },
+            'w': {
+                path: 'M 5 50 Q 5 40 10 45 L 20 85 L 30 55 L 40 85 L 55 50',
+                width: 60,
+                instruction: 'Start at the midline. Make a "v" shape, then another "v" shape right next to it. It\'s like two "v" letters joined!',
+                tips: 'Keep both "v" shapes the same size. The points should touch the baseline.'
+            },
+            'x': {
+                path: 'M 5 50 L 35 100 M 35 50 L 5 100',
+                width: 40,
+                instruction: 'Make two diagonal strokes that cross in the middle. One goes from top-left to bottom-right, the other from top-right to bottom-left.',
+                tips: 'The strokes should cross right in the center.'
+            },
+            'y': {
+                path: 'M 5 50 Q 5 40 10 45 L 10 75 Q 10 90 25 85 Q 35 80 35 50 L 35 130 Q 30 145 15 140',
+                width: 40,
+                instruction: 'Start like a "u", but continue the right stroke down past the baseline to the descender line, curving left at the end.',
+                tips: 'It\'s like a "u" with a tail that goes below the line.'
+            },
+            'z': {
+                path: 'M 5 50 L 35 50 L 5 100 L 35 100',
+                width: 40,
+                instruction: 'Draw across at the midline, then diagonally down to the baseline, then across again at the baseline.',
+                tips: 'Think of it as a zigzag! The diagonal should be at a nice angle.'
+            },
+            // Uppercase letters
+            'A': {
+                path: 'M 5 100 L 25 10 L 45 100 M 15 60 L 35 60',
+                width: 50,
+                instruction: 'Start at the baseline. Draw up to a point at the top, then back down to the baseline. Add a horizontal bar across the middle.',
+                tips: 'Make both sides equal. The crossbar goes in the middle.'
+            },
+            'B': {
+                path: 'M 5 100 L 5 10 L 30 10 Q 45 10 45 30 Q 45 50 30 50 L 5 50 L 35 50 Q 50 50 50 75 Q 50 100 30 100 L 5 100',
+                width: 55,
+                instruction: 'Start with a tall straight line. Add two bumps on the right side - a smaller one on top and a bigger one on the bottom.',
+                tips: 'The bottom bump is usually a bit bigger than the top one.'
+            },
+            'C': {
+                path: 'M 45 20 Q 25 5 10 25 Q 0 50 10 80 Q 25 100 45 85',
+                width: 50,
+                instruction: 'Start near the top. Make a big curve that opens to the right, like a crescent moon.',
+                tips: 'Keep the curve smooth and open. Don\'t close it!'
+            },
+            'D': {
+                path: 'M 5 100 L 5 10 L 25 10 Q 50 10 50 55 Q 50 100 25 100 L 5 100',
+                width: 55,
+                instruction: 'Start with a tall straight line. Add a big curved bump on the right that connects top and bottom.',
+                tips: 'The curve should be smooth and round, like half of an oval.'
+            },
+            'E': {
+                path: 'M 40 10 L 5 10 L 5 100 L 40 100 M 5 55 L 35 55',
+                width: 45,
+                instruction: 'Start with a tall straight line. Add three horizontal lines - at the top, middle, and bottom.',
+                tips: 'The middle line is usually a bit shorter than the top and bottom.'
+            },
+            'F': {
+                path: 'M 40 10 L 5 10 L 5 100 M 5 55 L 35 55',
+                width: 45,
+                instruction: 'Start with a tall straight line. Add two horizontal lines - at the top and in the middle.',
+                tips: 'It\'s like an "E" without the bottom line!'
+            },
+            'G': {
+                path: 'M 45 20 Q 25 5 10 25 Q 0 50 10 80 Q 25 100 45 85 L 45 55 L 30 55',
+                width: 50,
+                instruction: 'Start like a "C", then add a horizontal line coming in from the right side at the middle.',
+                tips: 'The horizontal bar shouldn\'t go past the middle of the letter.'
+            },
+            'H': {
+                path: 'M 5 100 L 5 10 M 45 100 L 45 10 M 5 55 L 45 55',
+                width: 50,
+                instruction: 'Draw two tall straight lines. Connect them with a horizontal bar in the middle.',
+                tips: 'Keep both lines the same height. The crossbar goes right in the middle.'
+            },
+            'I': {
+                path: 'M 5 10 L 35 10 M 20 10 L 20 100 M 5 100 L 35 100',
+                width: 40,
+                instruction: 'Draw a tall straight line. Add short horizontal lines at the top and bottom.',
+                tips: 'Keep the main line perfectly straight!'
+            },
+            'J': {
+                path: 'M 5 10 L 35 10 M 25 10 L 25 80 Q 25 100 10 100 Q 0 100 0 85',
+                width: 40,
+                instruction: 'Draw a line down from the top, then curve it to the left at the bottom like a hook.',
+                tips: 'The curve at the bottom is like a smile facing left.'
+            },
+            'K': {
+                path: 'M 5 100 L 5 10 M 45 10 L 5 55 L 45 100',
+                width: 50,
+                instruction: 'Draw a tall straight line. Add two diagonal lines that meet at the middle of the tall line.',
+                tips: 'The diagonals should meet right at the center of the tall line.'
+            },
+            'L': {
+                path: 'M 5 10 L 5 100 L 40 100',
+                width: 45,
+                instruction: 'Draw a tall straight line down, then a horizontal line to the right at the bottom.',
+                tips: 'Make a nice corner where the lines meet.'
+            },
+            'M': {
+                path: 'M 5 100 L 5 10 L 30 60 L 55 10 L 55 100',
+                width: 60,
+                instruction: 'Draw two tall lines. Connect their tops with two diagonal lines that meet in a point at the middle.',
+                tips: 'The point in the middle should come down about halfway.'
+            },
+            'N': {
+                path: 'M 5 100 L 5 10 L 45 100 L 45 10',
+                width: 50,
+                instruction: 'Draw a tall line. Add a diagonal line to the bottom-right, then another tall line going up.',
+                tips: 'The diagonal should connect the top of the first line to the bottom of the second.'
+            },
+            'O': {
+                path: 'M 25 10 Q 5 10 5 55 Q 5 100 25 100 Q 45 100 45 55 Q 45 10 25 10',
+                width: 50,
+                instruction: 'Draw a big oval shape, like a stretched circle.',
+                tips: 'Keep it smooth and round. Start and end at the same point.'
+            },
+            'P': {
+                path: 'M 5 100 L 5 10 L 30 10 Q 45 10 45 30 Q 45 55 30 55 L 5 55',
+                width: 50,
+                instruction: 'Draw a tall straight line. Add a bump at the top right side that comes back to the middle.',
+                tips: 'The bump fills the top half of the letter.'
+            },
+            'Q': {
+                path: 'M 25 10 Q 5 10 5 55 Q 5 100 25 100 Q 45 100 45 55 Q 45 10 25 10 M 30 80 L 50 105',
+                width: 55,
+                instruction: 'Draw a big "O", then add a small diagonal tail at the bottom right.',
+                tips: 'The tail makes the "Q" special! It should stick out from the oval.'
+            },
+            'R': {
+                path: 'M 5 100 L 5 10 L 30 10 Q 45 10 45 30 Q 45 55 30 55 L 5 55 M 25 55 L 45 100',
+                width: 50,
+                instruction: 'Draw a "P" first. Then add a diagonal leg from where the bump meets the stem down to the baseline.',
+                tips: 'The leg kicks out to the right at the bottom.'
+            },
+            'S': {
+                path: 'M 40 20 Q 40 5 25 5 Q 5 5 5 25 Q 5 45 25 50 Q 45 55 45 80 Q 45 100 25 100 Q 5 100 5 85',
+                width: 50,
+                instruction: 'Make a curvy snake shape! Start with a curve going left at the top, then swing right in the middle, then left again at the bottom.',
+                tips: 'Think of a snake slithering! Both curves should be smooth and equal.'
+            },
+            'T': {
+                path: 'M 5 10 L 45 10 M 25 10 L 25 100',
+                width: 50,
+                instruction: 'Draw a horizontal line at the top. Add a tall line going down from the middle.',
+                tips: 'The vertical line should come down from the exact center of the top line.'
+            },
+            'U': {
+                path: 'M 5 10 L 5 75 Q 5 100 25 100 Q 45 100 45 75 L 45 10',
+                width: 50,
+                instruction: 'Draw down, curve at the bottom like a smile, then back up. Both sides should be the same height.',
+                tips: 'The bottom curve should be smooth, like a cup or a smile!'
+            },
+            'V': {
+                path: 'M 5 10 L 25 100 L 45 10',
+                width: 50,
+                instruction: 'Draw a diagonal line down to a point, then another diagonal back up. Both sides should be equal.',
+                tips: 'The point should be at the exact center bottom.'
+            },
+            'W': {
+                path: 'M 5 10 L 15 100 L 30 40 L 45 100 L 55 10',
+                width: 60,
+                instruction: 'Make two "V" shapes side by side, connected at their bottoms.',
+                tips: 'All four lines should be at similar angles. It\'s like an "M" turned upside down!'
+            },
+            'X': {
+                path: 'M 5 10 L 45 100 M 45 10 L 5 100',
+                width: 50,
+                instruction: 'Draw two diagonal lines that cross in the middle, making an "X" shape.',
+                tips: 'The lines should cross right in the center.'
+            },
+            'Y': {
+                path: 'M 5 10 L 25 55 L 45 10 M 25 55 L 25 100',
+                width: 50,
+                instruction: 'Draw two diagonal lines that meet in the middle, then a straight line going down from there.',
+                tips: 'The top looks like a "V", and the bottom is a straight line down.'
+            },
+            'Z': {
+                path: 'M 5 10 L 45 10 L 5 100 L 45 100',
+                width: 50,
+                instruction: 'Draw across the top, then diagonally down to the left, then across the bottom.',
+                tips: 'It\'s like a zigzag! The diagonal should be at a nice angle.'
+            },
+            ' ': {
+                path: '',
+                width: 30,
+                instruction: 'This is a space - lift your pen and move to the right before writing the next letter.',
+                tips: 'Spaces help separate words so they\'re easy to read!'
+            }
+        };
+
+        // State variables
+        let currentWord = '';
+        let currentLetterIndex = 0;
+        let isAnimating = false;
+        let isPaused = false;
+        let animationSpeed = 5;
+        let currentStyle = 'modern';
+        let animations = [];
+
+        // Initialize the app
+        function init() {
+            generateLetterGrid();
+            updateSpeed();
+            startWriting();
+        }
+
+        // Generate the letter selection grid
+        function generateLetterGrid() {
+            const grid = document.getElementById('letterGrid');
+            const letters = 'abcdefghijklmnopqrstuvwxyz';
+
+            grid.innerHTML = '';
+            for (let letter of letters) {
+                const btn = document.createElement('button');
+                btn.className = 'letter-btn';
+                btn.textContent = letter;
+                btn.onclick = () => setWord(letter);
+                grid.appendChild(btn);
+            }
+        }
+
+        // Set word from suggestions or letter grid
+        function setWord(word) {
+            document.getElementById('wordInput').value = word;
+            startWriting();
+        }
+
+        // Start writing animation
+        function startWriting() {
+            const input = document.getElementById('wordInput').value.trim();
+            if (!input) return;
+
+            currentWord = input;
+            currentLetterIndex = 0;
+            isAnimating = true;
+            isPaused = false;
+
+            // Clear any existing animations
+            cancelAllAnimations();
+
+            // Update progress indicator
+            updateProgressIndicator();
+
+            // Draw all letters
+            drawWord();
+
+            // Show first letter instruction
+            showLetterInstruction(0);
+
+            // Start animation sequence
+            animateSequence();
+        }
+
+        // Update progress indicator dots
+        function updateProgressIndicator() {
+            const indicator = document.getElementById('progressIndicator');
+            indicator.innerHTML = '';
+
+            for (let i = 0; i < currentWord.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                dot.textContent = currentWord[i];
+                dot.onclick = () => jumpToLetter(i);
+                indicator.appendChild(dot);
+            }
+
+            updateProgressDots();
+        }
+
+        // Update progress dot styles
+        function updateProgressDots() {
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.remove('completed', 'current');
+                if (i < currentLetterIndex) {
+                    dot.classList.add('completed');
+                } else if (i === currentLetterIndex) {
+                    dot.classList.add('current');
+                }
+            });
+        }
+
+        // Draw the complete word with SVG paths
+        function drawWord() {
+            const svg = document.getElementById('cursiveSvg');
+            svg.innerHTML = '';
+
+            let xOffset = 20;
+            const sizeMultiplier = getSizeMultiplier();
+            const color = document.getElementById('penColor').value;
+
+            for (let i = 0; i < currentWord.length; i++) {
+                const char = currentWord[i];
+                const letterData = cursiveLetters[char] || cursiveLetters[char.toLowerCase()];
+
+                if (letterData && letterData.path) {
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', transformPath(letterData.path, xOffset, sizeMultiplier));
+                    path.setAttribute('class', 'letter-path animated');
+                    path.setAttribute('stroke', color);
+                    path.setAttribute('stroke-width', 3 * sizeMultiplier);
+                    path.setAttribute('data-index', i);
+                    path.id = `letter-${i}`;
+                    svg.appendChild(path);
+
+                    xOffset += letterData.width * sizeMultiplier + 5;
+                } else {
+                    xOffset += 30 * sizeMultiplier; // Space
+                }
+            }
+
+            // Update viewBox based on content
+            svg.setAttribute('viewBox', `0 0 ${Math.max(800, xOffset + 50)} 150`);
+        }
+
+        // Transform path coordinates
+        function transformPath(path, xOffset, scale) {
+            return path.replace(/([ML])\s*(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)|([Q])\s*(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)/g,
+                (match, cmd1, x1, y1, cmd2, cx, cy, x2, y2) => {
+                    if (cmd1) {
+                        return `${cmd1} ${parseFloat(x1) * scale + xOffset} ${parseFloat(y1) * scale}`;
+                    } else if (cmd2) {
+                        return `${cmd2} ${parseFloat(cx) * scale + xOffset} ${parseFloat(cy) * scale} ${parseFloat(x2) * scale + xOffset} ${parseFloat(y2) * scale}`;
+                    }
+                    return match;
+                });
+        }
+
+        // Get size multiplier based on setting
+        function getSizeMultiplier() {
+            const size = document.getElementById('letterSize').value;
+            switch (size) {
+                case 'small': return 0.7;
+                case 'large': return 1.3;
+                default: return 1;
+            }
+        }
+
+        // Animate the writing sequence
+        function animateSequence() {
+            if (currentLetterIndex >= currentWord.length || !isAnimating) {
+                isAnimating = false;
+                return;
+            }
+
+            if (isPaused) {
+                return;
+            }
+
+            const path = document.getElementById(`letter-${currentLetterIndex}`);
+            if (path) {
+                animatePath(path);
+            } else {
+                // Skip spaces
+                currentLetterIndex++;
+                updateProgressDots();
+                showLetterInstruction(currentLetterIndex);
+                setTimeout(() => animateSequence(), 300);
+            }
+        }
+
+        // Animate a single letter path
+        function animatePath(path) {
+            const length = path.getTotalLength();
+            const duration = (11 - animationSpeed) * 300; // Speed affects duration
+
+            path.style.strokeDasharray = length;
+            path.style.strokeDashoffset = length;
+
+            const startTime = performance.now();
+
+            function animate(currentTime) {
+                if (isPaused) {
+                    return;
+                }
+
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                path.style.strokeDashoffset = length * (1 - progress);
+
+                if (progress < 1) {
+                    const animId = requestAnimationFrame(animate);
+                    animations.push(animId);
+                } else {
+                    // Letter complete, move to next
+                    currentLetterIndex++;
+                    updateProgressDots();
+                    showLetterInstruction(currentLetterIndex);
+
+                    setTimeout(() => animateSequence(), 500);
+                }
+            }
+
+            const animId = requestAnimationFrame(animate);
+            animations.push(animId);
+        }
+
+        // Show instruction for current letter
+        function showLetterInstruction(index) {
+            const letterSpan = document.getElementById('currentLetter');
+            const instructionDiv = document.getElementById('instructionText');
+
+            if (index >= currentWord.length) {
+                letterSpan.textContent = '✓';
+                instructionDiv.innerHTML = '<strong>Great job!</strong> You\'ve completed the word! Click "Repeat" to practice again, or try a new word.';
+                return;
+            }
+
+            const char = currentWord[index];
+            const letterData = cursiveLetters[char] || cursiveLetters[char.toLowerCase()];
+
+            letterSpan.textContent = char;
+
+            if (letterData) {
+                instructionDiv.innerHTML = `
+                    <p><strong>Step by step:</strong> ${letterData.instruction}</p>
+                    <p style="margin-top: 10px; color: #7b1fa2;"><strong>💡 Tip:</strong> ${letterData.tips}</p>
+                `;
+            } else {
+                instructionDiv.textContent = 'Keep watching and follow along!';
+            }
+        }
+
+        // Cancel all running animations
+        function cancelAllAnimations() {
+            animations.forEach(id => cancelAnimationFrame(id));
+            animations = [];
+        }
+
+        // Repeat the current word
+        function repeatWriting() {
+            startWriting();
+        }
+
+        // Start practice mode with repetitions
+        function startPractice() {
+            const repeatCount = parseInt(document.getElementById('repeatCount').value) || 3;
+            let currentRepeat = 0;
+
+            function doRepeat() {
+                if (currentRepeat >= repeatCount) {
+                    alert('Practice complete! Great job! 🌟');
+                    return;
+                }
+
+                currentRepeat++;
+                startWriting();
+
+                // Wait for animation to complete before next repeat
+                const checkComplete = setInterval(() => {
+                    if (!isAnimating) {
+                        clearInterval(checkComplete);
+                        setTimeout(doRepeat, 1000);
+                    }
+                }, 500);
+            }
+
+            doRepeat();
+        }
+
+        // Navigation functions
+        function previousLetter() {
+            if (currentLetterIndex > 0) {
+                cancelAllAnimations();
+                currentLetterIndex--;
+                updateProgressDots();
+                showLetterInstruction(currentLetterIndex);
+
+                // Reset and animate from current letter
+                for (let i = currentLetterIndex; i < currentWord.length; i++) {
+                    const path = document.getElementById(`letter-${i}`);
+                    if (path) {
+                        const length = path.getTotalLength();
+                        path.style.strokeDashoffset = length;
+                    }
+                }
+
+                isAnimating = true;
+                isPaused = false;
+                animateSequence();
+            }
+        }
+
+        function nextLetter() {
+            if (currentLetterIndex < currentWord.length) {
+                cancelAllAnimations();
+
+                // Complete current letter instantly
+                const currentPath = document.getElementById(`letter-${currentLetterIndex}`);
+                if (currentPath) {
+                    currentPath.style.strokeDashoffset = 0;
+                }
+
+                currentLetterIndex++;
+                updateProgressDots();
+                showLetterInstruction(currentLetterIndex);
+
+                if (currentLetterIndex < currentWord.length) {
+                    isAnimating = true;
+                    isPaused = false;
+                    animateSequence();
+                } else {
+                    isAnimating = false;
+                }
+            }
+        }
+
+        function jumpToLetter(index) {
+            cancelAllAnimations();
+
+            // Complete all letters before the target
+            for (let i = 0; i < index; i++) {
+                const path = document.getElementById(`letter-${i}`);
+                if (path) {
+                    path.style.strokeDashoffset = 0;
+                }
+            }
+
+            // Reset all letters from target onwards
+            for (let i = index; i < currentWord.length; i++) {
+                const path = document.getElementById(`letter-${i}`);
+                if (path) {
+                    const length = path.getTotalLength();
+                    path.style.strokeDashoffset = length;
+                }
+            }
+
+            currentLetterIndex = index;
+            updateProgressDots();
+            showLetterInstruction(index);
+
+            isAnimating = true;
+            isPaused = false;
+            animateSequence();
+        }
+
+        function pauseResume() {
+            const btn = document.getElementById('pauseBtn');
+
+            if (isPaused) {
+                isPaused = false;
+                btn.textContent = '⏸️ Pause';
+                animateSequence();
+            } else {
+                isPaused = true;
+                btn.textContent = '▶️ Resume';
+            }
+        }
+
+        // Settings functions
+        function updateSpeed() {
+            const slider = document.getElementById('speedSlider');
+            const value = document.getElementById('speedValue');
+            animationSpeed = parseInt(slider.value);
+
+            const speedNames = ['', 'Very Slow', 'Slow', 'Slow', 'Medium-Slow', 'Medium', 'Medium', 'Medium-Fast', 'Fast', 'Fast', 'Very Fast'];
+            value.textContent = speedNames[animationSpeed];
+        }
+
+        function updateStyle() {
+            currentStyle = document.getElementById('cursiveStyle').value;
+            // In a full implementation, this would load different letter paths
+            // For now, we'll just redraw with current style
+            if (currentWord) {
+                startWriting();
+            }
+        }
+
+        function updateSize() {
+            if (currentWord) {
+                drawWord();
+                // Reset animation
+                currentLetterIndex = 0;
+                updateProgressDots();
+                showLetterInstruction(0);
+                animateSequence();
+            }
+        }
+
+        function updateColor() {
+            const color = document.getElementById('penColor').value;
+            document.querySelectorAll('.letter-path').forEach(path => {
+                path.setAttribute('stroke', color);
+            });
+        }
+
+        // Initialize on page load
+        window.onload = init;
+    </script>
+</body>
+</html>
