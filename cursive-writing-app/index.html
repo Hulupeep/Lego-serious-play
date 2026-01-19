@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cursive Writing Practice</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&family=Satisfy&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -77,22 +76,20 @@
         .btn-pink { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
         .btn-gray { background: #eee; color: #333; }
 
-        /* Copybook area */
         .copybook {
-            background: linear-gradient(to bottom,
-                transparent 0px, transparent 59px, #ffcccc 59px, #ffcccc 60px,
-                transparent 60px, transparent 99px, #4444ff 99px, #4444ff 101px,
-                transparent 101px, transparent 139px, #cccccc 139px, #cccccc 140px,
-                transparent 140px
-            );
-            background-size: 100% 140px;
-            background-color: #fffef8;
+            background: #fffef8;
             border: 2px solid #ddd;
             border-radius: 10px;
-            min-height: 320px;
+            min-height: 280px;
             position: relative;
             overflow: hidden;
             margin: 15px 0;
+        }
+
+        .writing-canvas {
+            width: 100%;
+            height: 260px;
+            display: block;
         }
 
         .copybook-labels {
@@ -102,6 +99,7 @@
             font-size: 9px;
             color: #999;
             pointer-events: none;
+            z-index: 10;
         }
 
         .copybook-labels span {
@@ -110,89 +108,11 @@
             white-space: nowrap;
         }
 
-        .label-top { top: 52px; }
-        .label-mid { top: 92px; color: #ff6666; }
-        .label-base { top: 132px; color: #4444ff; }
+        .label-top { top: 45px; }
+        .label-mid { top: 95px; color: #ff6666; }
+        .label-base { top: 145px; color: #4444ff; }
+        .label-desc { top: 195px; color: #999; }
 
-        .writing-display {
-            padding: 20px 30px;
-            min-height: 160px;
-            display: flex;
-            align-items: flex-end;
-            padding-bottom: 45px;
-            position: relative;
-        }
-
-        .cursive-text {
-            position: relative;
-            font-size: 72px;
-            font-family: 'Dancing Script', cursive;
-            white-space: nowrap;
-        }
-
-        .cursive-text.style-modern { font-family: 'Dancing Script', cursive; }
-        .cursive-text.style-traditional { font-family: 'Satisfy', cursive; }
-        .cursive-text.style-italic { font-family: 'Great Vibes', cursive; font-size: 80px; }
-        .cursive-text.style-fancy { font-family: 'Pacifico', cursive; }
-
-        #textOutline {
-            color: transparent;
-            -webkit-text-stroke: 1px #ccc;
-        }
-
-        #textFill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: #333;
-            clip-path: inset(0 100% 0 0);
-        }
-
-        /* Pen cursor for writing effect */
-        .pen-cursor {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            pointer-events: none;
-            transform: translate(-8px, -20px) rotate(-45deg);
-            transition: opacity 0.2s;
-            z-index: 10;
-        }
-
-        .pen-cursor svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
-        }
-
-        /* Ink trail effect */
-        .ink-dot {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: currentColor;
-            border-radius: 50%;
-            opacity: 0;
-            animation: inkFade 0.5s ease-out forwards;
-        }
-
-        @keyframes inkFade {
-            0% { opacity: 0.8; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0.3); }
-        }
-
-        /* Writing animation glow */
-        .writing-glow {
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: transparent;
-            -webkit-text-stroke: 3px rgba(102, 126, 234, 0.3);
-            clip-path: inset(0 100% 0 0);
-            filter: blur(2px);
-        }
-
-        /* Progress dots */
         .progress-row {
             display: flex;
             gap: 6px;
@@ -208,8 +128,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.3em;
+            font-size: 1.1em;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -222,7 +141,6 @@
             box-shadow: 0 0 10px rgba(102,126,234,0.5);
         }
 
-        /* Instruction box */
         .instruction-box {
             background: linear-gradient(135deg, #fff9c4, #fff59d);
             border-radius: 12px;
@@ -240,8 +158,7 @@
         }
 
         .current-letter-display {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5em;
+            font-size: 2em;
             color: #667eea;
         }
 
@@ -257,7 +174,6 @@
             flex-wrap: wrap;
         }
 
-        /* Sidebar */
         .sidebar { display: flex; flex-direction: column; gap: 15px; }
 
         .panel h3 {
@@ -286,20 +202,6 @@
             border-radius: 6px;
         }
 
-        .style-preview {
-            text-align: center;
-            font-size: 1.6em;
-            padding: 8px;
-            background: #f8f8f8;
-            border-radius: 6px;
-            margin-top: 4px;
-        }
-
-        .style-preview.style-modern { font-family: 'Dancing Script', cursive; }
-        .style-preview.style-traditional { font-family: 'Satisfy', cursive; }
-        .style-preview.style-italic { font-family: 'Great Vibes', cursive; }
-        .style-preview.style-fancy { font-family: 'Pacifico', cursive; }
-
         .letter-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -312,8 +214,7 @@
             border-radius: 6px;
             background: white;
             cursor: pointer;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.2em;
+            font-size: 1.1em;
         }
 
         .letter-btn:hover {
@@ -347,7 +248,6 @@
             font-size: 0.9em;
         }
 
-        /* Letter stroke guide */
         .stroke-guide {
             background: #f0f8ff;
             border-radius: 8px;
@@ -406,25 +306,12 @@
 
                 <div class="copybook">
                     <div class="copybook-labels">
-                        <span class="label-top">Top (tall letters)</span>
+                        <span class="label-top">Top line</span>
                         <span class="label-mid">Midline</span>
                         <span class="label-base">Baseline</span>
+                        <span class="label-desc">Descender</span>
                     </div>
-                    <div class="writing-display">
-                        <div class="cursive-text" id="cursiveText">
-                            <span id="textOutline"></span>
-                            <span class="writing-glow" id="textGlow"></span>
-                            <span id="textFill"></span>
-                        </div>
-                        <div class="pen-cursor" id="penCursor">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 21L5 14L18 1L23 6L10 19L3 21Z" fill="#8B4513" stroke="#5D3A1A" stroke-width="1"/>
-                                <path d="M5 14L10 19" stroke="#5D3A1A" stroke-width="1"/>
-                                <path d="M18 1L23 6" stroke="#5D3A1A" stroke-width="1"/>
-                                <path d="M3 21L5 19L5 14L3 21Z" fill="#333"/>
-                            </svg>
-                        </div>
-                    </div>
+                    <canvas class="writing-canvas" id="writingCanvas"></canvas>
                 </div>
 
                 <div class="instruction-box">
@@ -450,17 +337,6 @@
                     <h3>⚙️ Settings</h3>
 
                     <div class="setting-row">
-                        <label>Cursive Style</label>
-                        <select id="styleSelect" onchange="updateStyle()">
-                            <option value="modern">Modern (Dancing Script)</option>
-                            <option value="traditional">Traditional (Satisfy)</option>
-                            <option value="italic">Elegant (Great Vibes)</option>
-                            <option value="fancy">Fancy (Pacifico)</option>
-                        </select>
-                        <div class="style-preview style-modern" id="stylePreview">hello</div>
-                    </div>
-
-                    <div class="setting-row">
                         <label>Letter Case</label>
                         <select id="caseSelect" onchange="startWriting()">
                             <option value="lower">All Lowercase</option>
@@ -477,19 +353,19 @@
                     </div>
 
                     <div class="setting-row">
-                        <label>Size</label>
-                        <select id="sizeSelect" onchange="updateSize()">
-                            <option value="small">Small</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="large">Large</option>
+                        <label>Pen Size</label>
+                        <select id="sizeSelect" onchange="startWriting()">
+                            <option value="2">Fine</option>
+                            <option value="3" selected>Medium</option>
+                            <option value="5">Bold</option>
                         </select>
                     </div>
 
                     <div class="setting-row">
-                        <label>Color</label>
-                        <select id="colorSelect" onchange="updateColor()">
-                            <option value="#333333">Black</option>
+                        <label>Ink Color</label>
+                        <select id="colorSelect" onchange="startWriting()">
                             <option value="#1a237e">Navy Blue</option>
+                            <option value="#333333">Black</option>
                             <option value="#4a148c">Purple</option>
                             <option value="#b71c1c">Red</option>
                             <option value="#1b5e20">Green</option>
@@ -513,8 +389,6 @@
                         <span class="word-chip" onclick="setWord('happy')">happy</span>
                         <span class="word-chip" onclick="setWord('love')">love</span>
                         <span class="word-chip" onclick="setWord('school')">school</span>
-                        <span class="word-chip" onclick="setWord('write')">write</span>
-                        <span class="word-chip" onclick="setWord('the quick fox')">quick fox</span>
                     </div>
                 </div>
             </div>
@@ -522,138 +396,323 @@
     </div>
 
     <script>
-        // Letter instruction data
-        const letterInstructions = {
+        // Advanced Cursive Stroke Engine
+        // Uses Catmull-Rom splines for smooth curves and pressure simulation
+
+        // Each letter defined with control points that will be interpolated
+        // Format: { points: [[x,y,pressure], ...], instructions: {...} }
+        // Coordinates: 0-100 units, baseline=70, midline=40, top=10, descender=95
+
+        const cursiveLetters = {
             'a': {
-                steps: ['Start at midline', 'Curve left and down', 'Loop back up', 'Stroke down and exit right'],
-                tip: 'Make a small oval, then exit with an upstroke to connect.'
+                width: 45,
+                strokes: [
+                    // Entry up, oval, down, exit - all connected
+                    [[0,70,0.3], [8,50,0.7], [15,38,0.9], [10,32,0.8], [5,38,0.7], [5,52,0.8], [12,62,0.9], [25,65,0.9], [35,58,0.8], [38,45,0.7], [35,35,0.6], [25,32,0.5], [15,38,0.6]],
+                    [[38,45,0.8], [38,68,0.9], [45,62,0.5]]
+                ],
+                instructions: { steps: ['Upstroke to midline', 'Oval counter-clockwise', 'Down and exit'], tip: 'Make a smooth oval, connect to the exit stroke.' }
             },
             'b': {
-                steps: ['Start at baseline', 'Tall stroke up', 'Loop at top', 'Down and bump right'],
-                tip: 'The loop goes to the top line. The bump sits between midline and baseline.'
+                width: 45,
+                strokes: [
+                    [[0,70,0.3], [5,45,0.7], [10,20,0.9], [15,12,0.7], [20,15,0.5], [18,25,0.6], [12,38,0.8], [12,70,0.9]],
+                    [[12,70,0.5], [12,52,0.7], [22,45,0.9], [35,50,0.9], [40,62,0.8], [38,70,0.7], [45,65,0.4]]
+                ],
+                instructions: { steps: ['Tall loop up', 'Down to baseline', 'Bump right'], tip: 'Start with a tall loop, bump sits on baseline.' }
             },
             'c': {
-                steps: ['Start below midline', 'Curve up and left', 'Sweep down', 'Exit with upturn'],
-                tip: 'Keep it open like a crescent moon.'
+                width: 40,
+                strokes: [
+                    [[0,70,0.3], [8,55,0.7], [15,40,0.9], [28,35,0.8], [35,42,0.5]],
+                    [[28,35,0.6], [15,38,0.8], [8,50,0.9], [8,62,0.9], [18,72,0.8], [32,68,0.6], [40,58,0.4]]
+                ],
+                instructions: { steps: ['Upstroke', 'Curve around', 'Exit right'], tip: 'Open curve like a crescent moon.' }
             },
             'd': {
-                steps: ['Start like c', 'Curve around', 'Tall stroke up', 'Down and exit'],
-                tip: 'Make the round part first, then go up tall.'
+                width: 45,
+                strokes: [
+                    [[0,70,0.3], [8,55,0.7], [15,42,0.9], [8,48,0.8], [8,60,0.9], [18,70,0.9], [32,65,0.8], [38,52,0.7], [38,38,0.6]],
+                    [[38,38,0.5], [38,15,0.8], [38,70,0.9], [45,65,0.4]]
+                ],
+                instructions: { steps: ['Oval first', 'Tall stroke up', 'Down and exit'], tip: 'Make the round part, then go tall.' }
             },
             'e': {
-                steps: ['Start at middle', 'Small loop up', 'Curve around', 'Exit right'],
-                tip: 'The loop is tiny - like a small eye.'
+                width: 38,
+                strokes: [
+                    [[0,70,0.3], [8,55,0.7], [15,45,0.9], [20,42,0.7], [22,48,0.5], [18,52,0.6], [12,55,0.8], [8,62,0.9], [15,72,0.8], [28,68,0.6], [38,55,0.4]]
+                ],
+                instructions: { steps: ['Upstroke', 'Small loop', 'Around and exit'], tip: 'Tiny loop in the middle like an eye.' }
             },
             'f': {
-                steps: ['Curve at top', 'Tall stroke down', 'Below baseline', 'Cross at middle'],
-                tip: 'This letter goes both above and below the lines!'
+                width: 38,
+                strokes: [
+                    [[8,25,0.4], [15,15,0.7], [25,12,0.8], [30,20,0.5]],
+                    [[22,12,0.6], [18,35,0.9], [15,70,0.9], [12,85,0.8], [5,95,0.5], [0,92,0.3]],
+                    [[5,45,0.5], [32,45,0.7], [35,45,0.4]]
+                ],
+                instructions: { steps: ['Top curve', 'Long stroke down', 'Cross at midline'], tip: 'Goes above and below the lines!' }
             },
             'g': {
-                steps: ['Oval like a', 'Continue down', 'Below baseline', 'Curve left'],
-                tip: 'The tail hooks back to the left below the line.'
+                width: 45,
+                strokes: [
+                    [[0,70,0.3], [8,55,0.7], [15,42,0.9], [8,48,0.8], [8,60,0.9], [18,70,0.9], [32,65,0.8], [38,52,0.7], [38,42,0.6]],
+                    [[38,42,0.7], [38,80,0.9], [32,95,0.8], [18,95,0.6], [8,88,0.4]]
+                ],
+                instructions: { steps: ['Oval shape', 'Down below baseline', 'Curve left'], tip: 'Like "a" with a tail going down.' }
             },
             'h': {
-                steps: ['Start at baseline', 'Tall stroke up', 'Down to middle', 'Hump right'],
-                tip: 'Like an n attached to a tall stem.'
+                width: 48,
+                strokes: [
+                    [[0,70,0.3], [5,45,0.7], [10,18,0.9], [16,12,0.7], [20,18,0.5], [16,30,0.7], [12,50,0.9], [12,70,0.9]],
+                    [[12,70,0.5], [12,50,0.7], [20,42,0.9], [32,40,0.9], [42,48,0.8], [45,65,0.9], [48,60,0.4]]
+                ],
+                instructions: { steps: ['Tall loop', 'Down', 'Hump right'], tip: 'Like "n" attached to a tall stem.' }
             },
             'i': {
-                steps: ['Short upstroke', 'Down to baseline', 'Exit right', 'Add dot'],
-                tip: 'Keep it simple. Don\'t forget the dot!'
+                width: 28,
+                strokes: [
+                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,70,0.9], [22,65,0.6], [28,58,0.3]],
+                    [[15,25,0.5], [16,27,0.7], [17,25,0.5]]
+                ],
+                instructions: { steps: ['Upstroke', 'Down', 'Dot'], tip: 'Simple stroke. Don\'t forget the dot!' }
             },
             'j': {
-                steps: ['Short upstroke', 'Down past baseline', 'Curve left', 'Add dot'],
-                tip: 'Like i but with a tail below the line.'
+                width: 28,
+                strokes: [
+                    [[5,70,0.3], [12,52,0.7], [18,40,0.9], [18,75,0.9], [15,90,0.8], [5,95,0.5], [0,90,0.3]],
+                    [[18,25,0.5], [19,27,0.7], [20,25,0.5]]
+                ],
+                instructions: { steps: ['Upstroke', 'Down and curve', 'Dot'], tip: 'Like "i" with a descending tail.' }
             },
             'k': {
-                steps: ['Tall stroke up', 'Down', 'Kick in', 'Kick out'],
-                tip: 'The kicks meet at the middle of the tall stroke.'
+                width: 42,
+                strokes: [
+                    [[0,70,0.3], [5,45,0.7], [10,18,0.9], [16,12,0.7], [20,18,0.5], [16,35,0.8], [12,55,0.9], [12,70,0.9]],
+                    [[35,35,0.4], [25,48,0.7], [18,55,0.8]],
+                    [[18,55,0.7], [28,65,0.9], [38,72,0.7], [42,68,0.4]]
+                ],
+                instructions: { steps: ['Tall loop down', 'Kick in', 'Kick out'], tip: 'Kicks meet in the middle.' }
             },
             'l': {
-                steps: ['Start at baseline', 'Tall loop up', 'Down', 'Exit right'],
-                tip: 'Keep it tall and elegant.'
+                width: 32,
+                strokes: [
+                    [[0,70,0.3], [5,45,0.7], [10,18,0.9], [18,12,0.7], [22,18,0.5], [18,32,0.7], [14,55,0.9], [14,70,0.9], [22,65,0.6], [32,55,0.3]]
+                ],
+                instructions: { steps: ['Tall loop', 'Down', 'Exit'], tip: 'Elegant tall loop with smooth exit.' }
             },
             'm': {
-                steps: ['Upstroke', 'First hump', 'Second hump', 'Exit'],
-                tip: 'Two mountains side by side - keep them even!'
+                width: 60,
+                strokes: [
+                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,70,0.9], [15,52,0.7], [22,42,0.9], [32,42,0.9], [38,52,0.8], [38,70,0.9], [38,52,0.7], [45,42,0.9], [55,42,0.9], [58,55,0.8], [58,70,0.9], [60,65,0.4]]
+                ],
+                instructions: { steps: ['Up', 'First hump', 'Second hump', 'Exit'], tip: 'Two even humps side by side.' }
             },
             'n': {
-                steps: ['Upstroke', 'Over and down', 'One hump', 'Exit right'],
-                tip: 'One smooth hill - half of an m.'
+                width: 45,
+                strokes: [
+                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,70,0.9], [15,52,0.7], [22,42,0.9], [35,42,0.9], [42,55,0.8], [42,70,0.9], [45,65,0.4]]
+                ],
+                instructions: { steps: ['Up', 'Down', 'Hump', 'Exit'], tip: 'One smooth hill - half of "m".' }
             },
             'o': {
-                steps: ['Start at midline', 'Oval left', 'Close oval', 'Exit with connector'],
-                tip: 'Round oval, then a little exit stroke.'
+                width: 42,
+                strokes: [
+                    [[0,70,0.3], [8,55,0.7], [15,45,0.9], [8,52,0.8], [8,62,0.9], [18,72,0.9], [32,68,0.8], [38,55,0.7], [38,45,0.6], [30,38,0.5], [18,40,0.6], [15,48,0.7]],
+                    [[38,55,0.5], [42,62,0.3]]
+                ],
+                instructions: { steps: ['Oval', 'Close', 'Exit'], tip: 'Round oval with connector.' }
             },
             'p': {
-                steps: ['Upstroke', 'Down below baseline', 'Back up', 'Bump right'],
-                tip: 'Stem goes below the line. Bump on top half.'
+                width: 45,
+                strokes: [
+                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,95,0.9]],
+                    [[15,95,0.5], [15,70,0.7], [15,52,0.8], [25,45,0.9], [38,50,0.9], [42,62,0.8], [38,72,0.6], [25,72,0.5], [15,65,0.4]],
+                    [[42,62,0.4], [45,58,0.3]]
+                ],
+                instructions: { steps: ['Down below baseline', 'Up', 'Bump', 'Exit'], tip: 'Stem goes below, bump on top.' }
             },
             'q': {
-                steps: ['Oval like a', 'Down below baseline', 'Curve right', 'Exit'],
-                tip: 'Tail curves right - opposite of g!'
+                width: 48,
+                strokes: [
+                    [[0,70,0.3], [8,55,0.7], [15,45,0.9], [8,52,0.8], [8,62,0.9], [18,72,0.9], [32,68,0.8], [38,55,0.7], [38,45,0.6], [30,38,0.5], [18,40,0.6]],
+                    [[38,45,0.7], [38,88,0.9], [42,95,0.7], [50,95,0.4]]
+                ],
+                instructions: { steps: ['Oval', 'Down below', 'Tail right'], tip: 'Tail goes right - opposite of "g"!' }
             },
             'r': {
-                steps: ['Upstroke', 'Shoulder curve', 'Exit'],
-                tip: 'Short and simple - just a small shoulder.'
+                width: 32,
+                strokes: [
+                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,70,0.9]],
+                    [[15,70,0.5], [15,52,0.7], [22,42,0.8], [30,45,0.6], [32,52,0.4]]
+                ],
+                instructions: { steps: ['Up', 'Down', 'Shoulder'], tip: 'Short with a small shoulder.' }
             },
             's': {
-                steps: ['Upstroke', 'Curve left', 'Snake down', 'Curve right', 'Exit'],
-                tip: 'Think of a snake! S-curve motion.'
+                width: 35,
+                strokes: [
+                    [[0,70,0.3], [8,58,0.7], [15,48,0.9], [25,42,0.8], [30,48,0.6], [28,55,0.7], [20,60,0.8], [12,65,0.9], [10,72,0.8], [18,78,0.6], [28,72,0.5], [35,62,0.3]]
+                ],
+                instructions: { steps: ['Up', 'Curve', 'Snake', 'Exit'], tip: 'S-curve like a snake!' }
             },
             't': {
-                steps: ['Upstroke (not too tall)', 'Down', 'Exit', 'Cross at midline'],
-                tip: 'Shorter than l. Cross it last!'
+                width: 32,
+                strokes: [
+                    [[0,70,0.3], [8,52,0.7], [15,30,0.9], [15,70,0.9], [22,65,0.6], [30,58,0.3]],
+                    [[5,45,0.4], [25,45,0.7], [28,45,0.4]]
+                ],
+                instructions: { steps: ['Up', 'Down', 'Exit', 'Cross'], tip: 'Shorter than "l". Cross it last!' }
             },
             'u': {
-                steps: ['Upstroke', 'Down and curve', 'Up like a cup', 'Down and exit'],
-                tip: 'Like an upside-down n.'
+                width: 45,
+                strokes: [
+                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,65,0.9], [22,75,0.8], [32,75,0.8], [40,65,0.7], [42,50,0.6], [42,40,0.5]],
+                    [[42,40,0.6], [42,70,0.9], [45,65,0.4]]
+                ],
+                instructions: { steps: ['Up', 'Down curve', 'Up', 'Down exit'], tip: 'Like upside-down "n".' }
             },
             'v': {
-                steps: ['Upstroke', 'Diagonal down', 'Sharp point', 'Diagonal up'],
-                tip: 'Sharp point at the bottom.'
+                width: 38,
+                strokes: [
+                    [[0,70,0.3], [8,52,0.7], [12,40,0.9], [22,72,0.9], [32,45,0.7], [38,55,0.4]]
+                ],
+                instructions: { steps: ['Up', 'Down diagonal', 'Up diagonal'], tip: 'Sharp point at bottom.' }
             },
             'w': {
-                steps: ['Upstroke', 'Down', 'Up', 'Down', 'Up and exit'],
-                tip: 'Like two v shapes connected.'
+                width: 55,
+                strokes: [
+                    [[0,70,0.3], [8,52,0.7], [12,40,0.9], [20,72,0.9], [28,48,0.8], [38,72,0.9], [45,48,0.7], [52,58,0.5], [55,55,0.3]]
+                ],
+                instructions: { steps: ['Up', 'V', 'V', 'Exit'], tip: 'Two connected V shapes.' }
             },
             'x': {
-                steps: ['First diagonal', 'Second diagonal', 'Cross in middle'],
-                tip: 'The strokes cross right in the center.'
+                width: 38,
+                strokes: [
+                    [[0,70,0.3], [8,58,0.7], [15,48,0.9], [28,72,0.8], [35,68,0.4]],
+                    [[32,42,0.4], [22,55,0.8], [12,68,0.7], [5,75,0.3]]
+                ],
+                instructions: { steps: ['First diagonal', 'Second diagonal'], tip: 'Strokes cross in center.' }
             },
             'y': {
-                steps: ['Like u top', 'Continue down', 'Below baseline', 'Curve left'],
-                tip: 'Like u but with a descending tail.'
+                width: 45,
+                strokes: [
+                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,65,0.9], [22,75,0.8], [32,75,0.8], [40,65,0.7], [42,50,0.6], [42,40,0.5]],
+                    [[42,40,0.6], [42,85,0.9], [35,95,0.7], [22,95,0.5], [12,88,0.3]]
+                ],
+                instructions: { steps: ['U-shape', 'Down below', 'Curve left'], tip: 'Like "u" with descending tail.' }
             },
             'z': {
-                steps: ['Across top', 'Diagonal down', 'Across bottom', 'Exit'],
-                tip: 'Zigzag pattern!'
+                width: 38,
+                strokes: [
+                    [[0,70,0.3], [8,58,0.6], [12,45,0.8], [32,45,0.9], [12,72,0.9], [35,72,0.8], [38,68,0.4]]
+                ],
+                instructions: { steps: ['Up', 'Across', 'Diagonal', 'Across', 'Exit'], tip: 'Zigzag pattern!' }
             },
             ' ': {
-                steps: ['Lift pen', 'Move right'],
-                tip: 'Spaces separate words!'
+                width: 25,
+                strokes: [],
+                instructions: { steps: ['Lift pen', 'Move right'], tip: 'Space between words.' }
             }
         };
 
-        // Default for uppercase and unknown
-        const defaultInstruction = {
-            steps: ['Follow the letter shape', 'Smooth strokes', 'Connect to next'],
-            tip: 'Watch the animation and follow along!'
-        };
+        const defaultInstruction = { steps: ['Follow shape'], tip: 'Watch and follow!' };
 
         // State
-        let currentWord = '';
-        let displayWord = '';
+        let canvas, ctx;
+        let currentWord = '', displayWord = '';
         let currentIndex = 0;
-        let isAnimating = false;
-        let isPaused = false;
+        let isAnimating = false, isPaused = false;
         let animationId = null;
+        let allLetterData = [];
+        let drawnSegments = [];
 
-        // Init
+        // Catmull-Rom spline interpolation for smooth curves
+        function catmullRom(p0, p1, p2, p3, t) {
+            const t2 = t * t;
+            const t3 = t2 * t;
+            return {
+                x: 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * t + (2*p0.x - 5*p1.x + 4*p2.x - p3.x) * t2 + (-p0.x + 3*p1.x - 3*p2.x + p3.x) * t3),
+                y: 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * t + (2*p0.y - 5*p1.y + 4*p2.y - p3.y) * t2 + (-p0.y + 3*p1.y - 3*p2.y + p3.y) * t3),
+                p: p1.p + (p2.p - p1.p) * t // Linear interpolate pressure
+            };
+        }
+
+        // Generate smooth curve points from control points
+        function generateSmoothPoints(controlPoints, resolution = 8) {
+            if (controlPoints.length < 2) return controlPoints.map(p => ({x: p[0], y: p[1], p: p[2] || 0.7}));
+
+            const points = [];
+            const pts = controlPoints.map(p => ({x: p[0], y: p[1], p: p[2] || 0.7}));
+
+            for (let i = 0; i < pts.length - 1; i++) {
+                const p0 = pts[Math.max(0, i - 1)];
+                const p1 = pts[i];
+                const p2 = pts[Math.min(pts.length - 1, i + 1)];
+                const p3 = pts[Math.min(pts.length - 1, i + 2)];
+
+                for (let t = 0; t < 1; t += 1/resolution) {
+                    points.push(catmullRom(p0, p1, p2, p3, t));
+                }
+            }
+            points.push(pts[pts.length - 1]);
+            return points;
+        }
+
         function init() {
+            canvas = document.getElementById('writingCanvas');
+            ctx = canvas.getContext('2d');
+
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
             buildLetterGrid();
             updateSpeedLabel();
-            updateStyle();
             startWriting();
+        }
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = 260;
+            drawCopybookLines();
+            redrawAll();
+        }
+
+        function drawCopybookLines() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Top line
+            ctx.strokeStyle = '#ffcccc';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, 50);
+            ctx.lineTo(canvas.width, 50);
+            ctx.stroke();
+
+            // Midline (dashed)
+            ctx.strokeStyle = '#ff9999';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(0, 100);
+            ctx.lineTo(canvas.width, 100);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Baseline
+            ctx.strokeStyle = '#4444ff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, 150);
+            ctx.lineTo(canvas.width, 150);
+            ctx.stroke();
+
+            // Descender
+            ctx.strokeStyle = '#cccccc';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, 200);
+            ctx.lineTo(canvas.width, 200);
+            ctx.stroke();
         }
 
         function buildLetterGrid() {
@@ -686,13 +745,14 @@
             currentWord = document.getElementById('wordInput').value.trim();
             if (!currentWord) return;
 
-            displayWord = applyCase(currentWord);
+            displayWord = applyCase(currentWord).toLowerCase();
             currentIndex = 0;
             isAnimating = true;
             isPaused = false;
+            drawnSegments = [];
             document.getElementById('pauseBtn').textContent = '⏸️ Pause';
 
-            // Build progress dots
+            // Build progress
             const progressRow = document.getElementById('progressRow');
             progressRow.innerHTML = '';
             displayWord.split('').forEach((char, i) => {
@@ -703,27 +763,40 @@
                 progressRow.appendChild(dot);
             });
 
-            // Setup text display
-            const outline = document.getElementById('textOutline');
-            const fill = document.getElementById('textFill');
-            const glow = document.getElementById('textGlow');
-            outline.textContent = displayWord;
-            fill.textContent = displayWord;
-            glow.textContent = displayWord;
-
-            // Reset clip paths
-            fill.style.clipPath = 'inset(0 100% 0 0)';
-            glow.style.clipPath = 'inset(0 100% 0 0)';
-
-            // Position pen at start
-            const pen = document.getElementById('penCursor');
-            pen.style.opacity = '1';
-            pen.style.left = '0px';
-            pen.style.top = '50px';
-
+            buildAllLetterData();
+            drawCopybookLines();
             updateProgress();
             showInstruction(0);
-            animateLetter();
+            animateWriting();
+        }
+
+        function buildAllLetterData() {
+            allLetterData = [];
+            let xOffset = 40;
+            const scale = 1.8;
+
+            for (let i = 0; i < displayWord.length; i++) {
+                const char = displayWord[i];
+                const letterDef = cursiveLetters[char] || cursiveLetters['a'];
+
+                // Generate smooth points for each stroke
+                const smoothStrokes = letterDef.strokes.map(stroke => {
+                    const scaledPoints = stroke.map(p => [
+                        xOffset + p[0] * scale,
+                        p[1] * scale + 10,
+                        p[2] || 0.7
+                    ]);
+                    return generateSmoothPoints(scaledPoints, 6);
+                });
+
+                allLetterData.push({
+                    char,
+                    strokes: smoothStrokes,
+                    charIndex: i
+                });
+
+                xOffset += (letterDef.width || 40) * scale + 8;
+            }
         }
 
         function updateProgress() {
@@ -750,111 +823,109 @@
             const char = displayWord[index];
             letterSpan.textContent = char;
 
-            const info = letterInstructions[char.toLowerCase()] || defaultInstruction;
+            const letterDef = cursiveLetters[char];
+            const info = letterDef ? letterDef.instructions : defaultInstruction;
             textDiv.innerHTML = `<strong>Tip:</strong> ${info.tip}`;
-
             stepsDiv.innerHTML = info.steps.map((step, i) =>
                 `<div class="stroke-step"><span class="step-num">${i+1}</span>${step}</div>`
             ).join('');
         }
 
-        function animateLetter() {
+        // Draw a segment with pressure-sensitive width
+        function drawSegment(from, to, color, baseSize) {
+            const avgPressure = (from.p + to.p) / 2;
+            const width = baseSize * (0.5 + avgPressure);
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            ctx.beginPath();
+            ctx.moveTo(from.x, from.y);
+            ctx.lineTo(to.x, to.y);
+            ctx.stroke();
+
+            // Store for redraw
+            drawnSegments.push({ from: {...from}, to: {...to}, color, baseSize });
+        }
+
+        function animateWriting() {
             if (!isAnimating || isPaused) return;
-            if (currentIndex >= displayWord.length) {
+            if (currentIndex >= allLetterData.length) {
                 isAnimating = false;
-                // Hide pen when done
-                document.getElementById('penCursor').style.opacity = '0';
                 return;
             }
 
-            const fill = document.getElementById('textFill');
-            const glow = document.getElementById('textGlow');
-            const pen = document.getElementById('penCursor');
-            const textContainer = document.getElementById('cursiveText');
+            const letterData = allLetterData[currentIndex];
+            const color = document.getElementById('colorSelect').value;
+            const baseSize = parseInt(document.getElementById('sizeSelect').value);
             const speed = parseInt(document.getElementById('speedSlider').value);
-            const duration = (11 - speed) * 250; // ms per letter
+            const delay = Math.max(5, (11 - speed) * 8);
 
-            // Calculate clip percentage for current letter
-            const totalChars = displayWord.length;
-            const startPercent = (currentIndex / totalChars) * 100;
-            const endPercent = ((currentIndex + 1) / totalChars) * 100;
+            let strokeIdx = 0;
+            let pointIdx = 0;
 
-            // Calculate pen position based on text width
-            const textWidth = textContainer.offsetWidth;
-            const textHeight = textContainer.offsetHeight;
+            function drawNext() {
+                if (!isAnimating || isPaused) return;
 
-            let startTime = null;
-            let lastInkTime = 0;
-
-            function animate(timestamp) {
-                if (!startTime) startTime = timestamp;
-                if (isPaused) return;
-
-                const elapsed = timestamp - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-
-                // Use easing for more natural writing motion
-                const easeProgress = easeInOutQuad(progress);
-
-                const currentPercent = startPercent + (endPercent - startPercent) * easeProgress;
-                fill.style.clipPath = `inset(0 ${100 - currentPercent}% 0 0)`;
-                glow.style.clipPath = `inset(0 ${100 - currentPercent - 2}% 0 0)`;
-
-                // Move pen cursor
-                const penX = (currentPercent / 100) * textWidth;
-                // Add slight vertical wobble for natural writing feel
-                const wobble = Math.sin(progress * Math.PI * 4) * 3;
-                const penY = 50 + wobble;
-                pen.style.left = penX + 'px';
-                pen.style.top = penY + 'px';
-
-                // Add ink dots occasionally for trail effect
-                if (timestamp - lastInkTime > 80 && progress < 0.95) {
-                    createInkDot(penX + 30, penY + 70);
-                    lastInkTime = timestamp;
-                }
-
-                if (progress < 1) {
-                    animationId = requestAnimationFrame(animate);
-                } else {
+                if (strokeIdx >= letterData.strokes.length) {
                     currentIndex++;
                     updateProgress();
                     showInstruction(currentIndex);
 
-                    if (currentIndex < displayWord.length) {
-                        setTimeout(() => animateLetter(), 100);
+                    if (currentIndex < allLetterData.length) {
+                        animationId = setTimeout(animateWriting, 150);
                     } else {
                         isAnimating = false;
-                        pen.style.opacity = '0';
                     }
+                    return;
+                }
+
+                const stroke = letterData.strokes[strokeIdx];
+
+                if (stroke.length === 0) {
+                    strokeIdx++;
+                    animationId = setTimeout(drawNext, delay);
+                    return;
+                }
+
+                if (pointIdx < stroke.length - 1) {
+                    drawSegment(stroke[pointIdx], stroke[pointIdx + 1], color, baseSize);
+                    pointIdx++;
+                    animationId = setTimeout(drawNext, delay);
+                } else {
+                    strokeIdx++;
+                    pointIdx = 0;
+                    animationId = setTimeout(drawNext, delay * 3);
                 }
             }
 
-            animationId = requestAnimationFrame(animate);
+            drawNext();
         }
 
-        // Easing function for natural motion
-        function easeInOutQuad(t) {
-            return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-        }
+        function redrawAll() {
+            if (drawnSegments.length === 0) return;
 
-        // Create ink dot for trail effect
-        function createInkDot(x, y) {
-            const display = document.querySelector('.writing-display');
-            const dot = document.createElement('div');
-            dot.className = 'ink-dot';
-            dot.style.left = x + 'px';
-            dot.style.top = y + 'px';
-            dot.style.color = document.getElementById('colorSelect').value;
-            display.appendChild(dot);
+            for (const seg of drawnSegments) {
+                const avgPressure = (seg.from.p + seg.to.p) / 2;
+                const width = seg.baseSize * (0.5 + avgPressure);
 
-            // Remove after animation
-            setTimeout(() => dot.remove(), 500);
+                ctx.strokeStyle = seg.color;
+                ctx.lineWidth = width;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                ctx.beginPath();
+                ctx.moveTo(seg.from.x, seg.from.y);
+                ctx.lineTo(seg.to.x, seg.to.y);
+                ctx.stroke();
+            }
         }
 
         function cancelAnimation() {
             if (animationId) {
-                cancelAnimationFrame(animationId);
+                clearTimeout(animationId);
                 animationId = null;
             }
             isAnimating = false;
@@ -865,102 +936,74 @@
             if (isPaused) {
                 isPaused = false;
                 btn.textContent = '⏸️ Pause';
-                animateLetter();
+                animateWriting();
             } else {
                 isPaused = true;
                 btn.textContent = '▶️ Resume';
             }
         }
 
-        function updateClipAndPen(percent) {
-            const fill = document.getElementById('textFill');
-            const glow = document.getElementById('textGlow');
-            const pen = document.getElementById('penCursor');
-            const textContainer = document.getElementById('cursiveText');
+        function drawLetterInstantly(letterIdx) {
+            if (letterIdx >= allLetterData.length) return;
 
-            fill.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-            glow.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            const letterData = allLetterData[letterIdx];
+            const color = document.getElementById('colorSelect').value;
+            const baseSize = parseInt(document.getElementById('sizeSelect').value);
 
-            const penX = (percent / 100) * textContainer.offsetWidth;
-            pen.style.left = penX + 'px';
-            pen.style.top = '50px';
-            pen.style.opacity = percent < 100 ? '1' : '0';
+            for (const stroke of letterData.strokes) {
+                for (let i = 0; i < stroke.length - 1; i++) {
+                    drawSegment(stroke[i], stroke[i + 1], color, baseSize);
+                }
+            }
+        }
+
+        function rebuildToIndex(targetIndex) {
+            drawnSegments = [];
+            drawCopybookLines();
+
+            for (let i = 0; i < targetIndex && i < allLetterData.length; i++) {
+                drawLetterInstantly(i);
+            }
         }
 
         function prevLetter() {
             if (currentIndex > 0) {
                 cancelAnimation();
                 currentIndex--;
-
-                const percent = (currentIndex / displayWord.length) * 100;
-                updateClipAndPen(percent);
-
+                rebuildToIndex(currentIndex);
                 updateProgress();
                 showInstruction(currentIndex);
                 isAnimating = true;
                 isPaused = false;
-                animateLetter();
+                animateWriting();
             }
         }
 
         function nextLetter() {
             if (currentIndex < displayWord.length) {
                 cancelAnimation();
+                drawLetterInstantly(currentIndex);
                 currentIndex++;
-
-                const percent = (currentIndex / displayWord.length) * 100;
-                updateClipAndPen(percent);
-
                 updateProgress();
                 showInstruction(currentIndex);
 
                 if (currentIndex < displayWord.length) {
                     isAnimating = true;
                     isPaused = false;
-                    animateLetter();
+                    animateWriting();
                 }
             }
         }
 
         function jumpTo(index) {
             cancelAnimation();
+            rebuildToIndex(index);
             currentIndex = index;
-
-            const percent = (currentIndex / displayWord.length) * 100;
-            updateClipAndPen(percent);
-
             updateProgress();
             showInstruction(currentIndex);
             isAnimating = true;
             isPaused = false;
-            animateLetter();
-        }
-
-        function updateStyle() {
-            const style = document.getElementById('styleSelect').value;
-            const text = document.getElementById('cursiveText');
-            const preview = document.getElementById('stylePreview');
-            const glow = document.getElementById('textGlow');
-
-            text.className = 'cursive-text style-' + style;
-            preview.className = 'style-preview style-' + style;
-
-            if (displayWord) startWriting();
-        }
-
-        function updateSize() {
-            const size = document.getElementById('sizeSelect').value;
-            const text = document.getElementById('cursiveText');
-            const sizes = { small: '52px', medium: '72px', large: '92px' };
-            text.style.fontSize = sizes[size];
-        }
-
-        function updateColor() {
-            const color = document.getElementById('colorSelect').value;
-            const outline = document.getElementById('textOutline');
-            const fill = document.getElementById('textFill');
-            // Keep outline light, just change fill color
-            fill.style.color = color;
+            animateWriting();
         }
 
         function updateSpeedLabel() {
