@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cursive Writing Practice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -80,16 +81,10 @@
             background: #fffef8;
             border: 2px solid #ddd;
             border-radius: 10px;
-            min-height: 280px;
+            min-height: 300px;
             position: relative;
             overflow: hidden;
             margin: 15px 0;
-        }
-
-        .writing-canvas {
-            width: 100%;
-            height: 260px;
-            display: block;
         }
 
         .copybook-labels {
@@ -108,10 +103,45 @@
             white-space: nowrap;
         }
 
-        .label-top { top: 45px; }
-        .label-mid { top: 95px; color: #ff6666; }
-        .label-base { top: 145px; color: #4444ff; }
-        .label-desc { top: 195px; color: #999; }
+        .label-top { top: 55px; }
+        .label-mid { top: 105px; color: #ff6666; }
+        .label-base { top: 175px; color: #4444ff; }
+        .label-desc { top: 225px; color: #999; }
+
+        .writing-area {
+            padding: 20px 30px;
+            position: relative;
+        }
+
+        .writing-svg {
+            width: 100%;
+            height: 250px;
+            overflow: visible;
+        }
+
+        /* Guidelines */
+        .guideline { stroke-width: 1; }
+        .guideline-top { stroke: #ffcccc; }
+        .guideline-mid { stroke: #ff9999; stroke-dasharray: 5,5; }
+        .guideline-base { stroke: #4444ff; stroke-width: 2; }
+        .guideline-desc { stroke: #cccccc; }
+
+        /* Letter paths */
+        .letter-path {
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .letter-guide {
+            stroke: #e0e0e0;
+            stroke-width: 2;
+        }
+
+        .letter-draw {
+            stroke: #1a237e;
+            stroke-width: 3;
+        }
 
         .progress-row {
             display: flex;
@@ -121,14 +151,15 @@
         }
 
         .progress-dot {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: #eee;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1em;
+            font-size: 1.2em;
+            font-family: 'Dancing Script', cursive;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -158,7 +189,8 @@
         }
 
         .current-letter-display {
-            font-size: 2em;
+            font-size: 2.2em;
+            font-family: 'Dancing Script', cursive;
             color: #667eea;
         }
 
@@ -209,12 +241,13 @@
         }
 
         .letter-btn {
-            padding: 6px;
+            padding: 8px 4px;
             border: 2px solid #ddd;
             border-radius: 6px;
             background: white;
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 1.3em;
+            font-family: 'Dancing Script', cursive;
         }
 
         .letter-btn:hover {
@@ -233,7 +266,8 @@
             background: #f0f4ff;
             border-radius: 15px;
             cursor: pointer;
-            font-size: 0.85em;
+            font-size: 0.9em;
+            font-family: 'Dancing Script', cursive;
         }
 
         .word-chip:hover {
@@ -263,7 +297,7 @@
 
         .stroke-steps {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
@@ -311,7 +345,11 @@
                         <span class="label-base">Baseline</span>
                         <span class="label-desc">Descender</span>
                     </div>
-                    <canvas class="writing-canvas" id="writingCanvas"></canvas>
+                    <div class="writing-area">
+                        <svg class="writing-svg" id="writingSvg">
+                            <!-- Guidelines drawn by JS -->
+                        </svg>
+                    </div>
                 </div>
 
                 <div class="instruction-box">
@@ -337,16 +375,6 @@
                     <h3>⚙️ Settings</h3>
 
                     <div class="setting-row">
-                        <label>Letter Case</label>
-                        <select id="caseSelect" onchange="startWriting()">
-                            <option value="lower">All Lowercase</option>
-                            <option value="upper">All Uppercase</option>
-                            <option value="mixed">As Typed</option>
-                            <option value="title">Title Case</option>
-                        </select>
-                    </div>
-
-                    <div class="setting-row">
                         <label>Speed</label>
                         <input type="range" id="speedSlider" min="1" max="10" value="5" onchange="updateSpeedLabel()">
                         <div class="speed-label" id="speedLabel">Medium</div>
@@ -354,18 +382,18 @@
 
                     <div class="setting-row">
                         <label>Pen Size</label>
-                        <select id="sizeSelect" onchange="startWriting()">
+                        <select id="sizeSelect">
                             <option value="2">Fine</option>
                             <option value="3" selected>Medium</option>
-                            <option value="5">Bold</option>
+                            <option value="4">Bold</option>
                         </select>
                     </div>
 
                     <div class="setting-row">
                         <label>Ink Color</label>
-                        <select id="colorSelect" onchange="startWriting()">
+                        <select id="colorSelect">
                             <option value="#1a237e">Navy Blue</option>
-                            <option value="#333333">Black</option>
+                            <option value="#000000">Black</option>
                             <option value="#4a148c">Purple</option>
                             <option value="#b71c1c">Red</option>
                             <option value="#1b5e20">Green</option>
@@ -379,16 +407,16 @@
                 </div>
 
                 <div class="card panel">
-                    <h3>📚 Words</h3>
+                    <h3>📚 Practice Words</h3>
                     <div class="word-chips">
                         <span class="word-chip" onclick="setWord('cat')">cat</span>
                         <span class="word-chip" onclick="setWord('dog')">dog</span>
                         <span class="word-chip" onclick="setWord('hello')">hello</span>
-                        <span class="word-chip" onclick="setWord('world')">world</span>
-                        <span class="word-chip" onclick="setWord('apple')">apple</span>
-                        <span class="word-chip" onclick="setWord('happy')">happy</span>
                         <span class="word-chip" onclick="setWord('love')">love</span>
-                        <span class="word-chip" onclick="setWord('school')">school</span>
+                        <span class="word-chip" onclick="setWord('happy')">happy</span>
+                        <span class="word-chip" onclick="setWord('sun')">sun</span>
+                        <span class="word-chip" onclick="setWord('moon')">moon</span>
+                        <span class="word-chip" onclick="setWord('star')">star</span>
                     </div>
                 </div>
             </div>
@@ -396,323 +424,180 @@
     </div>
 
     <script>
-        // Advanced Cursive Stroke Engine
-        // Uses Catmull-Rom splines for smooth curves and pressure simulation
-
-        // Each letter defined with control points that will be interpolated
-        // Format: { points: [[x,y,pressure], ...], instructions: {...} }
-        // Coordinates: 0-100 units, baseline=70, midline=40, top=10, descender=95
+        // Hershey Script Simplex - clean stroke-based cursive font
+        // Each letter: SVG path data, width, and connection points
+        // Coordinates scaled for baseline at y=180, x-height ~60px
 
         const cursiveLetters = {
             'a': {
-                width: 45,
-                strokes: [
-                    // Entry up, oval, down, exit - all connected
-                    [[0,70,0.3], [8,50,0.7], [15,38,0.9], [10,32,0.8], [5,38,0.7], [5,52,0.8], [12,62,0.9], [25,65,0.9], [35,58,0.8], [38,45,0.7], [35,35,0.6], [25,32,0.5], [15,38,0.6]],
-                    [[38,45,0.8], [38,68,0.9], [45,62,0.5]]
-                ],
-                instructions: { steps: ['Upstroke to midline', 'Oval counter-clockwise', 'Down and exit'], tip: 'Make a smooth oval, connect to the exit stroke.' }
+                path: 'M 0 120 Q 10 100 25 95 Q 45 90 50 110 Q 55 130 50 150 Q 40 175 25 180 Q 10 180 5 165 Q 0 145 10 125 Q 20 110 35 110 Q 50 115 50 140 L 50 180 Q 55 175 65 170',
+                width: 65,
+                instructions: { steps: ['Up to midline', 'Curve around', 'Down stroke'], tip: 'Start with upstroke, make oval, exit right' }
             },
             'b': {
-                width: 45,
-                strokes: [
-                    [[0,70,0.3], [5,45,0.7], [10,20,0.9], [15,12,0.7], [20,15,0.5], [18,25,0.6], [12,38,0.8], [12,70,0.9]],
-                    [[12,70,0.5], [12,52,0.7], [22,45,0.9], [35,50,0.9], [40,62,0.8], [38,70,0.7], [45,65,0.4]]
-                ],
-                instructions: { steps: ['Tall loop up', 'Down to baseline', 'Bump right'], tip: 'Start with a tall loop, bump sits on baseline.' }
+                path: 'M 0 180 L 15 60 Q 20 50 30 55 Q 35 65 25 80 L 15 120 L 15 180 Q 20 160 35 150 Q 50 145 55 160 Q 58 175 50 185 Q 40 190 25 185 Q 15 180 15 180 L 60 175',
+                width: 60,
+                instructions: { steps: ['Tall stroke up', 'Loop down', 'Bump right'], tip: 'Start at baseline, go tall, loop and bump' }
             },
             'c': {
-                width: 40,
-                strokes: [
-                    [[0,70,0.3], [8,55,0.7], [15,40,0.9], [28,35,0.8], [35,42,0.5]],
-                    [[28,35,0.6], [15,38,0.8], [8,50,0.9], [8,62,0.9], [18,72,0.8], [32,68,0.6], [40,58,0.4]]
-                ],
-                instructions: { steps: ['Upstroke', 'Curve around', 'Exit right'], tip: 'Open curve like a crescent moon.' }
+                path: 'M 0 180 Q 5 160 15 140 Q 30 110 50 105 Q 60 105 60 115 M 50 105 Q 30 110 15 135 Q 5 160 10 180 Q 20 195 40 185 Q 55 175 60 165',
+                width: 60,
+                instructions: { steps: ['Upstroke', 'Curve around', 'Exit'], tip: 'Open curve like a crescent' }
             },
             'd': {
-                width: 45,
-                strokes: [
-                    [[0,70,0.3], [8,55,0.7], [15,42,0.9], [8,48,0.8], [8,60,0.9], [18,70,0.9], [32,65,0.8], [38,52,0.7], [38,38,0.6]],
-                    [[38,38,0.5], [38,15,0.8], [38,70,0.9], [45,65,0.4]]
-                ],
-                instructions: { steps: ['Oval first', 'Tall stroke up', 'Down and exit'], tip: 'Make the round part, then go tall.' }
+                path: 'M 0 180 Q 5 160 20 140 Q 35 115 50 110 Q 60 110 55 130 Q 50 150 40 175 Q 30 195 20 185 Q 5 175 10 150 Q 20 125 40 115 Q 50 110 50 110 L 50 60 Q 55 50 60 55 L 50 180 Q 55 175 65 170',
+                width: 65,
+                instructions: { steps: ['Oval first', 'Tall stroke', 'Down and exit'], tip: 'Make round part, go tall, exit' }
             },
             'e': {
-                width: 38,
-                strokes: [
-                    [[0,70,0.3], [8,55,0.7], [15,45,0.9], [20,42,0.7], [22,48,0.5], [18,52,0.6], [12,55,0.8], [8,62,0.9], [15,72,0.8], [28,68,0.6], [38,55,0.4]]
-                ],
-                instructions: { steps: ['Upstroke', 'Small loop', 'Around and exit'], tip: 'Tiny loop in the middle like an eye.' }
+                path: 'M 0 180 Q 5 165 15 145 Q 25 125 35 120 Q 45 118 45 130 Q 42 140 30 145 Q 15 150 10 165 Q 8 180 20 188 Q 35 192 50 180 Q 58 170 60 165',
+                width: 60,
+                instructions: { steps: ['Upstroke', 'Small loop', 'Around and exit'], tip: 'Tiny loop in middle' }
             },
             'f': {
-                width: 38,
-                strokes: [
-                    [[8,25,0.4], [15,15,0.7], [25,12,0.8], [30,20,0.5]],
-                    [[22,12,0.6], [18,35,0.9], [15,70,0.9], [12,85,0.8], [5,95,0.5], [0,92,0.3]],
-                    [[5,45,0.5], [32,45,0.7], [35,45,0.4]]
-                ],
-                instructions: { steps: ['Top curve', 'Long stroke down', 'Cross at midline'], tip: 'Goes above and below the lines!' }
+                path: 'M 15 55 Q 25 45 40 50 Q 50 58 45 75 L 25 180 Q 15 210 5 220 Q -5 225 -10 215 M 5 120 L 50 120',
+                width: 50,
+                instructions: { steps: ['Top curve', 'Long stroke down', 'Cross'], tip: 'Goes above and below lines' }
             },
             'g': {
-                width: 45,
-                strokes: [
-                    [[0,70,0.3], [8,55,0.7], [15,42,0.9], [8,48,0.8], [8,60,0.9], [18,70,0.9], [32,65,0.8], [38,52,0.7], [38,42,0.6]],
-                    [[38,42,0.7], [38,80,0.9], [32,95,0.8], [18,95,0.6], [8,88,0.4]]
-                ],
-                instructions: { steps: ['Oval shape', 'Down below baseline', 'Curve left'], tip: 'Like "a" with a tail going down.' }
+                path: 'M 0 180 Q 5 160 20 140 Q 35 115 50 110 Q 60 110 55 130 Q 50 150 40 175 Q 30 195 20 185 Q 5 175 10 150 Q 20 125 40 115 Q 50 110 50 110 L 50 180 Q 55 200 50 220 Q 40 240 20 235 Q 5 225 10 215',
+                width: 60,
+                instructions: { steps: ['Oval', 'Down below baseline', 'Curve back'], tip: 'Like a with descending tail' }
             },
             'h': {
-                width: 48,
-                strokes: [
-                    [[0,70,0.3], [5,45,0.7], [10,18,0.9], [16,12,0.7], [20,18,0.5], [16,30,0.7], [12,50,0.9], [12,70,0.9]],
-                    [[12,70,0.5], [12,50,0.7], [20,42,0.9], [32,40,0.9], [42,48,0.8], [45,65,0.9], [48,60,0.4]]
-                ],
-                instructions: { steps: ['Tall loop', 'Down', 'Hump right'], tip: 'Like "n" attached to a tall stem.' }
+                path: 'M 0 180 L 15 60 Q 20 50 30 55 Q 35 65 25 80 L 15 130 Q 20 115 35 110 Q 55 108 60 130 Q 62 150 55 175 L 55 180 Q 60 175 70 170',
+                width: 70,
+                instructions: { steps: ['Tall stroke', 'Down', 'Hump right'], tip: 'Like n with tall stem' }
             },
             'i': {
-                width: 28,
-                strokes: [
-                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,70,0.9], [22,65,0.6], [28,58,0.3]],
-                    [[15,25,0.5], [16,27,0.7], [17,25,0.5]]
-                ],
-                instructions: { steps: ['Upstroke', 'Down', 'Dot'], tip: 'Simple stroke. Don\'t forget the dot!' }
+                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 180 Q 33 175 43 170 M 28 95 L 30 100',
+                width: 43,
+                instructions: { steps: ['Upstroke', 'Down', 'Dot'], tip: 'Simple stroke with dot' }
             },
             'j': {
-                width: 28,
-                strokes: [
-                    [[5,70,0.3], [12,52,0.7], [18,40,0.9], [18,75,0.9], [15,90,0.8], [5,95,0.5], [0,90,0.3]],
-                    [[18,25,0.5], [19,27,0.7], [20,25,0.5]]
-                ],
-                instructions: { steps: ['Upstroke', 'Down and curve', 'Dot'], tip: 'Like "i" with a descending tail.' }
+                path: 'M 5 180 Q 10 165 20 145 Q 27 125 33 120 L 33 180 Q 38 210 30 230 Q 20 245 5 240 Q -5 230 0 220 M 33 95 L 35 100',
+                width: 45,
+                instructions: { steps: ['Upstroke', 'Down and curve', 'Dot'], tip: 'Like i with tail below' }
             },
             'k': {
-                width: 42,
-                strokes: [
-                    [[0,70,0.3], [5,45,0.7], [10,18,0.9], [16,12,0.7], [20,18,0.5], [16,35,0.8], [12,55,0.9], [12,70,0.9]],
-                    [[35,35,0.4], [25,48,0.7], [18,55,0.8]],
-                    [[18,55,0.7], [28,65,0.9], [38,72,0.7], [42,68,0.4]]
-                ],
-                instructions: { steps: ['Tall loop down', 'Kick in', 'Kick out'], tip: 'Kicks meet in the middle.' }
+                path: 'M 0 180 L 15 60 Q 20 50 30 55 Q 35 65 25 80 L 15 180 M 55 110 Q 40 130 20 145 M 25 145 Q 40 165 55 185 Q 60 180 65 175',
+                width: 65,
+                instructions: { steps: ['Tall stroke', 'Kick in', 'Kick out'], tip: 'Kicks meet in middle' }
             },
             'l': {
-                width: 32,
-                strokes: [
-                    [[0,70,0.3], [5,45,0.7], [10,18,0.9], [18,12,0.7], [22,18,0.5], [18,32,0.7], [14,55,0.9], [14,70,0.9], [22,65,0.6], [32,55,0.3]]
-                ],
-                instructions: { steps: ['Tall loop', 'Down', 'Exit'], tip: 'Elegant tall loop with smooth exit.' }
+                path: 'M 0 180 L 20 60 Q 25 50 35 55 Q 40 65 30 80 L 20 180 Q 25 175 40 170',
+                width: 40,
+                instructions: { steps: ['Tall loop', 'Down', 'Exit'], tip: 'Elegant tall stroke' }
             },
             'm': {
-                width: 60,
-                strokes: [
-                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,70,0.9], [15,52,0.7], [22,42,0.9], [32,42,0.9], [38,52,0.8], [38,70,0.9], [38,52,0.7], [45,42,0.9], [55,42,0.9], [58,55,0.8], [58,70,0.9], [60,65,0.4]]
-                ],
-                instructions: { steps: ['Up', 'First hump', 'Second hump', 'Exit'], tip: 'Two even humps side by side.' }
+                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 180 Q 30 150 45 120 Q 55 115 58 130 L 58 180 Q 60 150 75 120 Q 85 115 88 130 L 88 180 Q 93 175 100 170',
+                width: 100,
+                instructions: { steps: ['Up', 'First hump', 'Second hump'], tip: 'Two humps side by side' }
             },
             'n': {
-                width: 45,
-                strokes: [
-                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,70,0.9], [15,52,0.7], [22,42,0.9], [35,42,0.9], [42,55,0.8], [42,70,0.9], [45,65,0.4]]
-                ],
-                instructions: { steps: ['Up', 'Down', 'Hump', 'Exit'], tip: 'One smooth hill - half of "m".' }
+                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 180 Q 30 150 45 120 Q 60 115 65 135 L 65 180 Q 70 175 80 170',
+                width: 80,
+                instructions: { steps: ['Upstroke', 'Down', 'Hump'], tip: 'One smooth hill' }
             },
             'o': {
-                width: 42,
-                strokes: [
-                    [[0,70,0.3], [8,55,0.7], [15,45,0.9], [8,52,0.8], [8,62,0.9], [18,72,0.9], [32,68,0.8], [38,55,0.7], [38,45,0.6], [30,38,0.5], [18,40,0.6], [15,48,0.7]],
-                    [[38,55,0.5], [42,62,0.3]]
-                ],
-                instructions: { steps: ['Oval', 'Close', 'Exit'], tip: 'Round oval with connector.' }
+                path: 'M 0 180 Q 5 165 20 145 Q 35 125 50 125 Q 65 130 65 155 Q 60 180 45 190 Q 25 195 15 180 Q 5 165 15 145 M 60 160 Q 65 165 75 170',
+                width: 75,
+                instructions: { steps: ['Oval', 'Close', 'Exit'], tip: 'Round oval with connector' }
             },
             'p': {
-                width: 45,
-                strokes: [
-                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,95,0.9]],
-                    [[15,95,0.5], [15,70,0.7], [15,52,0.8], [25,45,0.9], [38,50,0.9], [42,62,0.8], [38,72,0.6], [25,72,0.5], [15,65,0.4]],
-                    [[42,62,0.4], [45,58,0.3]]
-                ],
-                instructions: { steps: ['Down below baseline', 'Up', 'Bump', 'Exit'], tip: 'Stem goes below, bump on top.' }
+                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 240 M 28 180 Q 30 150 45 130 Q 60 125 65 145 Q 68 165 55 185 Q 40 195 28 180 M 62 155 Q 70 165 75 170',
+                width: 75,
+                instructions: { steps: ['Down below', 'Up', 'Bump'], tip: 'Stem below, bump on top' }
             },
             'q': {
-                width: 48,
-                strokes: [
-                    [[0,70,0.3], [8,55,0.7], [15,45,0.9], [8,52,0.8], [8,62,0.9], [18,72,0.9], [32,68,0.8], [38,55,0.7], [38,45,0.6], [30,38,0.5], [18,40,0.6]],
-                    [[38,45,0.7], [38,88,0.9], [42,95,0.7], [50,95,0.4]]
-                ],
-                instructions: { steps: ['Oval', 'Down below', 'Tail right'], tip: 'Tail goes right - opposite of "g"!' }
+                path: 'M 0 180 Q 5 160 20 140 Q 35 120 50 120 Q 65 125 60 150 Q 55 175 40 190 Q 25 195 15 180 Q 5 165 15 145 M 55 150 L 55 240 Q 60 250 75 245',
+                width: 75,
+                instructions: { steps: ['Oval', 'Down below', 'Exit right'], tip: 'Tail goes right' }
             },
             'r': {
-                width: 32,
-                strokes: [
-                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,70,0.9]],
-                    [[15,70,0.5], [15,52,0.7], [22,42,0.8], [30,45,0.6], [32,52,0.4]]
-                ],
-                instructions: { steps: ['Up', 'Down', 'Shoulder'], tip: 'Short with a small shoulder.' }
+                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 180 Q 30 155 45 130 Q 55 120 60 130',
+                width: 55,
+                instructions: { steps: ['Up', 'Down', 'Shoulder'], tip: 'Short with small shoulder' }
             },
             's': {
-                width: 35,
-                strokes: [
-                    [[0,70,0.3], [8,58,0.7], [15,48,0.9], [25,42,0.8], [30,48,0.6], [28,55,0.7], [20,60,0.8], [12,65,0.9], [10,72,0.8], [18,78,0.6], [28,72,0.5], [35,62,0.3]]
-                ],
-                instructions: { steps: ['Up', 'Curve', 'Snake', 'Exit'], tip: 'S-curve like a snake!' }
+                path: 'M 0 180 Q 5 165 20 150 Q 35 130 50 125 Q 60 125 55 140 Q 48 155 35 160 Q 20 165 15 180 Q 15 195 30 195 Q 50 190 60 175',
+                width: 60,
+                instructions: { steps: ['Up', 'Snake curve', 'Exit'], tip: 'S-curve like snake' }
             },
             't': {
-                width: 32,
-                strokes: [
-                    [[0,70,0.3], [8,52,0.7], [15,30,0.9], [15,70,0.9], [22,65,0.6], [30,58,0.3]],
-                    [[5,45,0.4], [25,45,0.7], [28,45,0.4]]
-                ],
-                instructions: { steps: ['Up', 'Down', 'Exit', 'Cross'], tip: 'Shorter than "l". Cross it last!' }
+                path: 'M 0 180 Q 5 165 18 130 Q 25 100 30 80 L 30 180 Q 35 175 50 170 M 10 120 L 45 120',
+                width: 50,
+                instructions: { steps: ['Up', 'Down', 'Cross'], tip: 'Shorter than l, cross it' }
             },
             'u': {
-                width: 45,
-                strokes: [
-                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,65,0.9], [22,75,0.8], [32,75,0.8], [40,65,0.7], [42,50,0.6], [42,40,0.5]],
-                    [[42,40,0.6], [42,70,0.9], [45,65,0.4]]
-                ],
-                instructions: { steps: ['Up', 'Down curve', 'Up', 'Down exit'], tip: 'Like upside-down "n".' }
+                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 160 Q 30 185 50 185 Q 65 180 65 155 Q 65 130 60 120 L 60 180 Q 65 175 75 170',
+                width: 75,
+                instructions: { steps: ['Up', 'Down curve', 'Up and down'], tip: 'Like upside-down n' }
             },
             'v': {
-                width: 38,
-                strokes: [
-                    [[0,70,0.3], [8,52,0.7], [12,40,0.9], [22,72,0.9], [32,45,0.7], [38,55,0.4]]
-                ],
-                instructions: { steps: ['Up', 'Down diagonal', 'Up diagonal'], tip: 'Sharp point at bottom.' }
+                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 40 180 L 55 120 Q 60 125 65 140',
+                width: 60,
+                instructions: { steps: ['Up', 'Down', 'Up'], tip: 'Sharp point at bottom' }
             },
             'w': {
-                width: 55,
-                strokes: [
-                    [[0,70,0.3], [8,52,0.7], [12,40,0.9], [20,72,0.9], [28,48,0.8], [38,72,0.9], [45,48,0.7], [52,58,0.5], [55,55,0.3]]
-                ],
-                instructions: { steps: ['Up', 'V', 'V', 'Exit'], tip: 'Two connected V shapes.' }
+                path: 'M 0 180 Q 5 165 15 145 Q 20 125 25 120 L 35 180 L 50 130 L 60 180 L 75 120 Q 80 125 85 140',
+                width: 85,
+                instructions: { steps: ['Up', 'Down-up', 'Down-up'], tip: 'Two V shapes' }
             },
             'x': {
-                width: 38,
-                strokes: [
-                    [[0,70,0.3], [8,58,0.7], [15,48,0.9], [28,72,0.8], [35,68,0.4]],
-                    [[32,42,0.4], [22,55,0.8], [12,68,0.7], [5,75,0.3]]
-                ],
-                instructions: { steps: ['First diagonal', 'Second diagonal'], tip: 'Strokes cross in center.' }
+                path: 'M 0 180 Q 5 165 15 145 Q 22 125 30 120 L 55 180 Q 60 175 65 170 M 60 120 L 15 180',
+                width: 65,
+                instructions: { steps: ['Diagonal', 'Cross diagonal'], tip: 'Strokes cross in center' }
             },
             'y': {
-                width: 45,
-                strokes: [
-                    [[0,70,0.3], [8,52,0.7], [15,40,0.9], [15,65,0.9], [22,75,0.8], [32,75,0.8], [40,65,0.7], [42,50,0.6], [42,40,0.5]],
-                    [[42,40,0.6], [42,85,0.9], [35,95,0.7], [22,95,0.5], [12,88,0.3]]
-                ],
-                instructions: { steps: ['U-shape', 'Down below', 'Curve left'], tip: 'Like "u" with descending tail.' }
+                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 160 Q 30 185 50 185 Q 65 180 65 155 Q 65 130 60 120 L 60 180 Q 65 210 55 235 Q 40 250 20 240',
+                width: 70,
+                instructions: { steps: ['U-shape', 'Descending tail'], tip: 'Like u with tail' }
             },
             'z': {
-                width: 38,
-                strokes: [
-                    [[0,70,0.3], [8,58,0.6], [12,45,0.8], [32,45,0.9], [12,72,0.9], [35,72,0.8], [38,68,0.4]]
-                ],
-                instructions: { steps: ['Up', 'Across', 'Diagonal', 'Across', 'Exit'], tip: 'Zigzag pattern!' }
+                path: 'M 0 180 Q 5 165 15 145 Q 25 125 35 120 L 60 120 L 15 180 L 60 180 Q 65 175 70 170',
+                width: 70,
+                instructions: { steps: ['Up', 'Across', 'Diagonal', 'Across'], tip: 'Zigzag pattern' }
             },
             ' ': {
-                width: 25,
-                strokes: [],
-                instructions: { steps: ['Lift pen', 'Move right'], tip: 'Space between words.' }
+                path: '',
+                width: 30,
+                instructions: { steps: ['Lift', 'Move'], tip: 'Space between words' }
             }
         };
 
         const defaultInstruction = { steps: ['Follow shape'], tip: 'Watch and follow!' };
 
         // State
-        let canvas, ctx;
+        let svg;
         let currentWord = '', displayWord = '';
         let currentIndex = 0;
         let isAnimating = false, isPaused = false;
         let animationId = null;
-        let allLetterData = [];
-        let drawnSegments = [];
-
-        // Catmull-Rom spline interpolation for smooth curves
-        function catmullRom(p0, p1, p2, p3, t) {
-            const t2 = t * t;
-            const t3 = t2 * t;
-            return {
-                x: 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * t + (2*p0.x - 5*p1.x + 4*p2.x - p3.x) * t2 + (-p0.x + 3*p1.x - 3*p2.x + p3.x) * t3),
-                y: 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * t + (2*p0.y - 5*p1.y + 4*p2.y - p3.y) * t2 + (-p0.y + 3*p1.y - 3*p2.y + p3.y) * t3),
-                p: p1.p + (p2.p - p1.p) * t // Linear interpolate pressure
-            };
-        }
-
-        // Generate smooth curve points from control points
-        function generateSmoothPoints(controlPoints, resolution = 8) {
-            if (controlPoints.length < 2) return controlPoints.map(p => ({x: p[0], y: p[1], p: p[2] || 0.7}));
-
-            const points = [];
-            const pts = controlPoints.map(p => ({x: p[0], y: p[1], p: p[2] || 0.7}));
-
-            for (let i = 0; i < pts.length - 1; i++) {
-                const p0 = pts[Math.max(0, i - 1)];
-                const p1 = pts[i];
-                const p2 = pts[Math.min(pts.length - 1, i + 1)];
-                const p3 = pts[Math.min(pts.length - 1, i + 2)];
-
-                for (let t = 0; t < 1; t += 1/resolution) {
-                    points.push(catmullRom(p0, p1, p2, p3, t));
-                }
-            }
-            points.push(pts[pts.length - 1]);
-            return points;
-        }
+        let letterPaths = [];
 
         function init() {
-            canvas = document.getElementById('writingCanvas');
-            ctx = canvas.getContext('2d');
-
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-
+            svg = document.getElementById('writingSvg');
             buildLetterGrid();
             updateSpeedLabel();
+            drawGuidelines();
             startWriting();
         }
 
-        function resizeCanvas() {
-            const rect = canvas.parentElement.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = 260;
-            drawCopybookLines();
-            redrawAll();
-        }
+        function drawGuidelines() {
+            const width = svg.clientWidth || 700;
 
-        function drawCopybookLines() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Clear and redraw guidelines
+            const guidelines = `
+                <line x1="0" y1="60" x2="${width}" y2="60" class="guideline guideline-top"/>
+                <line x1="0" y1="110" x2="${width}" y2="110" class="guideline guideline-mid"/>
+                <line x1="0" y1="180" x2="${width}" y2="180" class="guideline guideline-base"/>
+                <line x1="0" y1="230" x2="${width}" y2="230" class="guideline guideline-desc"/>
+            `;
 
-            // Top line
-            ctx.strokeStyle = '#ffcccc';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(0, 50);
-            ctx.lineTo(canvas.width, 50);
-            ctx.stroke();
-
-            // Midline (dashed)
-            ctx.strokeStyle = '#ff9999';
-            ctx.setLineDash([5, 5]);
-            ctx.beginPath();
-            ctx.moveTo(0, 100);
-            ctx.lineTo(canvas.width, 100);
-            ctx.stroke();
-            ctx.setLineDash([]);
-
-            // Baseline
-            ctx.strokeStyle = '#4444ff';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(0, 150);
-            ctx.lineTo(canvas.width, 150);
-            ctx.stroke();
-
-            // Descender
-            ctx.strokeStyle = '#cccccc';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(0, 200);
-            ctx.lineTo(canvas.width, 200);
-            ctx.stroke();
+            // Keep guidelines at the start
+            const existingContent = svg.innerHTML.replace(/<line[^>]*class="guideline[^"]*"[^>]*\/>/g, '');
+            svg.innerHTML = guidelines + existingContent;
         }
 
         function buildLetterGrid() {
@@ -731,25 +616,17 @@
             startWriting();
         }
 
-        function applyCase(text) {
-            const opt = document.getElementById('caseSelect').value;
-            if (opt === 'lower') return text.toLowerCase();
-            if (opt === 'upper') return text.toUpperCase();
-            if (opt === 'title') return text.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
-            return text;
-        }
-
         function startWriting() {
             cancelAnimation();
 
-            currentWord = document.getElementById('wordInput').value.trim();
+            currentWord = document.getElementById('wordInput').value.trim().toLowerCase();
             if (!currentWord) return;
 
-            displayWord = applyCase(currentWord).toLowerCase();
+            displayWord = currentWord;
             currentIndex = 0;
             isAnimating = true;
             isPaused = false;
-            drawnSegments = [];
+            letterPaths = [];
             document.getElementById('pauseBtn').textContent = '⏸️ Pause';
 
             // Build progress
@@ -763,40 +640,65 @@
                 progressRow.appendChild(dot);
             });
 
-            buildAllLetterData();
-            drawCopybookLines();
+            // Clear SVG and redraw guidelines
+            svg.innerHTML = '';
+            drawGuidelines();
+
+            // Build letter paths
+            buildLetterPaths();
+
             updateProgress();
             showInstruction(0);
-            animateWriting();
+            animateLetter();
         }
 
-        function buildAllLetterData() {
-            allLetterData = [];
-            let xOffset = 40;
-            const scale = 1.8;
+        function buildLetterPaths() {
+            let xOffset = 30;
+            const color = document.getElementById('colorSelect').value;
+            const strokeWidth = document.getElementById('sizeSelect').value;
 
-            for (let i = 0; i < displayWord.length; i++) {
-                const char = displayWord[i];
-                const letterDef = cursiveLetters[char] || cursiveLetters['a'];
+            displayWord.split('').forEach((char, index) => {
+                const letterData = cursiveLetters[char] || cursiveLetters['a'];
 
-                // Generate smooth points for each stroke
-                const smoothStrokes = letterDef.strokes.map(stroke => {
-                    const scaledPoints = stroke.map(p => [
-                        xOffset + p[0] * scale,
-                        p[1] * scale + 10,
-                        p[2] || 0.7
-                    ]);
-                    return generateSmoothPoints(scaledPoints, 6);
-                });
+                if (letterData.path) {
+                    // Create guide path (light gray)
+                    const guidePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    guidePath.setAttribute('d', translatePath(letterData.path, xOffset, 0));
+                    guidePath.setAttribute('class', 'letter-path letter-guide');
+                    guidePath.setAttribute('data-index', index);
+                    svg.appendChild(guidePath);
 
-                allLetterData.push({
-                    char,
-                    strokes: smoothStrokes,
-                    charIndex: i
-                });
+                    // Create animated path
+                    const drawPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    drawPath.setAttribute('d', translatePath(letterData.path, xOffset, 0));
+                    drawPath.setAttribute('class', 'letter-path letter-draw');
+                    drawPath.setAttribute('stroke', color);
+                    drawPath.setAttribute('stroke-width', strokeWidth);
+                    drawPath.setAttribute('data-index', index);
 
-                xOffset += (letterDef.width || 40) * scale + 8;
-            }
+                    // Set up stroke animation
+                    const length = drawPath.getTotalLength ? drawPath.getTotalLength() : 1000;
+                    drawPath.style.strokeDasharray = length;
+                    drawPath.style.strokeDashoffset = length;
+
+                    svg.appendChild(drawPath);
+
+                    letterPaths.push({
+                        element: drawPath,
+                        length: length,
+                        index: index
+                    });
+                }
+
+                xOffset += letterData.width;
+            });
+        }
+
+        function translatePath(pathData, dx, dy) {
+            // Translate all coordinates in path by dx, dy
+            return pathData.replace(/(-?\d+\.?\d*)\s+(-?\d+\.?\d*)/g, (match, x, y) => {
+                return `${parseFloat(x) + dx} ${parseFloat(y) + dy}`;
+            });
         }
 
         function updateProgress() {
@@ -823,109 +725,65 @@
             const char = displayWord[index];
             letterSpan.textContent = char;
 
-            const letterDef = cursiveLetters[char];
-            const info = letterDef ? letterDef.instructions : defaultInstruction;
+            const letterData = cursiveLetters[char];
+            const info = letterData ? letterData.instructions : defaultInstruction;
             textDiv.innerHTML = `<strong>Tip:</strong> ${info.tip}`;
             stepsDiv.innerHTML = info.steps.map((step, i) =>
                 `<div class="stroke-step"><span class="step-num">${i+1}</span>${step}</div>`
             ).join('');
         }
 
-        // Draw a segment with pressure-sensitive width
-        function drawSegment(from, to, color, baseSize) {
-            const avgPressure = (from.p + to.p) / 2;
-            const width = baseSize * (0.5 + avgPressure);
-
-            ctx.strokeStyle = color;
-            ctx.lineWidth = width;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            ctx.beginPath();
-            ctx.moveTo(from.x, from.y);
-            ctx.lineTo(to.x, to.y);
-            ctx.stroke();
-
-            // Store for redraw
-            drawnSegments.push({ from: {...from}, to: {...to}, color, baseSize });
-        }
-
-        function animateWriting() {
+        function animateLetter() {
             if (!isAnimating || isPaused) return;
-            if (currentIndex >= allLetterData.length) {
+            if (currentIndex >= letterPaths.length) {
+                currentIndex = displayWord.length;
+                updateProgress();
+                showInstruction(currentIndex);
                 isAnimating = false;
                 return;
             }
 
-            const letterData = allLetterData[currentIndex];
-            const color = document.getElementById('colorSelect').value;
-            const baseSize = parseInt(document.getElementById('sizeSelect').value);
+            const pathData = letterPaths[currentIndex];
             const speed = parseInt(document.getElementById('speedSlider').value);
-            const delay = Math.max(5, (11 - speed) * 8);
+            const duration = (11 - speed) * 300; // ms
 
-            let strokeIdx = 0;
-            let pointIdx = 0;
+            const startTime = performance.now();
 
-            function drawNext() {
+            function animate(currentTime) {
                 if (!isAnimating || isPaused) return;
 
-                if (strokeIdx >= letterData.strokes.length) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Ease-in-out for natural feel
+                const eased = progress < 0.5
+                    ? 2 * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+                const offset = pathData.length * (1 - eased);
+                pathData.element.style.strokeDashoffset = offset;
+
+                if (progress < 1) {
+                    animationId = requestAnimationFrame(animate);
+                } else {
                     currentIndex++;
                     updateProgress();
                     showInstruction(currentIndex);
 
-                    if (currentIndex < allLetterData.length) {
-                        animationId = setTimeout(animateWriting, 150);
+                    if (currentIndex < letterPaths.length) {
+                        setTimeout(() => animateLetter(), 150);
                     } else {
                         isAnimating = false;
                     }
-                    return;
-                }
-
-                const stroke = letterData.strokes[strokeIdx];
-
-                if (stroke.length === 0) {
-                    strokeIdx++;
-                    animationId = setTimeout(drawNext, delay);
-                    return;
-                }
-
-                if (pointIdx < stroke.length - 1) {
-                    drawSegment(stroke[pointIdx], stroke[pointIdx + 1], color, baseSize);
-                    pointIdx++;
-                    animationId = setTimeout(drawNext, delay);
-                } else {
-                    strokeIdx++;
-                    pointIdx = 0;
-                    animationId = setTimeout(drawNext, delay * 3);
                 }
             }
 
-            drawNext();
-        }
-
-        function redrawAll() {
-            if (drawnSegments.length === 0) return;
-
-            for (const seg of drawnSegments) {
-                const avgPressure = (seg.from.p + seg.to.p) / 2;
-                const width = seg.baseSize * (0.5 + avgPressure);
-
-                ctx.strokeStyle = seg.color;
-                ctx.lineWidth = width;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-
-                ctx.beginPath();
-                ctx.moveTo(seg.from.x, seg.from.y);
-                ctx.lineTo(seg.to.x, seg.to.y);
-                ctx.stroke();
-            }
+            animationId = requestAnimationFrame(animate);
         }
 
         function cancelAnimation() {
             if (animationId) {
-                clearTimeout(animationId);
+                cancelAnimationFrame(animationId);
                 animationId = null;
             }
             isAnimating = false;
@@ -936,74 +794,64 @@
             if (isPaused) {
                 isPaused = false;
                 btn.textContent = '⏸️ Pause';
-                animateWriting();
+                animateLetter();
             } else {
                 isPaused = true;
                 btn.textContent = '▶️ Resume';
             }
         }
 
-        function drawLetterInstantly(letterIdx) {
-            if (letterIdx >= allLetterData.length) return;
-
-            const letterData = allLetterData[letterIdx];
-            const color = document.getElementById('colorSelect').value;
-            const baseSize = parseInt(document.getElementById('sizeSelect').value);
-
-            for (const stroke of letterData.strokes) {
-                for (let i = 0; i < stroke.length - 1; i++) {
-                    drawSegment(stroke[i], stroke[i + 1], color, baseSize);
+        function showLettersUpTo(index) {
+            letterPaths.forEach((pathData, i) => {
+                if (i < index) {
+                    pathData.element.style.strokeDashoffset = 0;
+                } else {
+                    pathData.element.style.strokeDashoffset = pathData.length;
                 }
-            }
-        }
-
-        function rebuildToIndex(targetIndex) {
-            drawnSegments = [];
-            drawCopybookLines();
-
-            for (let i = 0; i < targetIndex && i < allLetterData.length; i++) {
-                drawLetterInstantly(i);
-            }
+            });
         }
 
         function prevLetter() {
             if (currentIndex > 0) {
                 cancelAnimation();
                 currentIndex--;
-                rebuildToIndex(currentIndex);
+                showLettersUpTo(currentIndex);
                 updateProgress();
                 showInstruction(currentIndex);
                 isAnimating = true;
                 isPaused = false;
-                animateWriting();
+                animateLetter();
             }
         }
 
         function nextLetter() {
-            if (currentIndex < displayWord.length) {
+            if (currentIndex < letterPaths.length) {
                 cancelAnimation();
-                drawLetterInstantly(currentIndex);
+                letterPaths[currentIndex].element.style.strokeDashoffset = 0;
                 currentIndex++;
                 updateProgress();
                 showInstruction(currentIndex);
 
-                if (currentIndex < displayWord.length) {
+                if (currentIndex < letterPaths.length) {
                     isAnimating = true;
                     isPaused = false;
-                    animateWriting();
+                    animateLetter();
                 }
             }
         }
 
         function jumpTo(index) {
             cancelAnimation();
-            rebuildToIndex(index);
+            showLettersUpTo(index);
             currentIndex = index;
             updateProgress();
             showInstruction(currentIndex);
-            isAnimating = true;
-            isPaused = false;
-            animateWriting();
+
+            if (currentIndex < letterPaths.length) {
+                isAnimating = true;
+                isPaused = false;
+                animateLetter();
+            }
         }
 
         function updateSpeedLabel() {
@@ -1013,6 +861,9 @@
         }
 
         window.onload = init;
+        window.onresize = () => {
+            if (svg) drawGuidelines();
+        };
     </script>
 </body>
 </html>
