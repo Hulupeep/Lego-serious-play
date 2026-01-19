@@ -120,16 +120,14 @@
             display: flex;
             align-items: flex-end;
             padding-bottom: 45px;
+            position: relative;
         }
 
         .cursive-text {
-            font-size: 72px;
-            line-height: 1;
-            color: transparent;
-            -webkit-text-stroke: 2px #333;
-            font-family: 'Dancing Script', cursive;
-            letter-spacing: 2px;
             position: relative;
+            font-size: 72px;
+            font-family: 'Dancing Script', cursive;
+            white-space: nowrap;
         }
 
         .cursive-text.style-modern { font-family: 'Dancing Script', cursive; }
@@ -137,30 +135,61 @@
         .cursive-text.style-italic { font-family: 'Great Vibes', cursive; font-size: 80px; }
         .cursive-text.style-fancy { font-family: 'Pacifico', cursive; }
 
-        /* The filled text that animates */
-        .cursive-fill {
+        #textOutline {
+            color: transparent;
+            -webkit-text-stroke: 1px #ccc;
+        }
+
+        #textFill {
             position: absolute;
             left: 0;
             top: 0;
             color: #333;
-            -webkit-text-stroke: 0;
             clip-path: inset(0 100% 0 0);
-            transition: clip-path 0.1s linear;
         }
 
-        .letter-highlight {
-            display: inline-block;
-            position: relative;
+        /* Pen cursor for writing effect */
+        .pen-cursor {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            transform: translate(-8px, -20px) rotate(-45deg);
+            transition: opacity 0.2s;
+            z-index: 10;
         }
 
-        .letter-highlight.active {
-            color: #667eea;
-            -webkit-text-stroke-color: #667eea;
+        .pen-cursor svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
         }
 
-        .letter-highlight.completed {
-            color: #333;
-            -webkit-text-stroke: 0;
+        /* Ink trail effect */
+        .ink-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: currentColor;
+            border-radius: 50%;
+            opacity: 0;
+            animation: inkFade 0.5s ease-out forwards;
+        }
+
+        @keyframes inkFade {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.3); }
+        }
+
+        /* Writing animation glow */
+        .writing-glow {
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: transparent;
+            -webkit-text-stroke: 3px rgba(102, 126, 234, 0.3);
+            clip-path: inset(0 100% 0 0);
+            filter: blur(2px);
         }
 
         /* Progress dots */
@@ -384,7 +413,16 @@
                     <div class="writing-display">
                         <div class="cursive-text" id="cursiveText">
                             <span id="textOutline"></span>
-                            <span class="cursive-fill" id="textFill"></span>
+                            <span class="writing-glow" id="textGlow"></span>
+                            <span id="textFill"></span>
+                        </div>
+                        <div class="pen-cursor" id="penCursor">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 21L5 14L18 1L23 6L10 19L3 21Z" fill="#8B4513" stroke="#5D3A1A" stroke-width="1"/>
+                                <path d="M5 14L10 19" stroke="#5D3A1A" stroke-width="1"/>
+                                <path d="M18 1L23 6" stroke="#5D3A1A" stroke-width="1"/>
+                                <path d="M3 21L5 19L5 14L3 21Z" fill="#333"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -668,8 +706,20 @@
             // Setup text display
             const outline = document.getElementById('textOutline');
             const fill = document.getElementById('textFill');
+            const glow = document.getElementById('textGlow');
             outline.textContent = displayWord;
             fill.textContent = displayWord;
+            glow.textContent = displayWord;
+
+            // Reset clip paths
+            fill.style.clipPath = 'inset(0 100% 0 0)';
+            glow.style.clipPath = 'inset(0 100% 0 0)';
+
+            // Position pen at start
+            const pen = document.getElementById('penCursor');
+            pen.style.opacity = '1';
+            pen.style.left = '0px';
+            pen.style.top = '50px';
 
             updateProgress();
             showInstruction(0);
@@ -712,19 +762,29 @@
             if (!isAnimating || isPaused) return;
             if (currentIndex >= displayWord.length) {
                 isAnimating = false;
+                // Hide pen when done
+                document.getElementById('penCursor').style.opacity = '0';
                 return;
             }
 
             const fill = document.getElementById('textFill');
+            const glow = document.getElementById('textGlow');
+            const pen = document.getElementById('penCursor');
+            const textContainer = document.getElementById('cursiveText');
             const speed = parseInt(document.getElementById('speedSlider').value);
-            const duration = (11 - speed) * 200; // ms per letter
+            const duration = (11 - speed) * 250; // ms per letter
 
             // Calculate clip percentage for current letter
             const totalChars = displayWord.length;
             const startPercent = (currentIndex / totalChars) * 100;
             const endPercent = ((currentIndex + 1) / totalChars) * 100;
 
+            // Calculate pen position based on text width
+            const textWidth = textContainer.offsetWidth;
+            const textHeight = textContainer.offsetHeight;
+
             let startTime = null;
+            let lastInkTime = 0;
 
             function animate(timestamp) {
                 if (!startTime) startTime = timestamp;
@@ -733,8 +793,26 @@
                 const elapsed = timestamp - startTime;
                 const progress = Math.min(elapsed / duration, 1);
 
-                const currentPercent = startPercent + (endPercent - startPercent) * progress;
+                // Use easing for more natural writing motion
+                const easeProgress = easeInOutQuad(progress);
+
+                const currentPercent = startPercent + (endPercent - startPercent) * easeProgress;
                 fill.style.clipPath = `inset(0 ${100 - currentPercent}% 0 0)`;
+                glow.style.clipPath = `inset(0 ${100 - currentPercent - 2}% 0 0)`;
+
+                // Move pen cursor
+                const penX = (currentPercent / 100) * textWidth;
+                // Add slight vertical wobble for natural writing feel
+                const wobble = Math.sin(progress * Math.PI * 4) * 3;
+                const penY = 50 + wobble;
+                pen.style.left = penX + 'px';
+                pen.style.top = penY + 'px';
+
+                // Add ink dots occasionally for trail effect
+                if (timestamp - lastInkTime > 80 && progress < 0.95) {
+                    createInkDot(penX + 30, penY + 70);
+                    lastInkTime = timestamp;
+                }
 
                 if (progress < 1) {
                     animationId = requestAnimationFrame(animate);
@@ -744,14 +822,34 @@
                     showInstruction(currentIndex);
 
                     if (currentIndex < displayWord.length) {
-                        setTimeout(() => animateLetter(), 150);
+                        setTimeout(() => animateLetter(), 100);
                     } else {
                         isAnimating = false;
+                        pen.style.opacity = '0';
                     }
                 }
             }
 
             animationId = requestAnimationFrame(animate);
+        }
+
+        // Easing function for natural motion
+        function easeInOutQuad(t) {
+            return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        }
+
+        // Create ink dot for trail effect
+        function createInkDot(x, y) {
+            const display = document.querySelector('.writing-display');
+            const dot = document.createElement('div');
+            dot.className = 'ink-dot';
+            dot.style.left = x + 'px';
+            dot.style.top = y + 'px';
+            dot.style.color = document.getElementById('colorSelect').value;
+            display.appendChild(dot);
+
+            // Remove after animation
+            setTimeout(() => dot.remove(), 500);
         }
 
         function cancelAnimation() {
@@ -774,15 +872,28 @@
             }
         }
 
+        function updateClipAndPen(percent) {
+            const fill = document.getElementById('textFill');
+            const glow = document.getElementById('textGlow');
+            const pen = document.getElementById('penCursor');
+            const textContainer = document.getElementById('cursiveText');
+
+            fill.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            glow.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+
+            const penX = (percent / 100) * textContainer.offsetWidth;
+            pen.style.left = penX + 'px';
+            pen.style.top = '50px';
+            pen.style.opacity = percent < 100 ? '1' : '0';
+        }
+
         function prevLetter() {
             if (currentIndex > 0) {
                 cancelAnimation();
                 currentIndex--;
 
-                // Reset fill to previous state
-                const fill = document.getElementById('textFill');
                 const percent = (currentIndex / displayWord.length) * 100;
-                fill.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+                updateClipAndPen(percent);
 
                 updateProgress();
                 showInstruction(currentIndex);
@@ -797,10 +908,8 @@
                 cancelAnimation();
                 currentIndex++;
 
-                // Advance fill
-                const fill = document.getElementById('textFill');
                 const percent = (currentIndex / displayWord.length) * 100;
-                fill.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+                updateClipAndPen(percent);
 
                 updateProgress();
                 showInstruction(currentIndex);
@@ -817,9 +926,8 @@
             cancelAnimation();
             currentIndex = index;
 
-            const fill = document.getElementById('textFill');
             const percent = (currentIndex / displayWord.length) * 100;
-            fill.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            updateClipAndPen(percent);
 
             updateProgress();
             showInstruction(currentIndex);
@@ -832,6 +940,7 @@
             const style = document.getElementById('styleSelect').value;
             const text = document.getElementById('cursiveText');
             const preview = document.getElementById('stylePreview');
+            const glow = document.getElementById('textGlow');
 
             text.className = 'cursive-text style-' + style;
             preview.className = 'style-preview style-' + style;
@@ -848,9 +957,9 @@
 
         function updateColor() {
             const color = document.getElementById('colorSelect').value;
-            const text = document.getElementById('cursiveText');
+            const outline = document.getElementById('textOutline');
             const fill = document.getElementById('textFill');
-            text.style.webkitTextStrokeColor = color;
+            // Keep outline light, just change fill color
             fill.style.color = color;
         }
 
