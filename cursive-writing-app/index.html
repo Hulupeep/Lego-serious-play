@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cursive Writing Practice</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -81,7 +80,7 @@
             background: #fffef8;
             border: 2px solid #ddd;
             border-radius: 10px;
-            min-height: 300px;
+            min-height: 320px;
             position: relative;
             overflow: hidden;
             margin: 15px 0;
@@ -103,30 +102,28 @@
             white-space: nowrap;
         }
 
-        .label-top { top: 55px; }
-        .label-mid { top: 105px; color: #ff6666; }
-        .label-base { top: 175px; color: #4444ff; }
-        .label-desc { top: 225px; color: #999; }
+        .label-top { top: 70px; }
+        .label-mid { top: 130px; color: #ff6666; }
+        .label-base { top: 200px; color: #4444ff; }
+        .label-desc { top: 260px; color: #999; }
 
         .writing-area {
             padding: 20px 30px;
             position: relative;
         }
 
-        .writing-svg {
+        #writingSvg {
             width: 100%;
-            height: 250px;
+            height: 280px;
             overflow: visible;
         }
 
-        /* Guidelines */
-        .guideline { stroke-width: 1; }
-        .guideline-top { stroke: #ffcccc; }
-        .guideline-mid { stroke: #ff9999; stroke-dasharray: 5,5; }
+        .guideline { fill: none; }
+        .guideline-top { stroke: #ffcccc; stroke-width: 1; }
+        .guideline-mid { stroke: #ff9999; stroke-width: 1; stroke-dasharray: 5,5; }
         .guideline-base { stroke: #4444ff; stroke-width: 2; }
-        .guideline-desc { stroke: #cccccc; }
+        .guideline-desc { stroke: #cccccc; stroke-width: 1; }
 
-        /* Letter paths */
         .letter-path {
             fill: none;
             stroke-linecap: round;
@@ -134,34 +131,34 @@
         }
 
         .letter-guide {
-            stroke: #e0e0e0;
-            stroke-width: 2;
+            stroke: #e8e8e8;
+            stroke-width: 4;
         }
 
         .letter-draw {
-            stroke: #1a237e;
             stroke-width: 3;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
         }
 
         .progress-row {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             margin-bottom: 15px;
             flex-wrap: wrap;
         }
 
         .progress-dot {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: #eee;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2em;
-            font-family: 'Dancing Script', cursive;
+            font-size: 1.4em;
             cursor: pointer;
             transition: all 0.2s;
+            font-style: italic;
         }
 
         .progress-dot.done { background: #4caf50; color: white; }
@@ -169,7 +166,7 @@
             background: #667eea;
             color: white;
             transform: scale(1.15);
-            box-shadow: 0 0 10px rgba(102,126,234,0.5);
+            box-shadow: 0 0 15px rgba(102,126,234,0.5);
         }
 
         .instruction-box {
@@ -189,8 +186,8 @@
         }
 
         .current-letter-display {
-            font-size: 2.2em;
-            font-family: 'Dancing Script', cursive;
+            font-size: 2.5em;
+            font-style: italic;
             color: #667eea;
         }
 
@@ -247,7 +244,7 @@
             background: white;
             cursor: pointer;
             font-size: 1.3em;
-            font-family: 'Dancing Script', cursive;
+            font-style: italic;
         }
 
         .letter-btn:hover {
@@ -266,8 +263,8 @@
             background: #f0f4ff;
             border-radius: 15px;
             cursor: pointer;
-            font-size: 0.9em;
-            font-family: 'Dancing Script', cursive;
+            font-size: 0.95em;
+            font-style: italic;
         }
 
         .word-chip:hover {
@@ -295,30 +292,10 @@
             font-size: 0.95em;
         }
 
-        .stroke-steps {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .stroke-step {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.85em;
-        }
-
-        .step-num {
-            width: 20px;
-            height: 20px;
-            background: #1976d2;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75em;
-            font-weight: bold;
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
         }
     </style>
 </head>
@@ -346,8 +323,12 @@
                         <span class="label-desc">Descender</span>
                     </div>
                     <div class="writing-area">
-                        <svg class="writing-svg" id="writingSvg">
-                            <!-- Guidelines drawn by JS -->
+                        <svg id="writingSvg" viewBox="0 0 700 280">
+                            <line x1="0" y1="75" x2="700" y2="75" class="guideline guideline-top"/>
+                            <line x1="0" y1="135" x2="700" y2="135" class="guideline guideline-mid"/>
+                            <line x1="0" y1="205" x2="700" y2="205" class="guideline guideline-base"/>
+                            <line x1="0" y1="265" x2="700" y2="265" class="guideline guideline-desc"/>
+                            <g id="lettersGroup"></g>
                         </svg>
                     </div>
                 </div>
@@ -355,11 +336,10 @@
                 <div class="instruction-box">
                     <h3>💡 How to Write: <span class="current-letter-display" id="currentLetter">h</span></h3>
                     <div class="instruction-text" id="instructionText">
-                        Type a word and click "Write It!" to begin.
+                        Loading font... Please wait.
                     </div>
                     <div class="stroke-guide" id="strokeGuide">
-                        <h4>Stroke Order:</h4>
-                        <div class="stroke-steps" id="strokeSteps"></div>
+                        <h4>Watch the stroke being drawn!</h4>
                     </div>
                 </div>
 
@@ -423,181 +403,76 @@
         </div>
     </div>
 
+    <!-- OpenType.js for font path extraction -->
+    <script src="https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.min.js"></script>
+
     <script>
-        // Hershey Script Simplex - clean stroke-based cursive font
-        // Each letter: SVG path data, width, and connection points
-        // Coordinates scaled for baseline at y=180, x-height ~60px
-
-        const cursiveLetters = {
-            'a': {
-                path: 'M 0 120 Q 10 100 25 95 Q 45 90 50 110 Q 55 130 50 150 Q 40 175 25 180 Q 10 180 5 165 Q 0 145 10 125 Q 20 110 35 110 Q 50 115 50 140 L 50 180 Q 55 175 65 170',
-                width: 65,
-                instructions: { steps: ['Up to midline', 'Curve around', 'Down stroke'], tip: 'Start with upstroke, make oval, exit right' }
-            },
-            'b': {
-                path: 'M 0 180 L 15 60 Q 20 50 30 55 Q 35 65 25 80 L 15 120 L 15 180 Q 20 160 35 150 Q 50 145 55 160 Q 58 175 50 185 Q 40 190 25 185 Q 15 180 15 180 L 60 175',
-                width: 60,
-                instructions: { steps: ['Tall stroke up', 'Loop down', 'Bump right'], tip: 'Start at baseline, go tall, loop and bump' }
-            },
-            'c': {
-                path: 'M 0 180 Q 5 160 15 140 Q 30 110 50 105 Q 60 105 60 115 M 50 105 Q 30 110 15 135 Q 5 160 10 180 Q 20 195 40 185 Q 55 175 60 165',
-                width: 60,
-                instructions: { steps: ['Upstroke', 'Curve around', 'Exit'], tip: 'Open curve like a crescent' }
-            },
-            'd': {
-                path: 'M 0 180 Q 5 160 20 140 Q 35 115 50 110 Q 60 110 55 130 Q 50 150 40 175 Q 30 195 20 185 Q 5 175 10 150 Q 20 125 40 115 Q 50 110 50 110 L 50 60 Q 55 50 60 55 L 50 180 Q 55 175 65 170',
-                width: 65,
-                instructions: { steps: ['Oval first', 'Tall stroke', 'Down and exit'], tip: 'Make round part, go tall, exit' }
-            },
-            'e': {
-                path: 'M 0 180 Q 5 165 15 145 Q 25 125 35 120 Q 45 118 45 130 Q 42 140 30 145 Q 15 150 10 165 Q 8 180 20 188 Q 35 192 50 180 Q 58 170 60 165',
-                width: 60,
-                instructions: { steps: ['Upstroke', 'Small loop', 'Around and exit'], tip: 'Tiny loop in middle' }
-            },
-            'f': {
-                path: 'M 15 55 Q 25 45 40 50 Q 50 58 45 75 L 25 180 Q 15 210 5 220 Q -5 225 -10 215 M 5 120 L 50 120',
-                width: 50,
-                instructions: { steps: ['Top curve', 'Long stroke down', 'Cross'], tip: 'Goes above and below lines' }
-            },
-            'g': {
-                path: 'M 0 180 Q 5 160 20 140 Q 35 115 50 110 Q 60 110 55 130 Q 50 150 40 175 Q 30 195 20 185 Q 5 175 10 150 Q 20 125 40 115 Q 50 110 50 110 L 50 180 Q 55 200 50 220 Q 40 240 20 235 Q 5 225 10 215',
-                width: 60,
-                instructions: { steps: ['Oval', 'Down below baseline', 'Curve back'], tip: 'Like a with descending tail' }
-            },
-            'h': {
-                path: 'M 0 180 L 15 60 Q 20 50 30 55 Q 35 65 25 80 L 15 130 Q 20 115 35 110 Q 55 108 60 130 Q 62 150 55 175 L 55 180 Q 60 175 70 170',
-                width: 70,
-                instructions: { steps: ['Tall stroke', 'Down', 'Hump right'], tip: 'Like n with tall stem' }
-            },
-            'i': {
-                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 180 Q 33 175 43 170 M 28 95 L 30 100',
-                width: 43,
-                instructions: { steps: ['Upstroke', 'Down', 'Dot'], tip: 'Simple stroke with dot' }
-            },
-            'j': {
-                path: 'M 5 180 Q 10 165 20 145 Q 27 125 33 120 L 33 180 Q 38 210 30 230 Q 20 245 5 240 Q -5 230 0 220 M 33 95 L 35 100',
-                width: 45,
-                instructions: { steps: ['Upstroke', 'Down and curve', 'Dot'], tip: 'Like i with tail below' }
-            },
-            'k': {
-                path: 'M 0 180 L 15 60 Q 20 50 30 55 Q 35 65 25 80 L 15 180 M 55 110 Q 40 130 20 145 M 25 145 Q 40 165 55 185 Q 60 180 65 175',
-                width: 65,
-                instructions: { steps: ['Tall stroke', 'Kick in', 'Kick out'], tip: 'Kicks meet in middle' }
-            },
-            'l': {
-                path: 'M 0 180 L 20 60 Q 25 50 35 55 Q 40 65 30 80 L 20 180 Q 25 175 40 170',
-                width: 40,
-                instructions: { steps: ['Tall loop', 'Down', 'Exit'], tip: 'Elegant tall stroke' }
-            },
-            'm': {
-                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 180 Q 30 150 45 120 Q 55 115 58 130 L 58 180 Q 60 150 75 120 Q 85 115 88 130 L 88 180 Q 93 175 100 170',
-                width: 100,
-                instructions: { steps: ['Up', 'First hump', 'Second hump'], tip: 'Two humps side by side' }
-            },
-            'n': {
-                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 180 Q 30 150 45 120 Q 60 115 65 135 L 65 180 Q 70 175 80 170',
-                width: 80,
-                instructions: { steps: ['Upstroke', 'Down', 'Hump'], tip: 'One smooth hill' }
-            },
-            'o': {
-                path: 'M 0 180 Q 5 165 20 145 Q 35 125 50 125 Q 65 130 65 155 Q 60 180 45 190 Q 25 195 15 180 Q 5 165 15 145 M 60 160 Q 65 165 75 170',
-                width: 75,
-                instructions: { steps: ['Oval', 'Close', 'Exit'], tip: 'Round oval with connector' }
-            },
-            'p': {
-                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 240 M 28 180 Q 30 150 45 130 Q 60 125 65 145 Q 68 165 55 185 Q 40 195 28 180 M 62 155 Q 70 165 75 170',
-                width: 75,
-                instructions: { steps: ['Down below', 'Up', 'Bump'], tip: 'Stem below, bump on top' }
-            },
-            'q': {
-                path: 'M 0 180 Q 5 160 20 140 Q 35 120 50 120 Q 65 125 60 150 Q 55 175 40 190 Q 25 195 15 180 Q 5 165 15 145 M 55 150 L 55 240 Q 60 250 75 245',
-                width: 75,
-                instructions: { steps: ['Oval', 'Down below', 'Exit right'], tip: 'Tail goes right' }
-            },
-            'r': {
-                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 180 Q 30 155 45 130 Q 55 120 60 130',
-                width: 55,
-                instructions: { steps: ['Up', 'Down', 'Shoulder'], tip: 'Short with small shoulder' }
-            },
-            's': {
-                path: 'M 0 180 Q 5 165 20 150 Q 35 130 50 125 Q 60 125 55 140 Q 48 155 35 160 Q 20 165 15 180 Q 15 195 30 195 Q 50 190 60 175',
-                width: 60,
-                instructions: { steps: ['Up', 'Snake curve', 'Exit'], tip: 'S-curve like snake' }
-            },
-            't': {
-                path: 'M 0 180 Q 5 165 18 130 Q 25 100 30 80 L 30 180 Q 35 175 50 170 M 10 120 L 45 120',
-                width: 50,
-                instructions: { steps: ['Up', 'Down', 'Cross'], tip: 'Shorter than l, cross it' }
-            },
-            'u': {
-                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 160 Q 30 185 50 185 Q 65 180 65 155 Q 65 130 60 120 L 60 180 Q 65 175 75 170',
-                width: 75,
-                instructions: { steps: ['Up', 'Down curve', 'Up and down'], tip: 'Like upside-down n' }
-            },
-            'v': {
-                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 40 180 L 55 120 Q 60 125 65 140',
-                width: 60,
-                instructions: { steps: ['Up', 'Down', 'Up'], tip: 'Sharp point at bottom' }
-            },
-            'w': {
-                path: 'M 0 180 Q 5 165 15 145 Q 20 125 25 120 L 35 180 L 50 130 L 60 180 L 75 120 Q 80 125 85 140',
-                width: 85,
-                instructions: { steps: ['Up', 'Down-up', 'Down-up'], tip: 'Two V shapes' }
-            },
-            'x': {
-                path: 'M 0 180 Q 5 165 15 145 Q 22 125 30 120 L 55 180 Q 60 175 65 170 M 60 120 L 15 180',
-                width: 65,
-                instructions: { steps: ['Diagonal', 'Cross diagonal'], tip: 'Strokes cross in center' }
-            },
-            'y': {
-                path: 'M 0 180 Q 5 165 15 145 Q 22 125 28 120 L 28 160 Q 30 185 50 185 Q 65 180 65 155 Q 65 130 60 120 L 60 180 Q 65 210 55 235 Q 40 250 20 240',
-                width: 70,
-                instructions: { steps: ['U-shape', 'Descending tail'], tip: 'Like u with tail' }
-            },
-            'z': {
-                path: 'M 0 180 Q 5 165 15 145 Q 25 125 35 120 L 60 120 L 15 180 L 60 180 Q 65 175 70 170',
-                width: 70,
-                instructions: { steps: ['Up', 'Across', 'Diagonal', 'Across'], tip: 'Zigzag pattern' }
-            },
-            ' ': {
-                path: '',
-                width: 30,
-                instructions: { steps: ['Lift', 'Move'], tip: 'Space between words' }
-            }
-        };
-
-        const defaultInstruction = { steps: ['Follow shape'], tip: 'Watch and follow!' };
-
         // State
-        let svg;
+        let font = null;
         let currentWord = '', displayWord = '';
         let currentIndex = 0;
         let isAnimating = false, isPaused = false;
         let animationId = null;
         let letterPaths = [];
+        let fontLoaded = false;
 
-        function init() {
-            svg = document.getElementById('writingSvg');
+        // Letter tips
+        const letterTips = {
+            'a': 'Start with upstroke, curve around in an oval, then exit with a connector stroke.',
+            'b': 'Begin at baseline, stroke up tall, loop at top, come down and make a bump.',
+            'c': 'Upstroke to midline, curve around like a crescent moon, exit right.',
+            'd': 'Make the oval first, then tall stroke up, down and exit right.',
+            'e': 'Upstroke, tiny loop at midline, curve around and exit.',
+            'f': 'Start at top with curve, long stroke down below baseline, cross at midline.',
+            'g': 'Make oval like "a", continue down below baseline, curve back left.',
+            'h': 'Tall stroke up with loop, down, then hump to the right.',
+            'i': 'Short upstroke, down to baseline, add dot above.',
+            'j': 'Like "i" but continue below baseline with a curve left, add dot.',
+            'k': 'Tall stroke with loop, diagonal kick in, diagonal kick out.',
+            'l': 'Tall stroke up with elegant loop at top, down and exit right.',
+            'm': 'Upstroke, then two humps side by side, exit right.',
+            'n': 'Upstroke, one hump over, exit right.',
+            'o': 'Upstroke into oval, close it, small exit connector.',
+            'p': 'Upstroke, down below baseline, back up, make bump on top half.',
+            'q': 'Make oval, down below baseline, tail curves to the right.',
+            'r': 'Upstroke, down, small shoulder curve to exit.',
+            's': 'Upstroke, snake curve - up, back, down, out.',
+            't': 'Upstroke (shorter than l), down, cross at midline.',
+            'u': 'Upstroke, down curve, up, down and exit.',
+            'v': 'Upstroke, diagonal down to point, diagonal up.',
+            'w': 'Upstroke, two connected V shapes, exit.',
+            'x': 'First diagonal stroke, cross with second diagonal.',
+            'y': 'Like "u" on top, but continue down below baseline, curve left.',
+            'z': 'Upstroke, across top, diagonal down, across bottom.'
+        };
+
+        // Initialize
+        async function init() {
             buildLetterGrid();
             updateSpeedLabel();
-            drawGuidelines();
-            startWriting();
-        }
 
-        function drawGuidelines() {
-            const width = svg.clientWidth || 700;
+            // Load a professional cursive font
+            try {
+                // Using Dancing Script from Google Fonts (converted to direct URL)
+                const fontUrl = 'https://fonts.gstatic.com/s/dancingscript/v25/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7BMSo3Sup6hNX6plRP.woff';
 
-            // Clear and redraw guidelines
-            const guidelines = `
-                <line x1="0" y1="60" x2="${width}" y2="60" class="guideline guideline-top"/>
-                <line x1="0" y1="110" x2="${width}" y2="110" class="guideline guideline-mid"/>
-                <line x1="0" y1="180" x2="${width}" y2="180" class="guideline guideline-base"/>
-                <line x1="0" y1="230" x2="${width}" y2="230" class="guideline guideline-desc"/>
-            `;
-
-            // Keep guidelines at the start
-            const existingContent = svg.innerHTML.replace(/<line[^>]*class="guideline[^"]*"[^>]*\/>/g, '');
-            svg.innerHTML = guidelines + existingContent;
+                font = await opentype.load(fontUrl);
+                fontLoaded = true;
+                document.getElementById('instructionText').innerHTML = '<strong>Ready!</strong> Type a word and click "Write It!"';
+                startWriting();
+            } catch (e) {
+                console.error('Font loading error:', e);
+                // Fallback: try alternative font
+                try {
+                    const fallbackUrl = 'https://fonts.gstatic.com/s/greatvibes/v18/RWmMoKWR9v4ksMfaWd_JN9XFiaQ.woff';
+                    font = await opentype.load(fallbackUrl);
+                    fontLoaded = true;
+                    document.getElementById('instructionText').innerHTML = '<strong>Ready!</strong> Type a word and click "Write It!"';
+                    startWriting();
+                } catch (e2) {
+                    document.getElementById('instructionText').innerHTML = '<strong>Error:</strong> Could not load font. Please refresh.';
+                }
+            }
         }
 
         function buildLetterGrid() {
@@ -617,6 +492,8 @@
         }
 
         function startWriting() {
+            if (!fontLoaded) return;
+
             cancelAnimation();
 
             currentWord = document.getElementById('wordInput').value.trim().toLowerCase();
@@ -629,7 +506,7 @@
             letterPaths = [];
             document.getElementById('pauseBtn').textContent = '⏸️ Pause';
 
-            // Build progress
+            // Build progress dots
             const progressRow = document.getElementById('progressRow');
             progressRow.innerHTML = '';
             displayWord.split('').forEach((char, i) => {
@@ -640,48 +517,56 @@
                 progressRow.appendChild(dot);
             });
 
-            // Clear SVG and redraw guidelines
-            svg.innerHTML = '';
-            drawGuidelines();
-
-            // Build letter paths
-            buildLetterPaths();
+            // Generate paths from font
+            generatePaths();
 
             updateProgress();
             showInstruction(0);
             animateLetter();
         }
 
-        function buildLetterPaths() {
+        function generatePaths() {
+            const lettersGroup = document.getElementById('lettersGroup');
+            lettersGroup.innerHTML = '';
+
+            const fontSize = 120;
+            const baseline = 205;
             let xOffset = 30;
+
             const color = document.getElementById('colorSelect').value;
             const strokeWidth = document.getElementById('sizeSelect').value;
 
             displayWord.split('').forEach((char, index) => {
-                const letterData = cursiveLetters[char] || cursiveLetters['a'];
+                if (char === ' ') {
+                    xOffset += 40;
+                    letterPaths.push(null);
+                    return;
+                }
 
-                if (letterData.path) {
-                    // Create guide path (light gray)
+                // Get glyph path from font
+                const glyph = font.charToGlyph(char);
+                const path = glyph.getPath(xOffset, baseline, fontSize);
+                const pathData = path.toPathData(2);
+
+                if (pathData) {
+                    // Create guide path (light gray outline)
                     const guidePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                    guidePath.setAttribute('d', translatePath(letterData.path, xOffset, 0));
+                    guidePath.setAttribute('d', pathData);
                     guidePath.setAttribute('class', 'letter-path letter-guide');
-                    guidePath.setAttribute('data-index', index);
-                    svg.appendChild(guidePath);
+                    lettersGroup.appendChild(guidePath);
 
-                    // Create animated path
+                    // Create animated stroke path
                     const drawPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                    drawPath.setAttribute('d', translatePath(letterData.path, xOffset, 0));
+                    drawPath.setAttribute('d', pathData);
                     drawPath.setAttribute('class', 'letter-path letter-draw');
                     drawPath.setAttribute('stroke', color);
                     drawPath.setAttribute('stroke-width', strokeWidth);
-                    drawPath.setAttribute('data-index', index);
+                    lettersGroup.appendChild(drawPath);
 
-                    // Set up stroke animation
-                    const length = drawPath.getTotalLength ? drawPath.getTotalLength() : 1000;
+                    // Get path length for animation
+                    const length = drawPath.getTotalLength();
                     drawPath.style.strokeDasharray = length;
                     drawPath.style.strokeDashoffset = length;
-
-                    svg.appendChild(drawPath);
 
                     letterPaths.push({
                         element: drawPath,
@@ -690,14 +575,9 @@
                     });
                 }
 
-                xOffset += letterData.width;
-            });
-        }
-
-        function translatePath(pathData, dx, dy) {
-            // Translate all coordinates in path by dx, dy
-            return pathData.replace(/(-?\d+\.?\d*)\s+(-?\d+\.?\d*)/g, (match, x, y) => {
-                return `${parseFloat(x) + dx} ${parseFloat(y) + dy}`;
+                // Advance x position
+                const advance = glyph.advanceWidth * (fontSize / font.unitsPerEm);
+                xOffset += advance;
             });
         }
 
@@ -713,28 +593,27 @@
         function showInstruction(index) {
             const letterSpan = document.getElementById('currentLetter');
             const textDiv = document.getElementById('instructionText');
-            const stepsDiv = document.getElementById('strokeSteps');
 
             if (index >= displayWord.length) {
                 letterSpan.textContent = '✓';
                 textDiv.innerHTML = '<strong>Great job!</strong> You completed the word!';
-                stepsDiv.innerHTML = '';
                 return;
             }
 
             const char = displayWord[index];
             letterSpan.textContent = char;
-
-            const letterData = cursiveLetters[char];
-            const info = letterData ? letterData.instructions : defaultInstruction;
-            textDiv.innerHTML = `<strong>Tip:</strong> ${info.tip}`;
-            stepsDiv.innerHTML = info.steps.map((step, i) =>
-                `<div class="stroke-step"><span class="step-num">${i+1}</span>${step}</div>`
-            ).join('');
+            const tip = letterTips[char] || 'Watch the stroke being drawn and follow along!';
+            textDiv.innerHTML = `<strong>Tip:</strong> ${tip}`;
         }
 
         function animateLetter() {
             if (!isAnimating || isPaused) return;
+
+            // Skip null entries (spaces)
+            while (currentIndex < letterPaths.length && letterPaths[currentIndex] === null) {
+                currentIndex++;
+            }
+
             if (currentIndex >= letterPaths.length) {
                 currentIndex = displayWord.length;
                 updateProgress();
@@ -745,7 +624,7 @@
 
             const pathData = letterPaths[currentIndex];
             const speed = parseInt(document.getElementById('speedSlider').value);
-            const duration = (11 - speed) * 300; // ms
+            const duration = (11 - speed) * 400; // ms per letter
 
             const startTime = performance.now();
 
@@ -755,10 +634,10 @@
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
 
-                // Ease-in-out for natural feel
+                // Smooth easing
                 const eased = progress < 0.5
-                    ? 2 * progress * progress
-                    : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                    ? 4 * progress * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
                 const offset = pathData.length * (1 - eased);
                 pathData.element.style.strokeDashoffset = offset;
@@ -770,8 +649,13 @@
                     updateProgress();
                     showInstruction(currentIndex);
 
+                    // Skip spaces
+                    while (currentIndex < letterPaths.length && letterPaths[currentIndex] === null) {
+                        currentIndex++;
+                    }
+
                     if (currentIndex < letterPaths.length) {
-                        setTimeout(() => animateLetter(), 150);
+                        setTimeout(() => animateLetter(), 200);
                     } else {
                         isAnimating = false;
                     }
@@ -803,10 +687,12 @@
 
         function showLettersUpTo(index) {
             letterPaths.forEach((pathData, i) => {
-                if (i < index) {
-                    pathData.element.style.strokeDashoffset = 0;
-                } else {
-                    pathData.element.style.strokeDashoffset = pathData.length;
+                if (pathData) {
+                    if (i < index) {
+                        pathData.element.style.strokeDashoffset = 0;
+                    } else {
+                        pathData.element.style.strokeDashoffset = pathData.length;
+                    }
                 }
             });
         }
@@ -815,6 +701,10 @@
             if (currentIndex > 0) {
                 cancelAnimation();
                 currentIndex--;
+                // Skip spaces backwards
+                while (currentIndex > 0 && letterPaths[currentIndex] === null) {
+                    currentIndex--;
+                }
                 showLettersUpTo(currentIndex);
                 updateProgress();
                 showInstruction(currentIndex);
@@ -827,8 +717,14 @@
         function nextLetter() {
             if (currentIndex < letterPaths.length) {
                 cancelAnimation();
-                letterPaths[currentIndex].element.style.strokeDashoffset = 0;
+                if (letterPaths[currentIndex]) {
+                    letterPaths[currentIndex].element.style.strokeDashoffset = 0;
+                }
                 currentIndex++;
+                // Skip spaces
+                while (currentIndex < letterPaths.length && letterPaths[currentIndex] === null) {
+                    currentIndex++;
+                }
                 updateProgress();
                 showInstruction(currentIndex);
 
@@ -844,6 +740,10 @@
             cancelAnimation();
             showLettersUpTo(index);
             currentIndex = index;
+            // Skip spaces
+            while (currentIndex < letterPaths.length && letterPaths[currentIndex] === null) {
+                currentIndex++;
+            }
             updateProgress();
             showInstruction(currentIndex);
 
@@ -861,9 +761,6 @@
         }
 
         window.onload = init;
-        window.onresize = () => {
-            if (svg) drawGuidelines();
-        };
     </script>
 </body>
 </html>
