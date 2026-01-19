@@ -3,313 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cursive Writing Practice - Learn to Write Beautifully!</title>
+    <title>Cursive Writing Practice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&family=Satisfy&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1100px; margin: 0 auto; }
 
         header {
             text-align: center;
             color: white;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
-
-        header h1 {
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            margin-bottom: 10px;
-        }
-
-        header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
+        header h1 { font-size: 2.2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
 
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: 1fr 280px;
             gap: 20px;
         }
 
-        @media (max-width: 900px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 800px) {
+            .main-content { grid-template-columns: 1fr; }
         }
 
-        .writing-area {
+        .card {
             background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
         }
 
-        .input-section {
+        .input-row {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
         }
 
-        .input-section input {
+        .input-row input {
             flex: 1;
-            min-width: 200px;
-            padding: 15px 20px;
-            font-size: 1.2em;
-            border: 3px solid #ddd;
-            border-radius: 10px;
-            transition: border-color 0.3s;
+            min-width: 180px;
+            padding: 12px 16px;
+            font-size: 1.1em;
+            border: 2px solid #ddd;
+            border-radius: 8px;
         }
 
-        .input-section input:focus {
+        .input-row input:focus {
             outline: none;
             border-color: #667eea;
         }
 
         .btn {
-            padding: 15px 30px;
-            font-size: 1.1em;
+            padding: 12px 24px;
+            font-size: 1em;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
             font-weight: bold;
+            transition: transform 0.2s;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-pink { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+        .btn-gray { background: #eee; color: #333; }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
-        }
-
-        .btn-repeat {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-
+        /* Copybook area */
         .copybook {
-            background: #fffef5;
+            background: linear-gradient(to bottom,
+                transparent 0px, transparent 59px, #ffcccc 59px, #ffcccc 60px,
+                transparent 60px, transparent 99px, #4444ff 99px, #4444ff 101px,
+                transparent 101px, transparent 139px, #cccccc 139px, #cccccc 140px,
+                transparent 140px
+            );
+            background-size: 100% 140px;
+            background-color: #fffef8;
             border: 2px solid #ddd;
             border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
+            min-height: 320px;
             position: relative;
-            min-height: 250px;
-            overflow-x: auto;
+            overflow: hidden;
+            margin: 15px 0;
         }
 
-        .copybook-lines {
-            position: relative;
-            height: 200px;
-            margin: 10px 0;
+        .copybook-labels {
+            position: absolute;
+            right: 8px;
+            top: 0;
+            font-size: 9px;
+            color: #999;
+            pointer-events: none;
         }
 
-        .line {
+        .copybook-labels span {
+            position: absolute;
+            right: 0;
+            white-space: nowrap;
+        }
+
+        .label-top { top: 52px; }
+        .label-mid { top: 92px; color: #ff6666; }
+        .label-base { top: 132px; color: #4444ff; }
+
+        .writing-display {
+            padding: 20px 30px;
+            min-height: 160px;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 45px;
+        }
+
+        .cursive-text {
+            font-size: 72px;
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 2px #333;
+            font-family: 'Dancing Script', cursive;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .cursive-text.style-modern { font-family: 'Dancing Script', cursive; }
+        .cursive-text.style-traditional { font-family: 'Satisfy', cursive; }
+        .cursive-text.style-italic { font-family: 'Great Vibes', cursive; font-size: 80px; }
+        .cursive-text.style-fancy { font-family: 'Pacifico', cursive; }
+
+        /* The filled text that animates */
+        .cursive-fill {
             position: absolute;
             left: 0;
-            right: 0;
-            height: 2px;
-        }
-
-        .line-top {
-            top: 20px;
-            background: #e0e0e0;
-            border-top: 1px dashed #ccc;
-        }
-
-        .line-mid {
-            top: 80px;
-            background: #ff9999;
-            height: 1px;
-            border-top: 1px dashed #ff6666;
-        }
-
-        .line-base {
-            top: 140px;
-            background: #4444ff;
-            height: 2px;
-        }
-
-        .line-descender {
-            top: 200px;
-            background: #e0e0e0;
-            border-top: 1px dashed #ccc;
-        }
-
-        .line-label {
-            position: absolute;
-            right: 5px;
-            font-size: 10px;
-            color: #999;
-            transform: translateY(-50%);
-        }
-
-        .line-top .line-label { top: 0; }
-        .line-mid .line-label { top: 0; color: #ff6666; }
-        .line-base .line-label { top: 0; color: #4444ff; }
-        .line-descender .line-label { top: 0; }
-
-        .cursive-display {
-            position: absolute;
             top: 0;
-            left: 20px;
-            right: 20px;
-            height: 200px;
+            color: #333;
+            -webkit-text-stroke: 0;
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 0.1s linear;
         }
 
-        .cursive-svg {
-            width: 100%;
-            height: 100%;
-            overflow: visible;
+        .letter-highlight {
+            display: inline-block;
+            position: relative;
         }
 
-        .letter-path {
-            fill: none;
-            stroke: #333;
-            stroke-width: 2.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+        .letter-highlight.active {
+            color: #667eea;
+            -webkit-text-stroke-color: #667eea;
         }
 
-        .letter-path.animated {
-            stroke-dasharray: 2000;
-            stroke-dashoffset: 2000;
+        .letter-highlight.completed {
+            color: #333;
+            -webkit-text-stroke: 0;
         }
 
+        /* Progress dots */
+        .progress-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .progress-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .progress-dot.done { background: #4caf50; color: white; }
+        .progress-dot.current {
+            background: #667eea;
+            color: white;
+            transform: scale(1.15);
+            box-shadow: 0 0 10px rgba(102,126,234,0.5);
+        }
+
+        /* Instruction box */
         .instruction-box {
-            background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
-            border-left: 5px solid #ffc107;
+            background: linear-gradient(135deg, #fff9c4, #fff59d);
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 4px solid #ffc107;
+            margin-top: 15px;
         }
 
         .instruction-box h3 {
             color: #f57f17;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .instruction-box h3::before {
-            content: "💡";
-            font-size: 1.5em;
+        .current-letter-display {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5em;
+            color: #667eea;
         }
 
         .instruction-text {
             color: #5d4037;
-            line-height: 1.6;
-            font-size: 1.1em;
+            line-height: 1.5;
         }
 
-        .current-letter {
-            display: inline-block;
-            font-family: 'Brush Script MT', cursive;
-            font-size: 3em;
-            color: #667eea;
-            margin: 10px 0;
-        }
-
-        .sidebar {
+        .controls {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
         }
 
-        .panel {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
+        /* Sidebar */
+        .sidebar { display: flex; flex-direction: column; gap: 15px; }
 
         .panel h3 {
             color: #667eea;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #f0f0f0;
-        }
-
-        .setting-group {
-            margin-bottom: 15px;
-        }
-
-        .setting-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-            font-weight: 500;
-        }
-
-        .setting-group select,
-        .setting-group input[type="range"] {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
             font-size: 1em;
         }
 
-        .setting-group input[type="range"] {
-            padding: 5px;
+        .setting-row {
+            margin-bottom: 12px;
         }
 
-        .speed-value {
-            text-align: center;
-            color: #667eea;
-            font-weight: bold;
+        .setting-row label {
+            display: block;
+            margin-bottom: 4px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .setting-row select, .setting-row input[type="range"] {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
         }
 
         .style-preview {
             text-align: center;
-            font-size: 1.8em;
-            padding: 10px;
+            font-size: 1.6em;
+            padding: 8px;
             background: #f8f8f8;
-            border-radius: 8px;
-            margin-top: 5px;
-            font-family: 'Brush Script MT', cursive;
+            border-radius: 6px;
+            margin-top: 4px;
         }
+
+        .style-preview.style-modern { font-family: 'Dancing Script', cursive; }
+        .style-preview.style-traditional { font-family: 'Satisfy', cursive; }
+        .style-preview.style-italic { font-family: 'Great Vibes', cursive; }
+        .style-preview.style-fancy { font-family: 'Pacifico', cursive; }
 
         .letter-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 4px;
         }
 
         .letter-btn {
-            padding: 8px;
+            padding: 6px;
             border: 2px solid #ddd;
-            border-radius: 8px;
+            border-radius: 6px;
             background: white;
             cursor: pointer;
-            font-family: 'Brush Script MT', cursive;
-            font-size: 1.3em;
-            transition: all 0.2s;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2em;
         }
 
         .letter-btn:hover {
@@ -317,20 +292,18 @@
             background: #f0f4ff;
         }
 
-        .word-suggestions {
+        .word-chips {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 6px;
         }
 
         .word-chip {
-            padding: 8px 15px;
+            padding: 6px 12px;
             background: #f0f4ff;
-            border-radius: 20px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.2s;
+            font-size: 0.85em;
         }
 
         .word-chip:hover {
@@ -338,103 +311,51 @@
             color: white;
         }
 
-        .progress-indicator {
-            display: flex;
-            gap: 5px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-
-        .progress-dot {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Brush Script MT', cursive;
-            font-size: 1.2em;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .progress-dot.completed {
-            background: #4caf50;
-            color: white;
-        }
-
-        .progress-dot.current {
-            background: #667eea;
-            color: white;
-            transform: scale(1.2);
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
-        }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .practice-mode {
-            background: #e8f5e9;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .practice-mode h4 {
-            color: #2e7d32;
-            margin-bottom: 10px;
-        }
-
-        .repeat-options {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .repeat-options input {
-            width: 60px;
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+        .speed-label {
             text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 0.9em;
         }
 
-        .guide-lines-legend {
+        /* Letter stroke guide */
+        .stroke-guide {
+            background: #f0f8ff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .stroke-guide h4 {
+            color: #1976d2;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .stroke-steps {
             display: flex;
             gap: 15px;
-            margin-top: 10px;
             flex-wrap: wrap;
+        }
+
+        .stroke-step {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             font-size: 0.85em;
         }
 
-        .legend-item {
+        .step-num {
+            width: 20px;
+            height: 20px;
+            background: #1976d2;
+            color: white;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 5px;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 3px;
-            border-radius: 2px;
-        }
-
-        .legend-color.top { background: #e0e0e0; }
-        .legend-color.mid { background: #ff9999; }
-        .legend-color.base { background: #4444ff; }
-        .legend-color.descender { background: #e0e0e0; }
-
-        footer {
-            text-align: center;
-            color: white;
-            margin-top: 30px;
-            opacity: 0.8;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -442,107 +363,95 @@
     <div class="container">
         <header>
             <h1>✏️ Cursive Writing Practice</h1>
-            <p>Learn to write beautifully, one letter at a time!</p>
         </header>
 
         <div class="main-content">
-            <div class="writing-area">
-                <div class="input-section">
-                    <input type="text" id="wordInput" placeholder="Type a word, letter, or sentence..." value="hello">
+            <div class="card">
+                <div class="input-row">
+                    <input type="text" id="wordInput" placeholder="Type a word..." value="hello">
                     <button class="btn btn-primary" onclick="startWriting()">Write It!</button>
-                    <button class="btn btn-repeat" onclick="repeatWriting()">🔄 Repeat</button>
+                    <button class="btn btn-pink" onclick="startWriting()">🔄 Repeat</button>
                 </div>
 
-                <div class="progress-indicator" id="progressIndicator"></div>
+                <div class="progress-row" id="progressRow"></div>
 
-                <div class="copybook" id="copybook">
-                    <div class="copybook-lines">
-                        <div class="line line-top"><span class="line-label">Top Line (tall letters)</span></div>
-                        <div class="line line-mid"><span class="line-label">Midline (short letters)</span></div>
-                        <div class="line line-base"><span class="line-label">Baseline (all letters sit here)</span></div>
-                        <div class="line line-descender"><span class="line-label">Descender (g, j, p, q, y)</span></div>
-
-                        <div class="cursive-display" id="cursiveDisplay">
-                            <svg class="cursive-svg" id="cursiveSvg" viewBox="0 0 800 200" preserveAspectRatio="xMinYMid meet">
-                            </svg>
+                <div class="copybook">
+                    <div class="copybook-labels">
+                        <span class="label-top">Top (tall letters)</span>
+                        <span class="label-mid">Midline</span>
+                        <span class="label-base">Baseline</span>
+                    </div>
+                    <div class="writing-display">
+                        <div class="cursive-text" id="cursiveText">
+                            <span id="textOutline"></span>
+                            <span class="cursive-fill" id="textFill"></span>
                         </div>
                     </div>
                 </div>
 
-                <div class="guide-lines-legend">
-                    <div class="legend-item"><div class="legend-color top"></div> Top Line</div>
-                    <div class="legend-item"><div class="legend-color mid"></div> Midline</div>
-                    <div class="legend-item"><div class="legend-color base"></div> Baseline</div>
-                    <div class="legend-item"><div class="legend-color descender"></div> Descender</div>
-                </div>
-
-                <div class="instruction-box" id="instructionBox">
-                    <h3>How to Write: <span class="current-letter" id="currentLetter">h</span></h3>
+                <div class="instruction-box">
+                    <h3>💡 How to Write: <span class="current-letter-display" id="currentLetter">h</span></h3>
                     <div class="instruction-text" id="instructionText">
-                        Enter a word above and click "Write It!" to see how to write in cursive!
+                        Type a word and click "Write It!" to begin.
                     </div>
-                </div>
-
-                <div class="practice-mode">
-                    <h4>📝 Practice Mode</h4>
-                    <div class="repeat-options">
-                        <label>Repeat times:</label>
-                        <input type="number" id="repeatCount" value="3" min="1" max="10">
-                        <button class="btn btn-secondary" onclick="startPractice()">Start Practice</button>
+                    <div class="stroke-guide" id="strokeGuide">
+                        <h4>Stroke Order:</h4>
+                        <div class="stroke-steps" id="strokeSteps"></div>
                     </div>
                 </div>
 
                 <div class="controls">
-                    <button class="btn btn-secondary" onclick="previousLetter()">⬅️ Previous</button>
-                    <button class="btn btn-secondary" onclick="pauseResume()" id="pauseBtn">⏸️ Pause</button>
-                    <button class="btn btn-secondary" onclick="nextLetter()">Next ➡️</button>
+                    <button class="btn btn-gray" onclick="prevLetter()">⬅️ Prev</button>
+                    <button class="btn btn-gray" onclick="togglePause()" id="pauseBtn">⏸️ Pause</button>
+                    <button class="btn btn-gray" onclick="nextLetter()">Next ➡️</button>
                 </div>
             </div>
 
             <div class="sidebar">
-                <div class="panel">
+                <div class="card panel">
                     <h3>⚙️ Settings</h3>
 
-                    <div class="setting-group">
+                    <div class="setting-row">
                         <label>Cursive Style</label>
-                        <select id="cursiveStyle" onchange="updateStyle()">
-                            <option value="modern">Modern Cursive</option>
-                            <option value="traditional">Traditional D'Nealian</option>
-                            <option value="italic">Italic Cursive</option>
+                        <select id="styleSelect" onchange="updateStyle()">
+                            <option value="modern">Modern (Dancing Script)</option>
+                            <option value="traditional">Traditional (Satisfy)</option>
+                            <option value="italic">Elegant (Great Vibes)</option>
+                            <option value="fancy">Fancy (Pacifico)</option>
                         </select>
-                        <div class="style-preview" id="stylePreview">hello</div>
+                        <div class="style-preview style-modern" id="stylePreview">hello</div>
                     </div>
 
-                    <div class="setting-group">
+                    <div class="setting-row">
                         <label>Letter Case</label>
-                        <select id="letterCase" onchange="updateCase()">
-                            <option value="mixed">As Typed (Mixed)</option>
+                        <select id="caseSelect" onchange="startWriting()">
                             <option value="lower">All Lowercase</option>
                             <option value="upper">All Uppercase</option>
+                            <option value="mixed">As Typed</option>
                             <option value="title">Title Case</option>
                         </select>
                     </div>
 
-                    <div class="setting-group">
-                        <label>Writing Speed</label>
-                        <input type="range" id="speedSlider" min="1" max="10" value="5" onchange="updateSpeed()">
-                        <div class="speed-value" id="speedValue">Medium</div>
+                    <div class="setting-row">
+                        <label>Speed</label>
+                        <input type="range" id="speedSlider" min="1" max="10" value="5" onchange="updateSpeedLabel()">
+                        <div class="speed-label" id="speedLabel">Medium</div>
                     </div>
 
-                    <div class="setting-group">
-                        <label>Letter Size</label>
-                        <select id="letterSize" onchange="updateSize()">
+                    <div class="setting-row">
+                        <label>Size</label>
+                        <select id="sizeSelect" onchange="updateSize()">
                             <option value="small">Small</option>
                             <option value="medium" selected>Medium</option>
                             <option value="large">Large</option>
                         </select>
                     </div>
 
-                    <div class="setting-group">
-                        <label>Pen Color</label>
-                        <select id="penColor" onchange="updateColor()">
+                    <div class="setting-row">
+                        <label>Color</label>
+                        <select id="colorSelect" onchange="updateColor()">
                             <option value="#333333">Black</option>
-                            <option value="#1a237e">Dark Blue</option>
+                            <option value="#1a237e">Navy Blue</option>
                             <option value="#4a148c">Purple</option>
                             <option value="#b71c1c">Red</option>
                             <option value="#1b5e20">Green</option>
@@ -550,246 +459,174 @@
                     </div>
                 </div>
 
-                <div class="panel">
-                    <h3>🔤 Quick Letters</h3>
+                <div class="card panel">
+                    <h3>🔤 Letters</h3>
                     <div class="letter-grid" id="letterGrid"></div>
                 </div>
 
-                <div class="panel">
-                    <h3>📚 Practice Words</h3>
-                    <div class="word-suggestions">
-                        <span class="word-chip" onclick="setWord('apple')">apple</span>
-                        <span class="word-chip" onclick="setWord('ball')">ball</span>
+                <div class="card panel">
+                    <h3>📚 Words</h3>
+                    <div class="word-chips">
                         <span class="word-chip" onclick="setWord('cat')">cat</span>
                         <span class="word-chip" onclick="setWord('dog')">dog</span>
-                        <span class="word-chip" onclick="setWord('fish')">fish</span>
                         <span class="word-chip" onclick="setWord('hello')">hello</span>
                         <span class="word-chip" onclick="setWord('world')">world</span>
-                        <span class="word-chip" onclick="setWord('school')">school</span>
+                        <span class="word-chip" onclick="setWord('apple')">apple</span>
                         <span class="word-chip" onclick="setWord('happy')">happy</span>
                         <span class="word-chip" onclick="setWord('love')">love</span>
-                        <span class="word-chip" onclick="setWord('quick fox')">quick fox</span>
+                        <span class="word-chip" onclick="setWord('school')">school</span>
+                        <span class="word-chip" onclick="setWord('write')">write</span>
+                        <span class="word-chip" onclick="setWord('the quick fox')">quick fox</span>
                     </div>
                 </div>
             </div>
         </div>
-
-        <footer>
-            <p>Made with ❤️ for young learners | Practice makes perfect!</p>
-        </footer>
     </div>
 
     <script>
-        // Grid positions (y-coordinates)
-        const TOP_LINE = 20;
-        const MID_LINE = 80;
-        const BASE_LINE = 140;
-        const DESC_LINE = 200;
-
-        // Style configurations
-        const styleConfigs = {
-            modern: { name: 'Modern Cursive', slant: 0, description: 'Upright, clean style perfect for beginners' },
-            traditional: { name: "Traditional D'Nealian", slant: 12, description: 'Classic school style with gentle slant' },
-            italic: { name: 'Italic Cursive', slant: 20, description: 'Elegant slanted style for fluid writing' }
-        };
-
-        // Cursive letter definitions - each letter is a continuous path
-        // Format: path starting from connection point, ending at connection point
-        // Connection point is at baseline height, ready to connect to next letter
-        const cursiveLetters = {
+        // Letter instruction data
+        const letterInstructions = {
             'a': {
-                // Start at baseline, up to make oval, back down with exit stroke
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x} ${MID_LINE+10} C ${x} ${MID_LINE-5} ${x+25} ${MID_LINE-5} ${x+25} ${MID_LINE+15} C ${x+25} ${MID_LINE+35} ${x} ${MID_LINE+35} ${x} ${MID_LINE+15} L ${x+5} ${BASE_LINE} C ${x+10} ${BASE_LINE-10} ${x+20} ${BASE_LINE-10} ${x+28} ${BASE_LINE}`,
-                width: 32,
-                instruction: 'Start with an upstroke to the midline. Make a small oval going left, then exit with a stroke to the baseline.',
-                tips: 'The oval should be round and sit between midline and baseline.'
+                steps: ['Start at midline', 'Curve left and down', 'Loop back up', 'Stroke down and exit right'],
+                tip: 'Make a small oval, then exit with an upstroke to connect.'
             },
             'b': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x} ${TOP_LINE+5} C ${x+5} ${TOP_LINE} ${x+10} ${TOP_LINE+5} ${x+8} ${TOP_LINE+15} L ${x+8} ${MID_LINE} C ${x+8} ${MID_LINE-10} ${x+30} ${MID_LINE-10} ${x+30} ${MID_LINE+20} C ${x+30} ${BASE_LINE+5} ${x+8} ${BASE_LINE+5} ${x+8} ${MID_LINE+30} L ${x+32} ${BASE_LINE}`,
-                width: 36,
-                instruction: 'Start at baseline, make a tall loop to the top line. Come down and make a bump at the bottom half.',
-                tips: 'The tall loop goes all the way up. The bump is like a belly on the right.'
+                steps: ['Start at baseline', 'Tall stroke up', 'Loop at top', 'Down and bump right'],
+                tip: 'The loop goes to the top line. The bump sits between midline and baseline.'
             },
             'c': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+20} C ${x+25} ${MID_LINE-10} ${x+25} ${MID_LINE-10} ${x+10} ${MID_LINE+5} C ${x-5} ${MID_LINE+25} ${x-5} ${BASE_LINE-10} ${x+10} ${BASE_LINE} C ${x+20} ${BASE_LINE+5} ${x+25} ${BASE_LINE-5} ${x+28} ${BASE_LINE}`,
-                width: 32,
-                instruction: 'Upstroke, then curve around to the left like a crescent moon. Exit at baseline.',
-                tips: 'Keep the curve open - don\'t close it!'
+                steps: ['Start below midline', 'Curve up and left', 'Sweep down', 'Exit with upturn'],
+                tip: 'Keep it open like a crescent moon.'
             },
             'd': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+20} C ${x+25} ${MID_LINE-10} ${x+25} ${MID_LINE-10} ${x+10} ${MID_LINE+5} C ${x-5} ${MID_LINE+25} ${x-5} ${BASE_LINE-10} ${x+15} ${BASE_LINE-15} L ${x+20} ${TOP_LINE+5} C ${x+25} ${TOP_LINE} ${x+30} ${TOP_LINE+5} ${x+28} ${TOP_LINE+15} L ${x+28} ${BASE_LINE} L ${x+35} ${BASE_LINE}`,
-                width: 38,
-                instruction: 'Start like a "c", but then go up tall to the top line and back down.',
-                tips: 'The round part is made first, then the tall stem.'
+                steps: ['Start like c', 'Curve around', 'Tall stroke up', 'Down and exit'],
+                tip: 'Make the round part first, then go up tall.'
             },
             'e': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+25} L ${x+22} ${MID_LINE+15} C ${x+25} ${MID_LINE+5} ${x+15} ${MID_LINE} ${x+8} ${MID_LINE+10} C ${x-2} ${MID_LINE+25} ${x} ${BASE_LINE-5} ${x+15} ${BASE_LINE} L ${x+28} ${BASE_LINE}`,
-                width: 32,
-                instruction: 'Upstroke to middle, small loop, then curve around and exit at baseline.',
-                tips: 'The loop in the middle is small - like a little eye.'
+                steps: ['Start at middle', 'Small loop up', 'Curve around', 'Exit right'],
+                tip: 'The loop is tiny - like a small eye.'
             },
             'f': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+10} ${MID_LINE} L ${x+18} ${TOP_LINE+10} C ${x+20} ${TOP_LINE-5} ${x+30} ${TOP_LINE} ${x+25} ${TOP_LINE+15} L ${x+18} ${BASE_LINE} L ${x+15} ${DESC_LINE-20} C ${x+10} ${DESC_LINE} ${x} ${DESC_LINE-5} ${x+5} ${DESC_LINE-20} M ${x+5} ${MID_LINE} L ${x+30} ${MID_LINE}`,
-                width: 35,
-                instruction: 'Upstroke with a curve at top, down through baseline with a tail below. Cross at midline.',
-                tips: 'This letter goes above AND below the main lines!'
+                steps: ['Curve at top', 'Tall stroke down', 'Below baseline', 'Cross at middle'],
+                tip: 'This letter goes both above and below the lines!'
             },
             'g': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x} ${MID_LINE+10} C ${x} ${MID_LINE-5} ${x+25} ${MID_LINE-5} ${x+25} ${MID_LINE+15} C ${x+25} ${MID_LINE+35} ${x} ${MID_LINE+35} ${x} ${MID_LINE+15} L ${x+5} ${BASE_LINE} L ${x+25} ${BASE_LINE} L ${x+25} ${DESC_LINE-15} C ${x+20} ${DESC_LINE+5} ${x} ${DESC_LINE} ${x+5} ${DESC_LINE-20}`,
-                width: 32,
-                instruction: 'Make an oval like "a", then continue down below the baseline with a left-curving tail.',
-                tips: 'The tail goes below and curves back to the left like a hook.'
+                steps: ['Oval like a', 'Continue down', 'Below baseline', 'Curve left'],
+                tip: 'The tail hooks back to the left below the line.'
             },
             'h': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x} ${TOP_LINE+5} C ${x+5} ${TOP_LINE} ${x+10} ${TOP_LINE+5} ${x+8} ${TOP_LINE+15} L ${x+8} ${MID_LINE+10} C ${x+8} ${MID_LINE-5} ${x+30} ${MID_LINE-5} ${x+30} ${MID_LINE+20} L ${x+30} ${BASE_LINE} L ${x+38} ${BASE_LINE}`,
-                width: 42,
-                instruction: 'Tall loop up to top line, down to midline, then a hump going right to baseline.',
-                tips: 'Like an "n" attached to a tall loop.'
+                steps: ['Start at baseline', 'Tall stroke up', 'Down to middle', 'Hump right'],
+                tip: 'Like an n attached to a tall stem.'
             },
             'i': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+5} C ${x+8} ${MID_LINE} ${x+12} ${MID_LINE+5} ${x+10} ${MID_LINE+15} L ${x+10} ${BASE_LINE} L ${x+18} ${BASE_LINE} M ${x+10} ${MID_LINE-15} L ${x+12} ${MID_LINE-12}`,
-                width: 22,
-                instruction: 'Short upstroke to midline, back down to baseline. Add a dot above.',
-                tips: 'Keep it short and simple. Don\'t forget the dot!'
+                steps: ['Short upstroke', 'Down to baseline', 'Exit right', 'Add dot'],
+                tip: 'Keep it simple. Don\'t forget the dot!'
             },
             'j': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+8} ${MID_LINE+5} C ${x+12} ${MID_LINE} ${x+16} ${MID_LINE+5} ${x+14} ${MID_LINE+15} L ${x+14} ${DESC_LINE-15} C ${x+10} ${DESC_LINE+5} ${x-5} ${DESC_LINE} ${x} ${DESC_LINE-20} M ${x+14} ${MID_LINE-15} L ${x+16} ${MID_LINE-12}`,
-                width: 22,
-                instruction: 'Like "i" but continues below baseline with a left-curving tail. Add dot.',
-                tips: 'The tail hooks left below the baseline.'
+                steps: ['Short upstroke', 'Down past baseline', 'Curve left', 'Add dot'],
+                tip: 'Like i but with a tail below the line.'
             },
             'k': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x} ${TOP_LINE+5} C ${x+5} ${TOP_LINE} ${x+10} ${TOP_LINE+5} ${x+8} ${TOP_LINE+15} L ${x+8} ${BASE_LINE} M ${x+25} ${MID_LINE} L ${x+10} ${MID_LINE+25} L ${x+30} ${BASE_LINE}`,
-                width: 35,
-                instruction: 'Tall loop, then from the middle make a diagonal kick - in then out.',
-                tips: 'The kick strokes meet at the tall stem.'
+                steps: ['Tall stroke up', 'Down', 'Kick in', 'Kick out'],
+                tip: 'The kicks meet at the middle of the tall stroke.'
             },
             'l': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x} ${TOP_LINE+5} C ${x+5} ${TOP_LINE} ${x+15} ${TOP_LINE+5} ${x+12} ${TOP_LINE+15} L ${x+12} ${BASE_LINE} L ${x+20} ${BASE_LINE}`,
-                width: 24,
-                instruction: 'Start at baseline, loop up to top line, come straight back down.',
-                tips: 'Keep it tall and elegant with a small loop at top.'
+                steps: ['Start at baseline', 'Tall loop up', 'Down', 'Exit right'],
+                tip: 'Keep it tall and elegant.'
             },
             'm': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+5} C ${x+5} ${MID_LINE-5} ${x+22} ${MID_LINE-5} ${x+22} ${MID_LINE+20} L ${x+22} ${MID_LINE+5} C ${x+22} ${MID_LINE-5} ${x+40} ${MID_LINE-5} ${x+40} ${MID_LINE+20} L ${x+40} ${BASE_LINE} L ${x+48} ${BASE_LINE}`,
-                width: 52,
-                instruction: 'Upstroke, then two humps - each goes up to midline and down to baseline.',
-                tips: 'Two mountains side by side - keep them even!'
+                steps: ['Upstroke', 'First hump', 'Second hump', 'Exit'],
+                tip: 'Two mountains side by side - keep them even!'
             },
             'n': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+5} C ${x+5} ${MID_LINE-5} ${x+25} ${MID_LINE-5} ${x+25} ${MID_LINE+20} L ${x+25} ${BASE_LINE} L ${x+33} ${BASE_LINE}`,
-                width: 37,
-                instruction: 'Upstroke, then one hump going up to midline and down to baseline.',
-                tips: 'One smooth hill - half of an "m".'
+                steps: ['Upstroke', 'Over and down', 'One hump', 'Exit right'],
+                tip: 'One smooth hill - half of an m.'
             },
             'o': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+20} C ${x+5} ${MID_LINE-5} ${x+30} ${MID_LINE-5} ${x+30} ${MID_LINE+20} C ${x+30} ${BASE_LINE+5} ${x+5} ${BASE_LINE+5} ${x+5} ${MID_LINE+30} C ${x+15} ${BASE_LINE-10} ${x+25} ${BASE_LINE-10} ${x+35} ${BASE_LINE}`,
-                width: 38,
-                instruction: 'Upstroke into an oval shape, close it, then exit with a connecting stroke.',
-                tips: 'Make a nice round oval, then connect out to the right.'
+                steps: ['Start at midline', 'Oval left', 'Close oval', 'Exit with connector'],
+                tip: 'Round oval, then a little exit stroke.'
             },
             'p': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+8} ${MID_LINE+5} C ${x+12} ${MID_LINE} ${x+15} ${MID_LINE+5} ${x+12} ${MID_LINE+15} L ${x+12} ${DESC_LINE-10} M ${x+12} ${MID_LINE+15} C ${x+12} ${MID_LINE-5} ${x+35} ${MID_LINE-5} ${x+35} ${MID_LINE+20} C ${x+35} ${BASE_LINE+5} ${x+12} ${BASE_LINE+5} ${x+12} ${MID_LINE+30} L ${x+38} ${BASE_LINE}`,
-                width: 42,
-                instruction: 'Upstroke to midline, down below baseline for stem, then add bump on right.',
-                tips: 'The stem goes down below the line. Bump is like a "b".'
+                steps: ['Upstroke', 'Down below baseline', 'Back up', 'Bump right'],
+                tip: 'Stem goes below the line. Bump on top half.'
             },
             'q': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x} ${MID_LINE+10} C ${x} ${MID_LINE-5} ${x+25} ${MID_LINE-5} ${x+25} ${MID_LINE+15} C ${x+25} ${MID_LINE+35} ${x} ${MID_LINE+35} ${x+5} ${MID_LINE+15} L ${x+25} ${BASE_LINE} L ${x+25} ${DESC_LINE-10} C ${x+30} ${DESC_LINE+5} ${x+40} ${DESC_LINE-10} ${x+38} ${DESC_LINE-25}`,
-                width: 42,
-                instruction: 'Oval like "a", then stem goes down below baseline curving right.',
-                tips: 'The tail curves right - opposite of "g"!'
+                steps: ['Oval like a', 'Down below baseline', 'Curve right', 'Exit'],
+                tip: 'Tail curves right - opposite of g!'
             },
             'r': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+5} C ${x+5} ${MID_LINE-5} ${x+20} ${MID_LINE-5} ${x+20} ${MID_LINE+10} L ${x+25} ${BASE_LINE}`,
-                width: 28,
-                instruction: 'Upstroke to midline with a small shoulder curving right.',
-                tips: 'Short and simple - just a small curve at the top.'
+                steps: ['Upstroke', 'Shoulder curve', 'Exit'],
+                tip: 'Short and simple - just a small shoulder.'
             },
             's': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+8} ${MID_LINE+15} C ${x+25} ${MID_LINE} ${x+20} ${MID_LINE+5} ${x+12} ${MID_LINE+15} C ${x} ${MID_LINE+30} ${x+5} ${BASE_LINE-5} ${x+18} ${BASE_LINE-5} C ${x+25} ${BASE_LINE-5} ${x+28} ${BASE_LINE} ${x+30} ${BASE_LINE}`,
-                width: 34,
-                instruction: 'Upstroke, curve left at top, snake down curving right, exit at baseline.',
-                tips: 'Think of a snake! Curves one way then the other.'
+                steps: ['Upstroke', 'Curve left', 'Snake down', 'Curve right', 'Exit'],
+                tip: 'Think of a snake! S-curve motion.'
             },
             't': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+8} ${MID_LINE-20} C ${x+12} ${MID_LINE-30} ${x+18} ${MID_LINE-25} ${x+15} ${MID_LINE-15} L ${x+15} ${BASE_LINE} L ${x+23} ${BASE_LINE} M ${x+5} ${MID_LINE} L ${x+25} ${MID_LINE}`,
-                width: 28,
-                instruction: 'Upstroke above midline (but not to top), down to baseline, cross at midline.',
-                tips: 'Shorter than "l" - cross goes at the midline.'
+                steps: ['Upstroke (not too tall)', 'Down', 'Exit', 'Cross at midline'],
+                tip: 'Shorter than l. Cross it last!'
             },
             'u': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+5} C ${x+8} ${MID_LINE} ${x+12} ${MID_LINE+5} ${x+10} ${MID_LINE+15} L ${x+10} ${BASE_LINE-10} C ${x+10} ${BASE_LINE+5} ${x+25} ${BASE_LINE+5} ${x+25} ${MID_LINE+25} L ${x+25} ${MID_LINE+5} L ${x+25} ${BASE_LINE} L ${x+33} ${BASE_LINE}`,
-                width: 37,
-                instruction: 'Upstroke to midline, curve down and up like a cup, then down to baseline.',
-                tips: 'Like an upside-down "n" - a smile shape!'
+                steps: ['Upstroke', 'Down and curve', 'Up like a cup', 'Down and exit'],
+                tip: 'Like an upside-down n.'
             },
             'v': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+5} C ${x+8} ${MID_LINE} ${x+12} ${MID_LINE+5} ${x+10} ${MID_LINE+15} L ${x+18} ${BASE_LINE-5} L ${x+28} ${MID_LINE+10} L ${x+33} ${BASE_LINE}`,
-                width: 37,
-                instruction: 'Upstroke, diagonal down to a point, diagonal back up, exit to baseline.',
-                tips: 'Make a sharp point at the bottom.'
+                steps: ['Upstroke', 'Diagonal down', 'Sharp point', 'Diagonal up'],
+                tip: 'Sharp point at the bottom.'
             },
             'w': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+5} L ${x+12} ${BASE_LINE-8} L ${x+22} ${MID_LINE+15} L ${x+30} ${BASE_LINE-8} L ${x+40} ${MID_LINE+15} L ${x+45} ${BASE_LINE}`,
-                width: 50,
-                instruction: 'Like two "v" shapes connected - down up down up.',
-                tips: 'Keep the valleys at the same level.'
+                steps: ['Upstroke', 'Down', 'Up', 'Down', 'Up and exit'],
+                tip: 'Like two v shapes connected.'
             },
             'x': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+10} L ${x+25} ${BASE_LINE-5} M ${x+25} ${MID_LINE+10} L ${x+5} ${BASE_LINE-5} L ${x+30} ${BASE_LINE}`,
-                width: 34,
-                instruction: 'Two diagonal strokes that cross in the middle.',
-                tips: 'The cross should be right in the center.'
+                steps: ['First diagonal', 'Second diagonal', 'Cross in middle'],
+                tip: 'The strokes cross right in the center.'
             },
             'y': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+5} C ${x+8} ${MID_LINE} ${x+12} ${MID_LINE+5} ${x+10} ${MID_LINE+15} L ${x+10} ${BASE_LINE-10} C ${x+10} ${BASE_LINE+5} ${x+25} ${BASE_LINE+5} ${x+25} ${MID_LINE+25} L ${x+25} ${MID_LINE+5} L ${x+25} ${DESC_LINE-15} C ${x+20} ${DESC_LINE+5} ${x} ${DESC_LINE} ${x+5} ${DESC_LINE-20}`,
-                width: 32,
-                instruction: 'Like a "u" but the second stroke continues below baseline with a left hook.',
-                tips: 'Same start as "u", but with a tail going down!'
+                steps: ['Like u top', 'Continue down', 'Below baseline', 'Curve left'],
+                tip: 'Like u but with a descending tail.'
             },
             'z': {
-                getPath: (x) => `M ${x} ${BASE_LINE} L ${x+5} ${MID_LINE+5} L ${x+25} ${MID_LINE+5} L ${x+5} ${BASE_LINE-5} L ${x+28} ${BASE_LINE-5} L ${x+33} ${BASE_LINE}`,
-                width: 38,
-                instruction: 'Upstroke, horizontal, diagonal down, horizontal, exit.',
-                tips: 'Like a zigzag - angular not curvy.'
+                steps: ['Across top', 'Diagonal down', 'Across bottom', 'Exit'],
+                tip: 'Zigzag pattern!'
             },
             ' ': {
-                getPath: (x) => '',
-                width: 20,
-                instruction: 'Space - lift your pen and move right.',
-                tips: 'Spaces help separate words!'
+                steps: ['Lift pen', 'Move right'],
+                tip: 'Spaces separate words!'
             }
+        };
+
+        // Default for uppercase and unknown
+        const defaultInstruction = {
+            steps: ['Follow the letter shape', 'Smooth strokes', 'Connect to next'],
+            tip: 'Watch the animation and follow along!'
         };
 
         // State
         let currentWord = '';
-        let processedWord = '';
-        let currentLetterIndex = 0;
+        let displayWord = '';
+        let currentIndex = 0;
         let isAnimating = false;
         let isPaused = false;
-        let animationSpeed = 5;
-        let animations = [];
+        let animationId = null;
 
-        // Initialize
+        // Init
         function init() {
-            generateLetterGrid();
-            updateSpeed();
-            updateStylePreview();
+            buildLetterGrid();
+            updateSpeedLabel();
+            updateStyle();
             startWriting();
         }
 
-        function generateLetterGrid() {
+        function buildLetterGrid() {
             const grid = document.getElementById('letterGrid');
-            const letters = 'abcdefghijklmnopqrstuvwxyz';
-            grid.innerHTML = '';
-            for (let letter of letters) {
+            'abcdefghijklmnopqrstuvwxyz'.split('').forEach(letter => {
                 const btn = document.createElement('button');
                 btn.className = 'letter-btn';
                 btn.textContent = letter;
                 btn.onclick = () => setWord(letter);
                 grid.appendChild(btn);
-            }
+            });
         }
 
         function setWord(word) {
@@ -798,354 +635,229 @@
         }
 
         function applyCase(text) {
-            const caseOption = document.getElementById('letterCase').value;
-            switch(caseOption) {
-                case 'lower': return text.toLowerCase();
-                case 'upper': return text.toUpperCase();
-                case 'title': return text.split(' ').map(w =>
-                    w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-                ).join(' ');
-                default: return text;
-            }
-        }
-
-        function applySlant(pathStr, slant) {
-            if (slant === 0) return pathStr;
-            const slantRad = (slant * Math.PI) / 180;
-            const tanSlant = Math.tan(slantRad);
-
-            // Transform coordinates
-            return pathStr.replace(/([MLCQ])\s*([\d.-]+)\s+([\d.-]+)/g, (match, cmd, xStr, yStr) => {
-                const x = parseFloat(xStr);
-                const y = parseFloat(yStr);
-                const newX = x + (BASE_LINE - y) * tanSlant * 0.5;
-                return `${cmd} ${newX.toFixed(1)} ${y}`;
-            });
+            const opt = document.getElementById('caseSelect').value;
+            if (opt === 'lower') return text.toLowerCase();
+            if (opt === 'upper') return text.toUpperCase();
+            if (opt === 'title') return text.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+            return text;
         }
 
         function startWriting() {
-            const input = document.getElementById('wordInput').value.trim();
-            if (!input) return;
+            cancelAnimation();
 
-            currentWord = input;
-            processedWord = applyCase(input).toLowerCase(); // Always use lowercase for paths
-            currentLetterIndex = 0;
+            currentWord = document.getElementById('wordInput').value.trim();
+            if (!currentWord) return;
+
+            displayWord = applyCase(currentWord);
+            currentIndex = 0;
             isAnimating = true;
             isPaused = false;
+            document.getElementById('pauseBtn').textContent = '⏸️ Pause';
 
-            cancelAllAnimations();
-            updateProgressIndicator();
-            drawWord();
-            showLetterInstruction(0);
-            animateSequence();
-        }
-
-        function updateProgressIndicator() {
-            const indicator = document.getElementById('progressIndicator');
-            indicator.innerHTML = '';
-            const displayWord = applyCase(currentWord);
-
-            for (let i = 0; i < displayWord.length; i++) {
+            // Build progress dots
+            const progressRow = document.getElementById('progressRow');
+            progressRow.innerHTML = '';
+            displayWord.split('').forEach((char, i) => {
                 const dot = document.createElement('div');
                 dot.className = 'progress-dot';
-                dot.textContent = displayWord[i];
-                dot.onclick = () => jumpToLetter(i);
-                indicator.appendChild(dot);
-            }
-            updateProgressDots();
+                dot.textContent = char;
+                dot.onclick = () => jumpTo(i);
+                progressRow.appendChild(dot);
+            });
+
+            // Setup text display
+            const outline = document.getElementById('textOutline');
+            const fill = document.getElementById('textFill');
+            outline.textContent = displayWord;
+            fill.textContent = displayWord;
+
+            updateProgress();
+            showInstruction(0);
+            animateLetter();
         }
 
-        function updateProgressDots() {
+        function updateProgress() {
             const dots = document.querySelectorAll('.progress-dot');
             dots.forEach((dot, i) => {
-                dot.classList.remove('completed', 'current');
-                if (i < currentLetterIndex) dot.classList.add('completed');
-                else if (i === currentLetterIndex) dot.classList.add('current');
+                dot.classList.remove('done', 'current');
+                if (i < currentIndex) dot.classList.add('done');
+                else if (i === currentIndex) dot.classList.add('current');
             });
         }
 
-        function drawWord() {
-            const svg = document.getElementById('cursiveSvg');
-            svg.innerHTML = '';
+        function showInstruction(index) {
+            const letterSpan = document.getElementById('currentLetter');
+            const textDiv = document.getElementById('instructionText');
+            const stepsDiv = document.getElementById('strokeSteps');
 
-            const style = document.getElementById('cursiveStyle').value;
-            const slant = styleConfigs[style].slant;
-            const color = document.getElementById('penColor').value;
-            const sizeMultiplier = getSizeMultiplier();
-
-            let xPos = 30;
-
-            // Create one continuous path for the whole word
-            let fullPath = '';
-            let isFirstLetter = true;
-
-            for (let i = 0; i < processedWord.length; i++) {
-                const char = processedWord[i].toLowerCase();
-                const letterData = cursiveLetters[char];
-
-                if (!letterData) continue;
-
-                if (char === ' ') {
-                    xPos += letterData.width * sizeMultiplier;
-                    isFirstLetter = true;
-                    continue;
-                }
-
-                const letterPath = letterData.getPath(xPos * (1/sizeMultiplier));
-
-                if (letterPath) {
-                    // Create separate path for each letter for animation
-                    const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                    let transformedPath = applySlant(letterPath, slant);
-                    transformedPath = scalePath(transformedPath, sizeMultiplier);
-
-                    pathEl.setAttribute('d', transformedPath);
-                    pathEl.setAttribute('class', 'letter-path animated');
-                    pathEl.setAttribute('stroke', color);
-                    pathEl.setAttribute('stroke-width', 2.5 * sizeMultiplier);
-                    pathEl.id = `letter-${i}`;
-                    svg.appendChild(pathEl);
-                }
-
-                xPos += letterData.width * sizeMultiplier;
-                isFirstLetter = false;
+            if (index >= displayWord.length) {
+                letterSpan.textContent = '✓';
+                textDiv.innerHTML = '<strong>Great job!</strong> You completed the word!';
+                stepsDiv.innerHTML = '';
+                return;
             }
 
-            svg.setAttribute('viewBox', `0 0 ${Math.max(800, xPos + 50)} 220`);
+            const char = displayWord[index];
+            letterSpan.textContent = char;
+
+            const info = letterInstructions[char.toLowerCase()] || defaultInstruction;
+            textDiv.innerHTML = `<strong>Tip:</strong> ${info.tip}`;
+
+            stepsDiv.innerHTML = info.steps.map((step, i) =>
+                `<div class="stroke-step"><span class="step-num">${i+1}</span>${step}</div>`
+            ).join('');
         }
 
-        function scalePath(pathStr, scale) {
-            return pathStr.replace(/([\d.-]+)/g, (match) => {
-                return (parseFloat(match) * scale).toFixed(1);
-            });
-        }
-
-        function getSizeMultiplier() {
-            const size = document.getElementById('letterSize').value;
-            switch (size) {
-                case 'small': return 0.8;
-                case 'large': return 1.2;
-                default: return 1;
-            }
-        }
-
-        function animateSequence() {
-            if (currentLetterIndex >= processedWord.length || !isAnimating) {
+        function animateLetter() {
+            if (!isAnimating || isPaused) return;
+            if (currentIndex >= displayWord.length) {
                 isAnimating = false;
                 return;
             }
 
-            if (isPaused) return;
+            const fill = document.getElementById('textFill');
+            const speed = parseInt(document.getElementById('speedSlider').value);
+            const duration = (11 - speed) * 200; // ms per letter
 
-            if (processedWord[currentLetterIndex] === ' ') {
-                currentLetterIndex++;
-                updateProgressDots();
-                showLetterInstruction(currentLetterIndex);
-                setTimeout(() => animateSequence(), 150);
-                return;
-            }
+            // Calculate clip percentage for current letter
+            const totalChars = displayWord.length;
+            const startPercent = (currentIndex / totalChars) * 100;
+            const endPercent = ((currentIndex + 1) / totalChars) * 100;
 
-            const path = document.getElementById(`letter-${currentLetterIndex}`);
-            if (path) {
-                animatePath(path, () => {
-                    currentLetterIndex++;
-                    updateProgressDots();
-                    showLetterInstruction(currentLetterIndex);
-                    setTimeout(() => animateSequence(), 100);
-                });
-            } else {
-                currentLetterIndex++;
-                updateProgressDots();
-                animateSequence();
-            }
-        }
+            let startTime = null;
 
-        function animatePath(path, onComplete) {
-            const length = path.getTotalLength();
-            const duration = (11 - animationSpeed) * 150;
-
-            path.style.strokeDasharray = length;
-            path.style.strokeDashoffset = length;
-
-            const startTime = performance.now();
-
-            function animate(currentTime) {
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
                 if (isPaused) return;
 
-                const elapsed = currentTime - startTime;
+                const elapsed = timestamp - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                path.style.strokeDashoffset = length * (1 - progress);
+
+                const currentPercent = startPercent + (endPercent - startPercent) * progress;
+                fill.style.clipPath = `inset(0 ${100 - currentPercent}% 0 0)`;
 
                 if (progress < 1) {
-                    const animId = requestAnimationFrame(animate);
-                    animations.push(animId);
+                    animationId = requestAnimationFrame(animate);
                 } else {
-                    if (onComplete) onComplete();
-                }
-            }
+                    currentIndex++;
+                    updateProgress();
+                    showInstruction(currentIndex);
 
-            const animId = requestAnimationFrame(animate);
-            animations.push(animId);
-        }
-
-        function showLetterInstruction(index) {
-            const letterSpan = document.getElementById('currentLetter');
-            const instructionDiv = document.getElementById('instructionText');
-            const displayWord = applyCase(currentWord);
-
-            if (index >= processedWord.length) {
-                letterSpan.textContent = '✓';
-                instructionDiv.innerHTML = '<strong>Great job!</strong> You\'ve completed the word! Click "Repeat" to practice again.';
-                return;
-            }
-
-            const char = processedWord[index].toLowerCase();
-            const displayChar = displayWord[index];
-            letterSpan.textContent = displayChar;
-
-            if (char === ' ') {
-                instructionDiv.innerHTML = '<p><strong>Space:</strong> Lift your pen and move right for the next word.</p>';
-                return;
-            }
-
-            const letterData = cursiveLetters[char];
-            if (letterData) {
-                const style = document.getElementById('cursiveStyle').value;
-                const styleConfig = styleConfigs[style];
-                instructionDiv.innerHTML = `
-                    <p><strong>Step by step:</strong> ${letterData.instruction}</p>
-                    <p style="margin-top: 10px; color: #7b1fa2;"><strong>💡 Tip:</strong> ${letterData.tips}</p>
-                    <p style="margin-top: 10px; color: #1565c0;"><strong>Style (${styleConfig.name}):</strong> ${styleConfig.description}</p>
-                `;
-            }
-        }
-
-        function cancelAllAnimations() {
-            animations.forEach(id => cancelAnimationFrame(id));
-            animations = [];
-        }
-
-        function repeatWriting() { startWriting(); }
-
-        function startPractice() {
-            const repeatCount = parseInt(document.getElementById('repeatCount').value) || 3;
-            let currentRepeat = 0;
-
-            function doRepeat() {
-                if (currentRepeat >= repeatCount) {
-                    alert('Practice complete! Great job! 🌟');
-                    return;
-                }
-                currentRepeat++;
-                startWriting();
-
-                const checkComplete = setInterval(() => {
-                    if (!isAnimating) {
-                        clearInterval(checkComplete);
-                        setTimeout(doRepeat, 1000);
+                    if (currentIndex < displayWord.length) {
+                        setTimeout(() => animateLetter(), 150);
+                    } else {
+                        isAnimating = false;
                     }
-                }, 500);
-            }
-            doRepeat();
-        }
-
-        function previousLetter() {
-            if (currentLetterIndex > 0) {
-                cancelAllAnimations();
-                currentLetterIndex--;
-                updateProgressDots();
-                showLetterInstruction(currentLetterIndex);
-                resetFromIndex(currentLetterIndex);
-                isAnimating = true;
-                isPaused = false;
-                animateSequence();
-            }
-        }
-
-        function nextLetter() {
-            if (currentLetterIndex < processedWord.length) {
-                cancelAllAnimations();
-                completeLetterInstantly(currentLetterIndex);
-                currentLetterIndex++;
-                updateProgressDots();
-                showLetterInstruction(currentLetterIndex);
-
-                if (currentLetterIndex < processedWord.length) {
-                    isAnimating = true;
-                    isPaused = false;
-                    animateSequence();
-                } else {
-                    isAnimating = false;
                 }
             }
+
+            animationId = requestAnimationFrame(animate);
         }
 
-        function jumpToLetter(index) {
-            cancelAllAnimations();
-            for (let i = 0; i < index; i++) completeLetterInstantly(i);
-            resetFromIndex(index);
-            currentLetterIndex = index;
-            updateProgressDots();
-            showLetterInstruction(index);
-            isAnimating = true;
-            isPaused = false;
-            animateSequence();
-        }
-
-        function completeLetterInstantly(index) {
-            const path = document.getElementById(`letter-${index}`);
-            if (path) path.style.strokeDashoffset = 0;
-        }
-
-        function resetFromIndex(index) {
-            for (let i = index; i < processedWord.length; i++) {
-                const path = document.getElementById(`letter-${i}`);
-                if (path) {
-                    path.style.strokeDashoffset = path.getTotalLength();
-                }
+        function cancelAnimation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
             }
+            isAnimating = false;
         }
 
-        function pauseResume() {
+        function togglePause() {
             const btn = document.getElementById('pauseBtn');
             if (isPaused) {
                 isPaused = false;
                 btn.textContent = '⏸️ Pause';
-                animateSequence();
+                animateLetter();
             } else {
                 isPaused = true;
                 btn.textContent = '▶️ Resume';
             }
         }
 
-        function updateSpeed() {
-            const slider = document.getElementById('speedSlider');
-            const value = document.getElementById('speedValue');
-            animationSpeed = parseInt(slider.value);
-            const speedNames = ['', 'Very Slow', 'Slow', 'Slow', 'Medium-Slow', 'Medium', 'Medium', 'Medium-Fast', 'Fast', 'Fast', 'Very Fast'];
-            value.textContent = speedNames[animationSpeed];
+        function prevLetter() {
+            if (currentIndex > 0) {
+                cancelAnimation();
+                currentIndex--;
+
+                // Reset fill to previous state
+                const fill = document.getElementById('textFill');
+                const percent = (currentIndex / displayWord.length) * 100;
+                fill.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+
+                updateProgress();
+                showInstruction(currentIndex);
+                isAnimating = true;
+                isPaused = false;
+                animateLetter();
+            }
+        }
+
+        function nextLetter() {
+            if (currentIndex < displayWord.length) {
+                cancelAnimation();
+                currentIndex++;
+
+                // Advance fill
+                const fill = document.getElementById('textFill');
+                const percent = (currentIndex / displayWord.length) * 100;
+                fill.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+
+                updateProgress();
+                showInstruction(currentIndex);
+
+                if (currentIndex < displayWord.length) {
+                    isAnimating = true;
+                    isPaused = false;
+                    animateLetter();
+                }
+            }
+        }
+
+        function jumpTo(index) {
+            cancelAnimation();
+            currentIndex = index;
+
+            const fill = document.getElementById('textFill');
+            const percent = (currentIndex / displayWord.length) * 100;
+            fill.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+
+            updateProgress();
+            showInstruction(currentIndex);
+            isAnimating = true;
+            isPaused = false;
+            animateLetter();
         }
 
         function updateStyle() {
-            updateStylePreview();
-            if (currentWord) startWriting();
-        }
-
-        function updateStylePreview() {
-            const style = document.getElementById('cursiveStyle').value;
+            const style = document.getElementById('styleSelect').value;
+            const text = document.getElementById('cursiveText');
             const preview = document.getElementById('stylePreview');
-            const config = styleConfigs[style];
-            preview.style.transform = `skewX(-${config.slant}deg)`;
+
+            text.className = 'cursive-text style-' + style;
+            preview.className = 'style-preview style-' + style;
+
+            if (displayWord) startWriting();
         }
 
-        function updateCase() { if (currentWord) startWriting(); }
-        function updateSize() { if (currentWord) startWriting(); }
+        function updateSize() {
+            const size = document.getElementById('sizeSelect').value;
+            const text = document.getElementById('cursiveText');
+            const sizes = { small: '52px', medium: '72px', large: '92px' };
+            text.style.fontSize = sizes[size];
+        }
 
         function updateColor() {
-            const color = document.getElementById('penColor').value;
-            document.querySelectorAll('.letter-path').forEach(path => {
-                path.setAttribute('stroke', color);
-            });
+            const color = document.getElementById('colorSelect').value;
+            const text = document.getElementById('cursiveText');
+            const fill = document.getElementById('textFill');
+            text.style.webkitTextStrokeColor = color;
+            fill.style.color = color;
+        }
+
+        function updateSpeedLabel() {
+            const val = document.getElementById('speedSlider').value;
+            const labels = ['', 'Very Slow', 'Slow', 'Slow', 'Medium-Slow', 'Medium', 'Medium', 'Medium-Fast', 'Fast', 'Fast', 'Very Fast'];
+            document.getElementById('speedLabel').textContent = labels[val];
         }
 
         window.onload = init;
